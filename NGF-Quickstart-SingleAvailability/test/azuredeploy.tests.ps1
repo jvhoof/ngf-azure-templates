@@ -112,18 +112,16 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         # Validate all ARM templates one by one
         $testsErrorFound = $false
-        foreach ($template in $testsTemplateList.GetEnumerator()) {
-            $testsTemplateFile = $template[0]
-            $testsTemplateParemeterFile = $template[1]
-            It "Test Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
-                (Test-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $testsTemplateFile -TemplateParameterFile $testsTemplateParemeterFile).Count | Should not BeGreaterThan 0
-            }
-            It "Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
-                (New-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $testsTemplateFile -TemplateParameterFile $testsTemplateParemeterFile -adminPassword $testPassword -prefix $prefix).Count | Should not BeGreaterThan 0
-            }
-            It "Do we have connection with Azure?" {
-                $result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
-                Write-Host $result
+
+        It "Test Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
+            (Test-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation).Count | Should not BeGreaterThan 0
+        }
+        It "Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
+            (New-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testPassword -prefix $prefix).Count | Should not BeGreaterThan 0
+        }
+        It "Do we have connection with Azure?" {
+            $result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
+            Write-Host $result
                 $result | Should Not Be $null
             }
         }
