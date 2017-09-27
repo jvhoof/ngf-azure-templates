@@ -118,13 +118,13 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         It "Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testsAdminPassword -prefix $testsprefix
-            Write-Host $resultDeployment
+            Write-Host ($resultDeployment | Format-Table | Out-String)
             Write-Host $resultDeployment.Count
             $resultDeployment.Count | Should not BeGreaterThan 0
         }
         It "Do we have connection with Azure?" {
             $result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
-            Write-Host $result
+            Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
         Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
