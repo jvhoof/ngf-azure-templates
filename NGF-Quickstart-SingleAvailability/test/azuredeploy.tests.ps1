@@ -99,7 +99,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $testsAdminPassword = "cudatests-ngf-quickstart-sa-$testsRandom"
         $testsPrefix = "cudatests-$testsRandom"
         $testsVM = "cudatests-$testsRandom-VM-NGF"
-        $testsResourceGroupLocation = "West Europe"
+        $testsResourceGroupLocation = "East US"
 
         # List of all scripts + parameter files
         $testsTemplateList=@()
