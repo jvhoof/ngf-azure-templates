@@ -253,7 +253,7 @@
       "condition": "[equals(parameters('ccManaged'),'yes')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('fwVmName')]",
+      "name": "[concat(variables('fwVmName'),'-CC')]",
       "location": "[resourceGroup().location]",
       "plan": {
         "name": "[parameters('imageSKU')]",
