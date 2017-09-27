@@ -1,0 +1,57 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminPassword": {
+      "value": "GEN-PASSWORD"
+    },
+    "prefix": {
+      "value": "CUDA"
+    },
+    "vNetResourceGroup": {
+      "value": "CUDA-RG-VNET"
+    },
+    "vNetName": {
+      "value": "CUDA-VNET"
+    },
+    "vNetPrefix": {
+      "value": "172.16.136.0/22"
+    },
+    "subnetPrefixNGF": {
+      "value": "172.16.136.0/24"
+    },
+    "imageSKU": {
+      "value": "byol"
+    },
+    "vmSize": {
+      "value": "Standard_DS1_v2"
+    },
+    "fwVmNameA": {
+      "value": "CUDA-VM-NGF-A"
+    },
+    "fwVmNameB": {
+      "value": "CUDA-VM-NGF-B"
+    },
+    "fwVmAdressA": {
+      "value": "172.16.136.10"
+    },
+    "fwVmAdressB": {
+      "value": "172.16.136.11"
+    },
+    "ccManaged": {
+      "value": "no"
+    },
+    "ccIpAddress": {
+      "value": ""
+    },
+    "ccClusterName": {
+      "value": ""
+    },
+    "ccRangeId": {
+      "value": ""
+    },
+    "ccSecret": {
+      "value": ""
+    }
+  }
+}
