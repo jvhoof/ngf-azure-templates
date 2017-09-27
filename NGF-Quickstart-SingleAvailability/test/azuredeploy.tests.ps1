@@ -122,8 +122,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         It "Do we have connection with Azure?" {
             $result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
             Write-Host $result
-                $result | Should Not Be $null
-            }
+            $result | Should Not Be $null
         }
         Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
 
