@@ -96,7 +96,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         # Basic Variables
         $testsRandom = Get-Random 10001
         $testsResourceGroupName = "cudatests-ngf-quickstart-sa-$testsRandom"
-        $testsAdminPassword = ConvertTo-SecureString "cudatests-ngf-quickstart-sa-$testsRandom"
+        $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
         $testsPrefix = "cudatests-$testsRandom"
         $testsVM = "cudatests-$testsRandom-VM-NGF"
         $testsResourceGroupLocation = "East US"
