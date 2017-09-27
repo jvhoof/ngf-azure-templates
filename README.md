@@ -1,0 +1,1 @@
+# ngf-azure-templates
