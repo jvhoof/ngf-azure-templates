@@ -32,7 +32,7 @@ $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
 $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
-$templateParemeterFileLocation = "$sourcePath\$templateParameterFileName" 
+$templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
 
 Describe 'ARM Templates Test : Validation & Test Deployment' {
     
@@ -43,7 +43,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Has a parameters file' {        
-            $templateParemeterFileLocation | Should Exist
+            $templateParameterFileLocation | Should Exist
         }
 		
         It 'Has a metadata file' {        
