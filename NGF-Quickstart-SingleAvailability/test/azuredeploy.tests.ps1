@@ -114,7 +114,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $testsErrorFound = $false
 
         It "Test Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
-            (Test-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation).Count | Should not BeGreaterThan 0
+            (Test-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testPassword -prefix $prefix).Count | Should not BeGreaterThan 0
         }
         It "Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
             (New-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testPassword -prefix $prefix).Count | Should not BeGreaterThan 0
