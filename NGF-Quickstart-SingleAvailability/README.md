@@ -1,6 +1,6 @@
 # Barracuda Next Gen Firewall F Series Quick Start Single Availability
 
-<img src="https://cudajvhoof.visualstudio.com/_apis/public/build/definitions/74ff283c-fcb5-4060-b1f2-f377e03be483/3/badge"/>
+![Build status](https://img.shields.io/vso/build/cudajvhoof/19118fdb-7d82-4c41-a1fd-b16e490dc968/4.svg)
 
 ## Introduction
 This Azure Resource Manager (ARM) template will deploy the Barracuda Next Gen Firewall F Series in a new VNET. Deployment is done with in a one-armed fashion where north-south, east-west and VPN tunnel traffic can be intercepted and inspected based on the User Defined Routing that is attached to the subnets that need this control. Do not apply any UDR to the subnet where the NGF is located that points back to the NGF. This will cause routing loops.
