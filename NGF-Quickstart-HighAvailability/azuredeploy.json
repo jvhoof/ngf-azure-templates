@@ -460,7 +460,7 @@
       "condition": "[equals(parameters('ccManaged'),'yes')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('fwVmNameA')]",
+      "name": "[concat(variables('fwVmNameA'),'-CC')]",
       "location": "[resourceGroup().location]",
       "plan": {
         "name": "[parameters('imageSKU')]",
@@ -566,7 +566,7 @@
       "condition": "[equals(parameters('ccManaged'),'yes')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('fwVmNameB')]",
+      "name": "[concat(variables('fwVmNameB'),'-CC')]",
       "location": "[resourceGroup().location]",
       "plan": {
         "name": "[parameters('imageSKU')]",
