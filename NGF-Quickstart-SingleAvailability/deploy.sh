@@ -13,10 +13,26 @@ cat << "EOF"
 ##############################################################################################################
 EOF
 
-location="westeurope"
+# Input prefix 
+echo -n "Enter location (e.g. westeurope): "
+stty_orig=`stty -g` # save original terminal setting.
+read location         # read the password
+stty $stty_orig     # restore terminal setting.
+if [ -z "$location" ] 
+then
+    location="westeurope"
+fi
 echo -e "Deployment in $location location ...\n"
 
-prefix="CUDA"
+# Input prefix 
+echo -n "Enter prefix: "
+stty_orig=`stty -g` # save original terminal setting.
+read prefix         # read the password
+stty $stty_orig     # restore terminal setting.
+if [ -z "$location" ] 
+then
+    prefix="CUDA"
+fi
 rg_ngf="$prefix-RG"
 
 # Input password 
@@ -25,7 +41,7 @@ stty_orig=`stty -g` # save original terminal setting.
 stty -echo          # turn-off echoing.
 read passwd         # read the password
 stty $stty_orig     # restore terminal setting.
-                           
+
 # Create resource group for NextGen Firewall resources
 echo -e "\nCreating $rg_ngf resource group ...\n"
 az group create --location "$location" --name "$rg_ngf"
