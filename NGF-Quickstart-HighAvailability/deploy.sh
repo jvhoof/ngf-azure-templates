@@ -22,7 +22,7 @@ if [ -z "$location" ]
 then
     location="westeurope"
 fi
-echo -e "Deployment in $location location ...\n"
+echo "Deployment in $location location ...\n"
 
 # Input prefix 
 echo -n "Enter prefix: "
@@ -33,7 +33,7 @@ if [ -z "$prefix" ]
 then
     prefix="CUDA"
 fi
-echo -e "Using prefix #prefix for all resources ...\n"
+echo "Using prefix #prefix for all resources ...\n"
 rg_ngf="$prefix-RG"
 
 # Input password 
@@ -44,7 +44,7 @@ read passwd         # read the password
 stty $stty_orig     # restore terminal setting.
                            
 # Create resource group for NextGen Firewall resources
-echo -e "\nCreating $rg_ngf resource group ...\n"
+echo "\nCreating $rg_ngf resource group ...\n"
 az group create --location "$location" --name "$rg_ngf"
 
 # Validate template
