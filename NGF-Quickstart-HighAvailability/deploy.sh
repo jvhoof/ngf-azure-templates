@@ -27,12 +27,13 @@ echo -e "Deployment in $location location ...\n"
 # Input prefix 
 echo -n "Enter prefix: "
 stty_orig=`stty -g` # save original terminal setting.
-read prefix         # read the password
+read prefix         # read the prefix
 stty $stty_orig     # restore terminal setting.
-if [ -z "$location" ] 
+if [ -z "$prefix" ] 
 then
     prefix="CUDA"
 fi
+echo -e "Using prefix #prefix for all resources ...\n"
 rg_ngf="$prefix-RG"
 
 # Input password 
