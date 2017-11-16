@@ -44,11 +44,11 @@ read passwd         # read the password
 stty $stty_orig     # restore terminal setting.
 
 # Create resource group for NextGen Firewall resources
-echo -e "\nCreating $rg_ngf resource group ...\n"
+echo "\nCreating $rg_ngf resource group ...\n"
 az group create --location "$location" --name "$rg_ngf"
 
 # Deploy NextGen Firewall resources
-echo -e "\nDeployment of $rg_ngf resources ...\n"
+echo "\nDeployment of $rg_ngf resources ...\n"
 az group deployment create --resource-group "$rg_ngf" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \

@@ -48,7 +48,7 @@ echo "\nCreating $rg_ngf resource group ...\n"
 az group create --location "$location" --name "$rg_ngf"
 
 # Validate template
-echo -e "\nValidation deployment in $rg_ngf resource group ...\n"
+echo "\nValidation deployment in $rg_ngf resource group ...\n"
 az group deployment validate --verbose --resource-group "$rg_ngf" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
