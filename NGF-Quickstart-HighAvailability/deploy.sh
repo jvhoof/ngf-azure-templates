@@ -33,7 +33,7 @@ if [ -z "$prefix" ]
 then
     prefix="CUDA"
 fi
-echo "Using prefix #prefix for all resources ...\n"
+echo "Using prefix $prefix for all resources ...\n"
 rg_ngf="$prefix-RG"
 
 # Input password 
