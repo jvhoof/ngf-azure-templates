@@ -47,9 +47,28 @@ stty $stty_orig     # restore terminal setting.
 echo "\nCreating $rg_ngf resource group ...\n"
 az group create --location "$location" --name "$rg_ngf"
 
+# Validate template
+echo "\nValidation deployment in $rg_ngf resource group ...\n"
+az group deployment validate --verbose --resource-group "$rg_ngf" \
+                           --template-file azuredeploy.json \
+                           --parameters "@azuredeploy.parameters.json" \
+                           --parameters adminPassword=$passwd prefix=$prefix
+result=$? 
+if [ $result != 0 ]; 
+then 
+    echo "\nValidation failed ...\n"
+    exit $rc; 
+fi
+
 # Deploy NextGen Firewall resources
 echo "\nDeployment of $rg_ngf resources ...\n"
 az group deployment create --resource-group "$rg_ngf" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
                            --parameters adminPassword=$passwd prefix=$prefix
+result=$? 
+if [ $result != 0 ]; 
+then 
+    echo "\nDeployment failed ...\n"
+    exit $rc; 
+fi

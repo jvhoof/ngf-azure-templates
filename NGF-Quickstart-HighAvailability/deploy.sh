@@ -56,19 +56,19 @@ az group deployment validate --verbose --resource-group "$rg_ngf" \
 result=$? 
 if [ $result != 0 ]; 
 then 
-    echo -e "\nValidation failed ...\n"
+    echo "\nValidation failed ...\n"
     exit $rc; 
 fi
 
 # Deploy NextGen Firewall resources
-echo -e "\nDeployment of $rg_ngf resources ...\n"
+echo "\nDeployment of $rg_ngf resources ...\n"
 az group deployment create --resource-group "$rg_ngf" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
                            --parameters adminPassword=$passwd prefix=$prefix
 result=$? 
-if [[ $result != 0 ]]; 
+if [ $result != 0 ]; 
 then 
-    echo -e "\nDeployment failed ...\n"
+    echo "\nDeployment failed ...\n"
     exit $rc; 
 fi
