@@ -29,7 +29,6 @@ subnetNameNGF | The name of the subnet where NGF will be installed
 subnetPrefixNGF | Network range of the Subnet containing the NextGen Firewall (e.g. 172.16.136.0/24)
 imageSKU | SKU Hourly (PAYG) or BYOL (Bring your own license)
 vmSize | Size of the VMs to be created
-fwVMName | Name of the NGF VM in Azure
 fwVMAddressA | Static IP Address of the first NGF VM in Azure
 fwVMAddressB | Static IP Address of the second NGF VM in Azure
 ccManaged | Is this instance managed via a Next Gen Control Center (Yes/No)

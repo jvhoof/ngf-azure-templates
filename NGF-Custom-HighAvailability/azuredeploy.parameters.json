@@ -26,12 +26,6 @@
     "vmSize": {
       "value": "Standard_DS1_v2"
     },
-    "fwVmNameA": {
-      "value": "CUDA-VM-NGF-A"
-    },
-    "fwVmNameB": {
-      "value": "CUDA-VM-NGF-B"
-    },
     "fwVmAdressA": {
       "value": "172.16.136.10"
     },
