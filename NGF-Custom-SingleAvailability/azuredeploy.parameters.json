@@ -5,6 +5,9 @@
     "adminPassword": {
       "value": "GEN-PASSWORD"
     },
+    "prefix": {
+      "value": "CUDA"
+    },
     "vNetResourceGroup": {
       "value": "CUDA-RG-VNET"
     },
@@ -22,9 +25,6 @@
     },
     "vmSize": {
       "value": "Standard_DS1_v2"
-    },
-    "fwVmName": {
-      "value": "CUDA-VM-NGF"
     },
     "fwVmAddress": {
       "value": "172.16.136.10"

@@ -36,6 +36,7 @@ ccIpAddress | IP address of the Next Gen Control Center
 ccSecret | Secret to retrieve the configuration from the Next Gen Control Center
 
 ## Launching the Template
+
 The package provides a deploy.ps1 and deploy.sh for Powershell or Azure CLI based deployments. This can be peformed from the Azure Portal as well as the any system that has either of these scripting infrastructures installed. Or you can deploy from the Azure Portal using the provided link.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-SingleAvailability%2Fazuredeploy.json" target="_blank">
