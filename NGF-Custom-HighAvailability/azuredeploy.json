@@ -12,7 +12,8 @@
       "type": "string",
       "metadata": {
           "description": "identifying prefix for all VM's being build. e.g WeProd would become WeProd-VM-NGF (Max 19 char, no spaces, [A-Za-z0-9]"
-      }
+      },
+      "defaultValue": "CUDA"
     },
     "vNetResourceGroup": {
       "type": "string",
@@ -46,42 +47,13 @@
       "allowedValues": [
           "hourly",
           "byol"
-      ]
+      ],
+      "defaultValue": "byol"
     },
     "vmSize": {
       "type": "string",
-      "allowedValues": [
-        "Standard_A1_v2",
-        "Standard_A2_v2",
-        "Standard_A3_v2",
-        "Standard_A4_v2",
-        "Standard_D1",
-        "Standard_D2",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_D1_v2",
-        "Standard_D2_v2",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_DS1_v2",
-        "Standard_DS2_v2",
-        "Standard_DS3_v2",
-        "Standard_DS4_v2",
-        "Standard_F1",
-        "Standard_F2",
-        "Standard_F4",
-        "Standard_F8",
-        "Standard_FS1",
-        "Standard_FS2",
-        "Standard_FS4",
-        "Standard_FS8"
-      ],
-      "metadata": {
-        "description": "Size of the VMs to be created"
-      }
-    },
-    "fwVmAddressA": {
-      "type": "string",
+      "defaultValue": "Standard_F1s",
+      "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_D1_v2", "Standard_D2_v2", "Standard_D4_v2", "Standard_D8_v2" ],
       "metadata": {
         "description": "IP address of the second NGF in the cluster"
       }
