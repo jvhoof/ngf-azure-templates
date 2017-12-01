@@ -36,6 +36,10 @@
       "ilbName": {
         "type": "string",
         "defaultValue": "ngf-hailb-ilb"
+      },
+      "elbName": {
+        "type": "string",
+        "defaultValue": "ngf-haelb-elb"
       }
     },
     "variables": {
@@ -52,7 +56,6 @@
       "ngfCustomData2": "[Base64('\n')]",
       "ngfPipName1": "[concat( parameters( 'prefix' ), '-pip1' )]",
       "ngfPipName2": "[concat( parameters( 'prefix' ), '-pip2' )]"
-
     },
     "resources": [
       {
@@ -68,7 +71,6 @@
               "platformFaultDomainCount": 2
           }
       },
-
       {
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "[variables( concat( 'ngfPipName', copyIndex(1)))]",
@@ -111,7 +113,8 @@
                           },
                           "loadBalancerBackendAddressPools": [
                               {
-                                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('ilbName')), '/backendAddressPools/NGFPool')]"
+                                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('ilbName')), '/backendAddressPools/NGFPool')]",
+                                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('elbName')), '/backendAddressPools/NGFPool-ext')]"
                               }
                           ]
                       }

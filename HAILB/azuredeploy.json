@@ -62,6 +62,7 @@
     "vnetTemplateUrl": "[uri(deployment().properties.templateLink.uri, 'Artifacts/vnet.json')]",
     "ngfTemplateUrl": "[uri(deployment().properties.templateLink.uri, 'Artifacts/ngf.json')]",
     "ilbTemplateUrl": "[uri(deployment().properties.templateLink.uri, 'Artifacts/ilb.json')]",
+    "elbTemplateUrl": "[uri(deployment().properties.templateLink.uri, 'Artifacts/elb.json')]",
     "netId-gw": "[concat( resourceId( 'Microsoft.Network/virtualNetworks', concat( parameters('deploymentPrefix'), '-vnet' )), '/subnets/gw' )]",
     "netGwCidrSplit": "[split( parameters( 'firewallSubnetAddress' ), '/' )]",
     "netGwAddrSplit": "[split( variables( 'netGwCidrSplit' )[0], '.' )]",
@@ -70,8 +71,6 @@
     "ngfIpAddr1": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 4 ))]",
     "ngfIpAddr2": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 5 ))]",
     "ilbAddr": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 6 ))]"
-
-
   },
   "resources": [
     {
@@ -131,6 +130,24 @@
           "ilbProbePort": { "value": "[parameters( 'ilbProbePort' )]" },
           "prefix": { "value": "[parameters('deploymentPrefix')]" },
           "netId-gw": { "value": "[variables( 'netId-gw' )]" }
+        },
+        "mode": "Incremental"
+      },
+      "dependsOn": [
+        "[resourceId( 'Microsoft.Resources/deployments', 'Network' )]"
+      ]
+    },
+    {
+      "apiVersion": "[variables('apiNetwork')]",
+      "type": "Microsoft.Resources/deployments",
+      "name": "ELB",
+      "properties": {
+        "templateLink": {
+          "uri": "[variables('elbTemplateUrl')]"
+        },
+        "parameters": {
+          "prefix": { "value": "[parameters('deploymentPrefix')]" },
+          "elbProbePort": { "value": "[parameters( 'ilbProbePort' )]" }
         },
         "mode": "Incremental"
       },
