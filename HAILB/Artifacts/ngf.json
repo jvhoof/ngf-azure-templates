@@ -112,10 +112,6 @@
                             "id": "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
                           },
                           "loadBalancerBackendAddressPools": [
-                              {
-                                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('ilbName')), '/backendAddressPools/NGFPool')]",
-                                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('elbName')), '/backendAddressPools/NGFPool-ext')]"
-                              }
                           ]
                       }
                   }
