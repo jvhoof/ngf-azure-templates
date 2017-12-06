@@ -112,7 +112,8 @@
           "ngfIpAddr4": { "value": "[variables( 'ngfIpAddr4' )]" },
           "ngfIpGw": { "value": "[variables( 'netGwDefaultGw' )]" },
           "netId-gw": { "value": "[variables( 'netId-gw' )]" },
-          "ilbName": { "value": "[concat( parameters('deploymentPrefix'), '-ilb' )]" }
+          "ilbName": { "value": "[concat( parameters('deploymentPrefix'), '-ilb' )]" },
+          "elbName": { "value": "[concat( parameters('deploymentPrefix'), '-elb' )]" }
         },
         "mode": "Incremental"
       },
