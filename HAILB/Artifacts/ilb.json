@@ -24,7 +24,7 @@
     "apiVersionNetwork": "2017-06-01",
     "apiVersionLB": "2017-08-01",
     "ilbName": "[concat( parameters('prefix'), '-ilb' )]",
-    "ilbPoolName": "NGFPool",
+    "ilbPoolName": "NGFPool-int",
     "ilbProbeName": "ngprobe"
   },
   "resources": [
