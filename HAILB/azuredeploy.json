@@ -70,6 +70,8 @@
     "netGwDefaultGw": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 1 ))]",
     "ngfIpAddr1": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 4 ))]",
     "ngfIpAddr2": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 5 ))]",
+    "ngfIpAddr3": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 6 ))]",
+    "ngfIpAddr4": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 7 ))]",
     "ilbAddr": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 6 ))]"
   },
   "resources": [
@@ -103,9 +105,11 @@
           "prefix": { "value": "[parameters( 'deploymentPrefix' )]" },
           "sizeNGF": { "value": "[parameters( 'firewallInstanceSize' )]" },
           "ngfPassword": { "value": "[parameters( 'rootPassword' )]" },
+          "ngfIpMask": { "value": "[variables( 'netGwMask' )]" },
           "ngfIpAddr1": { "value": "[variables( 'ngfIpAddr1' )]" },
           "ngfIpAddr2": { "value": "[variables( 'ngfIpAddr2' )]" },
-          "ngfIpMask": { "value": "[variables( 'netGwMask' )]" },
+          "ngfIpAddr3": { "value": "[variables( 'ngfIpAddr3' )]" },
+          "ngfIpAddr4": { "value": "[variables( 'ngfIpAddr4' )]" },
           "ngfIpGw": { "value": "[variables( 'netGwDefaultGw' )]" },
           "netId-gw": { "value": "[variables( 'netId-gw' )]" },
           "ilbName": { "value": "[concat( parameters('deploymentPrefix'), '-ilb' )]" }

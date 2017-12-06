@@ -13,9 +13,29 @@
       "ngfPassword": {
         "type": "secureString"
       },
+      "ngfIpAddr1": {
+        "type": "string",
+        "defaultValue": "172.16.25.4"
+      },
+      "ngfIpAddr2": {
+        "type": "string",
+        "defaultValue": "172.16.25.5"
+      },
+      "ngfIpAddr3": {
+        "type": "string",
+        "defaultValue": "172.16.25.6"
+      },
+      "ngfIpAddr4": {
+        "type": "string",
+        "defaultValue": "172.16.25.7"
+      },
       "ngfIpMask": {
         "type": "string",
         "defaultValue": "24"
+      },
+      "ngfIpGw": {
+        "type": "string",
+        "defaultValue": "172.16.25.1"
       },
       "netId-gw": {
         "type": "string",
@@ -40,18 +60,10 @@
       "ngfNicName1": "[concat( variables('ngfName1'), '_nic0_', uniqueString( resourceGroup().id ))]",
       "ngfNicName2": "[concat( variables('ngfName2'), '_nic0_', uniqueString( resourceGroup().id ))]",
       "singleQuotationMark": "'",
-      "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables( 'ngfIpAddress1' ), ' ', parameters( 'ngfIpMask' ), ' ', variables( 'ngfSubnetDefaultGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'ngfPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', variables( 'ngfIpAddress3' ), ' -n ', parameters( 'ngfIpMask' ), ' -g ', variables( 'ngfSubnetDefaultGw' ), '\n'))]",
+      "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', parameters( 'ngfIpAddr1' ), ' ', parameters( 'ngfIpMask' ), ' ', parameters( 'ngfIpGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'ngfPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', parameters( 'ngfIpAddr3' ), ' -n ', parameters( 'ngfIpMask' ), ' -g ', parameters( 'ngfIpGw' ), '\n'))]",
       "ngfCustomData2": "[Base64('\n')]",
       "ngfPipName1": "[concat( parameters( 'prefix' ), '-pip1' )]",
       "ngfPipName2": "[concat( parameters( 'prefix' ), '-pip2' )]",
-      "ngfSubnetSplit": "[split( parameters( 'ngfIpMask' ), '/' )]",
-      "ngfSubnetAddrSplit": "[split( variables( 'ngfSubnetSplit' )[0], '.' )]",
-      "ngfSubnetMask": "[variables( 'ngfSubnetSplit' )[1]]",
-      "ngfSubnetDefaultGw": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 1 ))]",
-      "ngfIpAddress1": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 4 ))]",
-      "ngfIpAddress2": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 5 ))]",
-      "ngfIpAddress3": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 6 ))]",
-      "ngfIpAddress4": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 7 ))]",
     },
     "resources": [
       {
