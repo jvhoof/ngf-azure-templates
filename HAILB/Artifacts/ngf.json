@@ -115,6 +115,7 @@
                           "subnet": {
                               "id": "[parameters('netId-gw')]"
                           },
+                          "primary": true,
                           "privateIPAddressVersion": "IPv4",
                           "publicIpAddress": {
                             "id": "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
@@ -134,6 +135,7 @@
                           "subnet": {
                               "id": "[parameters('netId-gw')]"
                           },
+                          "primary": false,
                           "privateIPAddressVersion": "IPv4",
                           "loadBalancerBackendAddressPools": [
                             {
