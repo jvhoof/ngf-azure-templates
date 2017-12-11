@@ -151,8 +151,7 @@
           "uri": "[variables('elbTemplateUrl')]"
         },
         "parameters": {
-          "prefix": { "value": "[parameters('deploymentPrefix')]" },
-          "elbProbePort": { "value": "[parameters( 'ilbProbePort' )]" }
+          "prefix": { "value": "[parameters('deploymentPrefix')]" }
         },
         "mode": "Incremental"
       },

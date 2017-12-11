@@ -5,18 +5,21 @@
         "prefix": {
             "type": "string",
             "defaultValue": "ngf-hailb"
-        },
-        "elbProbePort": {
-            "type": "int",
-            "defaultValue": 65500
         }
     },
     "variables": {
         "apiVersionNetwork": "2017-08-01",
         "elbName": "[concat( parameters('prefix'), '-elb' )]",
         "elbPipName": "[concat( parameters('prefix'), '-LB-PIP' )]",
+        "elbFrontEndName": "ExternalLoadBalancerVIP",
         "elbPoolName": "NGFPool-ext",
-        "elbProbeName": "ngprobe"
+        "elbProbeName": "ngfprobe",
+        "elbProbePort": "691",
+        "elbID": "[resourceId('Microsoft.Network/loadBalancers',variables('elbName'))]",
+        "elbPIPID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('elbPipName'))]",
+        "elbFrontEndPoolID": "[concat(variables('elbID'),'/frontendIPConfigurations/',variables('elbFrontEndName'))]",
+        "elbBackEndPoolID": "[concat(variables('elbID'),'/backendAddressPools/',variables('elbPoolName'))]",
+        "elbProbeID": "[concat(variables('elbID'),'/probes/',variables('elbProbeName'))]"
     },
     "resources": [
         {
@@ -43,10 +46,10 @@
             "properties": {
                 "frontendIPConfigurations": [
                     {
-                        "name": "ExternalLoadBalancerVIP",
+                        "name": "[variables('elbFrontEndName')]",
                         "properties": {
                             "publicIPAddress": {
-                                "id": "[resourceId( 'Microsoft.Network/publicIPAddresses', variables('elbPipName'))]"
+                                "id": "[variables('elbPIPID')]"
                             }
                         }
                     }
@@ -58,24 +61,80 @@
                 ],
                 "loadBalancingRules": [
                     {
-                        "name": "lbrule",
+                        "name": "IPSEC-IKE",
                         "properties": {
                             "frontendIPConfiguration": {
                                 "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('elbName')), '/frontendIpConfigurations/ExternalLoadBalancerVIP' )]"
                             },
-                            "frontendPort": 0,
-                            "backendPort": 0,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 15,
-                            "protocol": "All",
-                            "loadDistribution": "Default",
                             "backendAddressPool": {
-                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('elbName')), '/backendAddressPools/', variables('elbPoolName'))]"
+                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('elbName')), '/backendAddressPools/loadBalancerBackend' )]"
                             },
+                            "protocol": "Udp",
+                            "frontendPort": 500,
+                            "backendPort": 500,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 5,
                             "probe": {
-                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('elbName')), '/probes/', variables('elbProbeName'))]"
+                                "id": "[variables('elbProbeID')]"
                             }
                         }
+                    },
+                    {
+                      "name": "IPSEC-NATT",
+                      "properties": {
+                          "frontendIPConfiguration": {
+                              "id": "[variables('elbFrontEndPoolID')]"
+                          },
+                          "backendAddressPool": {
+                              "id": "[variables('elbBackEndPoolID')]"
+                          },
+                          "protocol": "Udp",
+                          "frontendPort": 4500,
+                          "backendPort": 4500,
+                          "enableFloatingIP": false,
+                          "idleTimeoutInMinutes": 5,
+                          "probe": {
+                              "id": "[variables('elbProbeID')]"
+                          }
+                      }
+                    },
+                    {
+                      "name": "TINA-UDP",
+                      "properties": {
+                          "frontendIPConfiguration": {
+                              "id": "[variables('elbFrontEndPoolID')]"
+                          },
+                          "backendAddressPool": {
+                              "id": "[variables('elbBackEndPoolID')]"
+                          },
+                          "protocol": "Udp",
+                          "frontendPort": 691,
+                          "backendPort": 691,
+                          "enableFloatingIP": false,
+                          "idleTimeoutInMinutes": 5,
+                          "probe": {
+                              "id": "[variables('elbProbeID')]"
+                          }
+                      }
+                    },
+                    {
+                      "name": "TINA-TCP",
+                      "properties": {
+                          "frontendIPConfiguration": {
+                              "id": "[variables('elbFrontEndPoolID')]"
+                          },
+                          "backendAddressPool": {
+                              "id": "[variables('elbBackEndPoolID')]"
+                          },
+                          "protocol": "Tcp",
+                          "frontendPort": 691,
+                          "backendPort": 691,
+                          "enableFloatingIP": false,
+                          "idleTimeoutInMinutes": 5,
+                          "probe": {
+                              "id": "[variables('elbProbeID')]"
+                          }
+                      }
                     }
                 ],
                 "probes": [
@@ -84,7 +143,7 @@
                         "properties": {
                             "provisioningState": "Succeeded",
                             "protocol": "Tcp",
-                            "port": "[parameters('elbProbePort')]",
+                            "port": "[variables('elbProbePort')]",
                             "intervalInSeconds": 5,
                             "numberOfProbes": 2
                         }
