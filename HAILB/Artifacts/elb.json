@@ -61,7 +61,7 @@
                         "name": "lbrule",
                         "properties": {
                             "frontendIPConfiguration": {
-                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('elbName')), '/frontendIpConfigurations/InternalLoadBalancerVIP' )]"
+                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('elbName')), '/frontendIpConfigurations/ExternalLoadBalancerVIP' )]"
                             },
                             "frontendPort": 0,
                             "backendPort": 0,
