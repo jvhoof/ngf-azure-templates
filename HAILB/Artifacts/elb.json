@@ -64,10 +64,10 @@
                         "name": "IPSEC-IKE",
                         "properties": {
                             "frontendIPConfiguration": {
-                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('elbName')), '/frontendIpConfigurations/ExternalLoadBalancerVIP' )]"
+                              "id": "[variables('elbFrontEndPoolID')]"
                             },
                             "backendAddressPool": {
-                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('elbName')), '/backendAddressPools/loadBalancerBackend' )]"
+                              "id": "[variables('elbBackEndPoolID')]"
                             },
                             "protocol": "Udp",
                             "frontendPort": 500,
