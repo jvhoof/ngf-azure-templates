@@ -13,6 +13,14 @@
       "ngfPassword": {
         "type": "secureString"
       },
+      "ngfIpAddr1": {
+        "type": "object",
+        "defaultValue": { "external": "172.16.25.4", "internal": "172.16.25.5" }
+      },
+      "ngfIpAddr2": {
+        "type": "object",
+        "defaultValue": { "external": "172.16.25.6", "internal": "172.16.25.7" }
+      },
       "ngfIpMask": {
         "type": "string",
         "defaultValue": "24"
@@ -44,18 +52,10 @@
       "ngfNicName1": "[concat( variables('ngfName1'), '_nic0_', uniqueString( resourceGroup().id ))]",
       "ngfNicName2": "[concat( variables('ngfName2'), '_nic0_', uniqueString( resourceGroup().id ))]",
       "singleQuotationMark": "'",
-      "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables( 'ngfIpAddr1' ).external, ' ', parameters( 'ngfIpMask' ), ' ', parameters( 'ngfIpGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'ngfPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', variables( 'ngfIpAddr2' ).external, ' -n ', parameters( 'ngfIpMask' ), ' -g ', parameters( 'ngfIpGw' ), '\n'))]",
+      "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', parameters( 'ngfIpAddr1' ).external, ' ', parameters( 'ngfIpMask' ), ' ', parameters( 'ngfIpGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'ngfPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', parameters( 'ngfIpAddr2' ).external, ' -n ', parameters( 'ngfIpMask' ), ' -g ', parameters( 'ngfIpGw' ), '\n'))]",
       "ngfCustomData2": "[Base64('\n')]",
       "ngfPipName1": "[concat( parameters( 'prefix' ), '-pip1' )]",
-      "ngfPipName2": "[concat( parameters( 'prefix' ), '-pip2' )]",
-      "ngfIpAddr1": {
-        "external": "172.16.25.4",
-        "internal": "172.16.25.5"
-      },
-      "ngfIpAddr2": {
-        "external": "172.16.25.6",
-        "internal": "172.16.25.7"
-      }
+      "ngfPipName2": "[concat( parameters( 'prefix' ), '-pip2' )]"
     },
     "resources": [
       {
@@ -102,7 +102,7 @@
                   {
                       "name": "external",
                       "properties": {
-                          "privateIPAddress": "[variables( concat('ngfIpAddr', copyIndex(1))).external]",
+                          "privateIPAddress": "[parameters( concat('ngfIpAddr', copyIndex(1))).external]",
                           "privateIPAllocationMethod": "Static",
                           "subnet": {
                               "id": "[parameters('netId-gw')]"
@@ -119,7 +119,7 @@
                   {
                       "name": "internal",
                       "properties": {
-                          "privateIPAddress": "[variables( concat('ngfIpAddr', copyIndex(1))).internal]",
+                          "privateIPAddress": "[parameters( concat('ngfIpAddr', copyIndex(1))).internal]",
                           "privateIPAllocationMethod": "Static",
                           "subnet": {
                               "id": "[parameters('netId-gw')]"
