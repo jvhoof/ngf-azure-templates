@@ -45,7 +45,6 @@
             },
             "dependsOn": [
                 "[concat('Microsoft.Network/publicIPAddresses/', variables('elbPipName'))]"
-                "[concat('Microsoft.Network/virtualNetworks/', parameters('prefix'),'-vnet')]",
                 "[concat('Microsoft.Network/availabilitySets/', parameters('prefix'),'-haSet')]"
             ],
             "properties": {

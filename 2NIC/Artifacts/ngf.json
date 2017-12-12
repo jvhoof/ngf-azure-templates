@@ -105,7 +105,6 @@
           },
           "dependsOn": [
             "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('prefix'),'-vnet')]",
             "[concat('Microsoft.Network/loadBalancer/', parameters('prefix'),'-elb')]"
           ],
           "properties": {
@@ -143,7 +142,6 @@
           },
           "dependsOn": [
             "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('prefix'),'-vnet')]",
             "[concat('Microsoft.Network/loadBalancer/', parameters('prefix'),'-ilb')]"
           ],
           "properties": {
@@ -235,7 +233,6 @@
             "[resourceId('Microsoft.Compute/availabilitySets', variables('ngfAsName'))]",
             "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameExternal', copyIndex(1))))]"
             "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameInternal', copyIndex(1))))]"
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('prefix'),'-vnet')]",
             "[resourceId('Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
           ]
         }
