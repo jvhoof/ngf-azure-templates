@@ -76,7 +76,7 @@
       "external": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 6 ))]",
       "internal": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 7 ))]"
     },
-    "ilbAddr": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 6 ))]"
+    "ilbAddr": "[concat( variables( 'netGwAddrSplit' )[0], '.', variables( 'netGwAddrSplit' )[1], '.', variables( 'netGwAddrSplit' )[2], '.', add( int( variables( 'netGwAddrSplit' )[3]), 250 ))]"
   },
   "resources": [
     {
