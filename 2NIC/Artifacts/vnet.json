@@ -1,0 +1,173 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "0.0.1",
+  "parameters": {
+    "ilbAddr": {
+      "type": "string",
+      "defaultValue": "172.16.25.254"
+    },
+    "netAddrExternal-gw": {
+      "type": "string",
+      "defaultValue": "172.16.25.0/25"
+    },
+    "netAddrInternal-gw": {
+      "type": "string",
+      "defaultValue": "172.16.25.128/25"
+    },
+    "netAddr-FE": {
+      "type": "string",
+      "defaultValue": "172.16.26.0/24"
+    },
+    "netAddr-BE": {
+      "type": "string",
+      "defaultValue": "172.16.27.0/24"
+    },
+    "prefix": {
+      "type": "string",
+      "defaultValue": "ngf-hailb"
+    }
+  },
+  "variables": {
+    "apiVersionNetwork": "2017-08-01",
+    "rtableName-BE": "[concat( parameters('prefix'), '-rt-for-be' )]",
+    "rtableName-FE": "[concat( parameters('prefix'), '-rt-for-fe' )]",
+    "vnetName": "[concat( parameters('prefix'), '-vnet' )]",
+    "nsgName": "[concat( parameters('prefix'), '-nsg' )]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('nsgName')]",
+      "apiVersion": "[variables('apiVersionNetwork')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowAny",
+            "properties": {
+              "description": "Allow Any",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "1-65535",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[variables('vnetName')]",
+        "apiVersion": "[variables('apiVersionNetwork')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+            "addressSpace": {
+                "addressPrefixes": [
+                    "[parameters('netAddrExternal-gw')]",
+                    "[parameters('netAddrInternal-gw')]",
+                    "[parameters('netAddr-FE')]",
+                    "[parameters('netAddr-BE')]"
+                ]
+            },
+            "subnets": [
+                {
+                    "name": "gw-external",
+                    "properties": {
+                        "addressPrefix": "[parameters('netAddrExternal-gw')]",
+                        "networkSecurityGroup": {
+                          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+                        }
+                    }
+                },
+                {
+                    "name": "gw-internal",
+                    "properties": {
+                        "addressPrefix": "[parameters('netAddrInternal-gw')]",
+                        "networkSecurityGroup": {
+                          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+                        }
+                    }
+                },
+                {
+                    "name": "fe",
+                    "properties": {
+                        "addressPrefix": "[parameters('netAddr-FE')]",
+                        "routeTable": {
+                            "id": "[resourceId('Microsoft.Network/routeTables', variables('rtableName-FE'))]"
+                        }
+                    }
+                },
+                {
+                    "name": "be",
+                    "properties": {
+                        "addressPrefix": "[parameters('netAddr-BE')]",
+                        "routeTable": {
+                            "id": "[resourceId('Microsoft.Network/routeTables', variables('rtableName-BE'))]"
+                        }
+                    }
+                }
+            ]
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/routeTables', variables('rtableName-BE'))]",
+          "[resourceId('Microsoft.Network/routeTables', variables('rtableName-FE'))]"
+        ]
+      },
+      {
+        "type": "Microsoft.Network/routeTables",
+        "name": "[variables('rtableName-BE')]",
+        "apiVersion": "[variables('apiVersionNetwork')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "routes": [
+            {
+              "name": "to-fe",
+              "properties": {
+                "addressPrefix": "[parameters('netAddr-FE')]",
+                "nextHopType": "VirtualAppliance",
+                "nextHopIpAddress": "[parameters('ilbAddr')]"
+              }
+            },
+            {
+              "name": "to-internet",
+              "properties": {
+                "addressPrefix": "0.0.0.0/0",
+                "nextHopType": "VirtualAppliance",
+                "nextHopIpAddress": "[parameters('ilbAddr')]"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Network/routeTables",
+        "name": "[variables('rtableName-FE')]",
+        "apiVersion": "[variables('apiVersionNetwork')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "routes": [
+            {
+              "name": "to-be",
+              "properties": {
+                "addressPrefix": "[parameters('netAddr-BE')]",
+                "nextHopType": "VirtualAppliance",
+                "nextHopIpAddress": "[parameters('ilbAddr')]"
+              }
+            },
+            {
+              "name": "to-internet",
+              "properties": {
+                "addressPrefix": "0.0.0.0/0",
+                "nextHopType": "VirtualAppliance",
+                "nextHopIpAddress": "[parameters('ilbAddr')]"
+              }
+            }
+          ]
+        }
+      }
+  ]
+}

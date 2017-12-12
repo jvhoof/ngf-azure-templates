@@ -1,0 +1,243 @@
+  {
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "0.0.1",
+    "parameters": {
+      "prefix": {
+        "type": "string",
+        "defaultValue": "ngf-hailb"
+      },
+      "sizeNGF": {
+        "type": "string",
+        "defaultValue": "Standard_F1s"
+      },
+      "ngfPassword": {
+        "type": "secureString"
+      },
+      "ngfIpAddr1": {
+        "type": "object",
+        "defaultValue": { "external": "172.16.25.4", "internal": "172.16.25.132" }
+      },
+      "ngfIpAddr2": {
+        "type": "object",
+        "defaultValue": { "external": "172.16.25.6", "internal": "172.16.25.133" }
+      },
+      "ngfIpMask": {
+        "type": "string",
+        "defaultValue": "25"
+      },
+      "ngfIpGw": {
+        "type": "string",
+        "defaultValue": "172.16.25.1"
+      },
+      "netId-gw-external": {
+        "type": "string",
+        "defaultValue": ""
+      },
+      "netId-gw-internal": {
+        "type": "string",
+        "defaultValue": ""
+      },
+      "ilbName": {
+        "type": "string",
+        "defaultValue": "ngf-hailb-ilb"
+      },
+      "elbName": {
+        "type": "string",
+        "defaultValue": "ngf-haelb-elb"
+      }
+    },
+    "variables": {
+      "apiVersionAS": "2017-03-30",
+      "apiVersionVM": "2017-03-30",
+      "apiVersionNetwork": "2017-08-01",
+      "ngfName1": "[concat( parameters('prefix'), '-NGF')]",
+      "ngfName2": "[concat( parameters('prefix'), '-NGF-HA')]",
+      "ngfAsName": "[concat( parameters( 'prefix' ), '-haSet')]",
+      "ngfNicNameExternal1": "[concat( variables('ngfName1'), '_nic0_', uniqueString( resourceGroup().id ))]",
+      "ngfNicNameExternal2": "[concat( variables('ngfName2'), '_nic0_', uniqueString( resourceGroup().id ))]",
+      "ngfNicNameInternal1": "[concat( variables('ngfName1'), '_nic1_', uniqueString( resourceGroup().id ))]",
+      "ngfNicNameInternal2": "[concat( variables('ngfName2'), '_nic2_', uniqueString( resourceGroup().id ))]",
+      "singleQuotationMark": "'",
+      "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', parameters( 'ngfIpAddr1' ).external, ' ', parameters( 'ngfIpMask' ), ' ', parameters( 'ngfIpGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'ngfPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', parameters( 'ngfIpAddr2' ).external, ' -n ', parameters( 'ngfIpMask' ), ' -g ', parameters( 'ngfIpGw' ), '\n'))]",
+      "ngfCustomData2": "[Base64('\n')]",
+      "ngfPipName1": "[concat( parameters( 'prefix' ), '-pip1' )]",
+      "ngfPipName2": "[concat( parameters( 'prefix' ), '-pip2' )]"
+    },
+    "resources": [
+      {
+          "type": "Microsoft.Compute/availabilitySets",
+          "name": "[variables('ngfAsName')]",
+          "apiVersion": "[variables('apiVersionAS')]",
+          "sku": {
+              "name": "Aligned"
+          },
+          "location": "[resourceGroup().location]",
+          "properties": {
+              "platformUpdateDomainCount": 3,
+              "platformFaultDomainCount": 2
+          }
+      },
+      {
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables( concat( 'ngfPipName', copyIndex(1)))]",
+        "apiVersion": "[variables('apiVersionNetwork')]",
+        "location": "[resourceGroup().location]",
+        "sku": {
+            "name": "Standard"
+        },
+        "copy": {
+          "name": "pipCopyLoop",
+          "count": 2
+        },
+        "properties": {
+          "publicIpAllocationMethod": "Static",
+          "publicIpAddressVersion": "IPv4"
+        }
+      },
+      {
+          "type": "Microsoft.Network/networkInterfaces",
+          "name": "[variables( concat( 'ngfNicNameExternal', copyIndex(1)))]",
+          "apiVersion": "[variables('apiVersionNetwork')]",
+          "location": "[resourceGroup().location]",
+          "copy": {
+            "name": "nicCopyLoop",
+            "count": 2
+          },
+          "dependsOn": [
+            "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
+            "[concat('Microsoft.Network/virtualNetworks/', parameters('prefix'),'-vnet')]",
+            "[concat('Microsoft.Network/loadBalancer/', parameters('prefix'),'-elb')]"
+          ],
+          "properties": {
+              "ipConfigurations": [
+                  {
+                      "name": "external",
+                      "properties": {
+                          "privateIPAddress": "[parameters( concat('ngfIpAddr', copyIndex(1))).external]",
+                          "privateIPAllocationMethod": "Static",
+                          "subnet": {
+                              "id": "[parameters('netId-gw-external')]"
+                          },
+                          "privateIPAddressVersion": "IPv4",
+                          "publicIpAddress": {
+                            "id": "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
+                          },
+                          "loadBalancerBackendAddressPools": [
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-elb'), '/backendAddressPools/NGFPool-ext')]"
+                          ]
+                      }
+                  }
+              ],
+              "enableAcceleratedNetworking": false,
+              "enableIPForwarding": true
+          }
+      },
+      {
+          "type": "Microsoft.Network/networkInterfaces",
+          "name": "[variables( concat( 'ngfNicNameInternal', copyIndex(1)))]",
+          "apiVersion": "[variables('apiVersionNetwork')]",
+          "location": "[resourceGroup().location]",
+          "copy": {
+            "name": "nicCopyLoop",
+            "count": 2
+          },
+          "dependsOn": [
+            "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
+            "[concat('Microsoft.Network/virtualNetworks/', parameters('prefix'),'-vnet')]",
+            "[concat('Microsoft.Network/loadBalancer/', parameters('prefix'),'-ilb')]"
+          ],
+          "properties": {
+              "ipConfigurations": [
+                  {
+                      "name": "internal",
+                      "properties": {
+                          "privateIPAddress": "[parameters( concat('ngfIpAddr', copyIndex(1))).internal]",
+                          "privateIPAllocationMethod": "Static",
+                          "subnet": {
+                              "id": "[parameters('netId-gw-internal')]"
+                          },
+                          "primary": true,
+                          "privateIPAddressVersion": "IPv4",
+                          "publicIpAddress": {
+                            "id": "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
+                          },
+                          "loadBalancerBackendAddressPools": [
+                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-ilb'), '/backendAddressPools/NGFPool-int')]"
+                          ]
+                      }
+                  }
+              ],
+              "enableAcceleratedNetworking": false,
+              "enableIPForwarding": true
+          }
+      },
+
+      {
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "[variables('apiVersionVM')]",
+        "name": "[variables( concat( 'ngfName', copyIndex(1)))]",
+        "location": "[resourceGroup().location]",
+        "copy": {
+          "name": "vmHaCopyLoop",
+          "count": 2
+        },
+        "plan": {
+          "name": "byol",
+          "product": "barracuda-ng-firewall",
+          "publisher": "barracudanetworks"
+        },
+        "properties": {
+          "availabilitySet": {
+            "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('ngfAsName'))]"
+          },
+          "hardwareProfile": {
+            "vmSize": "[parameters('sizeNGF')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "barracudanetworks",
+              "offer": "barracuda-ng-firewall",
+              "sku": "byol",
+              "version": "latest"
+            },
+            "osDisk": {
+              "osType": "Linux",
+              "createOption": "FromImage",
+              "managedDisk": {
+                "storageAccountType": "Premium_LRS"
+              }
+            },
+            "dataDisks": []
+          },
+          "osProfile": {
+            "computerName": "[variables( concat( 'ngfName', copyIndex(1)))]",
+            "adminUsername": "will-be-replaced-by-root",
+            "adminPassword": "[parameters('ngfPassword')]"
+            },
+          "networkProfile": {
+            "networkInterfaces": [
+                {
+                  "id": "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameExternal', copyIndex(1))))]",
+                  "properties": {
+                    "primary": true
+                  }
+                },
+                {
+                  "id": "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameInternal', copyIndex(1))))]",
+                  "properties": {
+                    "primary": true
+                  }
+                }
+              ]
+          }
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/availabilitySets', variables('ngfAsName'))]",
+            "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameExternal', copyIndex(1))))]"
+            "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameInternal', copyIndex(1))))]"
+            "[concat('Microsoft.Network/virtualNetworks/', parameters('prefix'),'-vnet')]",
+            "[resourceId('Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
+          ]
+        }
+      ]
+    }
