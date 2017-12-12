@@ -231,8 +231,8 @@
           },
           "dependsOn": [
             "[resourceId('Microsoft.Compute/availabilitySets', variables('ngfAsName'))]",
-            "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameExternal', copyIndex(1))))]"
-            "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameInternal', copyIndex(1))))]"
+            "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameExternal', copyIndex(1))))]",
+            "[resourceId('Microsoft.Network/networkInterfaces', variables( concat( 'ngfNicNameInternal', copyIndex(1))))]",
             "[resourceId('Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
           ]
         }
