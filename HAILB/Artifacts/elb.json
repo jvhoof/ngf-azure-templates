@@ -43,6 +43,9 @@
             "sku": {
                 "name": "Standard"
             },
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('elbPipName'))]"
+            ],
             "properties": {
                 "frontendIPConfigurations": [
                     {
