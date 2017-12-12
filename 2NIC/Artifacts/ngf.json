@@ -104,7 +104,7 @@
             "count": 2
           },
           "dependsOn": [
-            "[resourceId('Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
+            "[resourceId('Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]",
             "[resourceId('Microsoft.Network/loadBalancer/', parameters('prefix'),'-elb')]"
           ],
           "properties": {
