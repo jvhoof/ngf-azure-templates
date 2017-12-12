@@ -36,10 +36,6 @@
         "sku": {
             "name": "Standard"
         },
-        "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', parameters('prefix'),'-vnet')]",
-            "[concat('Microsoft.Network/availabilitySets/', parameters('prefix'),'-haSet')]"
-        ],
         "properties": {
             "frontendIPConfigurations": [
                 {
