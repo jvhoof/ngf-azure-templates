@@ -122,7 +122,9 @@
                             "id": "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
                           },
                           "loadBalancerBackendAddressPools": [
-                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-elb'), '/backendAddressPools/NGFPool-ext')]"
+                            {
+                              "id": "[concat(resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-elb'), '/backendAddressPools/NGFPool-ext')]"
+                            }
                           ]
                       }
                   }
@@ -160,7 +162,9 @@
                             "id": "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
                           },
                           "loadBalancerBackendAddressPools": [
-                            "id": "[concat(resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-ilb'), '/backendAddressPools/NGFPool-int')]"
+                            {
+                              "id": "[concat(resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-ilb'), '/backendAddressPools/NGFPool-int')]"
+                            }
                           ]
                       }
                   }
