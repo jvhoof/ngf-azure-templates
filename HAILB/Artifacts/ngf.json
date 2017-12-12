@@ -119,7 +119,7 @@
                   {
                       "name": "internal",
                       "properties": {
-                          "privateIPAddress": "[parameters( concat('ngfIpAddr', copyIndex(1)))]",
+                          "privateIPAddress": "[parameters( concat('ngfIpAddr', copyIndex(1))).internal]",
                           "privateIPAllocationMethod": "Static",
                           "subnet": {
                               "id": "[parameters('netId-gw')]"
