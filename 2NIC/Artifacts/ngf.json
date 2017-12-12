@@ -123,7 +123,7 @@
                           },
                           "loadBalancerBackendAddressPools": [
                             {
-                              "id": "[concat(resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-elb'), '/backendAddressPools/NGFPool-ext')]"
+                              "id": "[resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-elb', '/backendAddressPools/NGFPool-ext')]"
                             }
                           ]
                       }
@@ -162,7 +162,7 @@
                           },
                           "loadBalancerBackendAddressPools": [
                             {
-                              "id": "[concat(resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-ilb'), '/backendAddressPools/NGFPool-int')]"
+                              "id": "[resourceId('Microsoft.Network/loadBalancers/',parameters('prefix'),'-ilb', '/backendAddressPools/NGFPool-int')]"
                             }
                           ]
                       }
