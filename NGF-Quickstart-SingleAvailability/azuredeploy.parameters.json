@@ -18,7 +18,7 @@
       "value": "byol"
     },
     "vmSize": {
-      "value": "Standard_DS1_v2"
+      "value": "Standard_F1s"
     },
     "ccManaged": {
       "value": "no"
