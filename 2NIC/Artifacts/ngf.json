@@ -63,7 +63,7 @@
       "ngfPipName1": "[concat( parameters( 'prefix' ), '-pip1' )]",
       "ngfPipName2": "[concat( parameters( 'prefix' ), '-pip2' )]",
       "elbID": "[resourceId( 'Microsoft.Network/loadBalancers' ,parameters('prefix'), '-elb')]",
-      "ilbID": "[resourceId( 'Microsoft.Network/loadBalancers' ,parameters('prefix'), '-ilb')]",
+      "ilbID": "[resourceId( 'Microsoft.Network/loadBalancers' ,parameters('prefix'), '-ilb')]"
     },
     "resources": [
       {
