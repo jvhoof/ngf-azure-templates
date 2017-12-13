@@ -109,6 +109,7 @@
           },
           "dependsOn": [
             "[resourceId('Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]",
+            "[variables('elbID')]"
           ],
           "properties": {
               "ipConfigurations": [
@@ -145,6 +146,9 @@
             "name": "nicCopyLoop",
             "count": 2
           },
+          "dependsOn": [
+            "[variables('ilbID')]"
+          ],
           "properties": {
               "ipConfigurations": [
                   {
@@ -157,9 +161,6 @@
                           },
                           "primary": true,
                           "privateIPAddressVersion": "IPv4",
-                          "publicIpAddress": {
-                            "id": "[resourceId( 'Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]"
-                          },
                           "loadBalancerBackendAddressPools": [
                             {
                               "id": "[concat( variables('ilbID'), '/backendAddressPools/NGFPool-int')]"
