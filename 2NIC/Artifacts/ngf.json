@@ -105,7 +105,7 @@
           },
           "dependsOn": [
             "[resourceId('Microsoft.Network/publicIPAddresses', variables( concat( 'ngfPipName', copyIndex(1))))]",
-            "[resourceId('Microsoft.Network/loadBalancer/', parameters('prefix'),'-elb')]"
+            "[resourceId('Microsoft.Network/loadBalancers/', parameters('prefix'),'-elb')]"
           ],
           "properties": {
               "ipConfigurations": [
@@ -143,7 +143,7 @@
             "count": 2
           },
           "dependsOn": [
-            "[resourceId('Microsoft.Network/loadBalancer/', parameters('prefix'),'-ilb')]"
+            "[resourceId('Microsoft.Network/loadBalancers/', parameters('prefix'),'-ilb')]"
           ],
           "properties": {
               "ipConfigurations": [

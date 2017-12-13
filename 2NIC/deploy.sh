@@ -14,18 +14,18 @@ cat << "EOF"
 EOF
 
 # Input location 
-echo "Enter location (e.g. westeurope): "
+echo -n "Enter location (e.g. eastus2): "
 stty_orig=`stty -g` # save original terminal setting.
-read location         # read the password
+read location         # read the location
 stty $stty_orig     # restore terminal setting.
 if [ -z "$location" ] 
 then
-    location="westeurope"
+    location="eastus2"
 fi
 echo "Deployment in $location location ...\n"
 
 # Input prefix 
-echo "Enter prefix: "
+echo -n "Enter prefix: "
 stty_orig=`stty -g` # save original terminal setting.
 read prefix         # read the prefix
 stty $stty_orig     # restore terminal setting.
@@ -37,7 +37,7 @@ echo "Using prefix $prefix for all resources ...\n"
 rg_ngf="$prefix-RG"
 
 # Input password 
-echo "Enter password: "
+echo -n "Enter password: "
 stty_orig=`stty -g` # save original terminal setting.
 stty -echo          # turn-off echoing.
 read passwd         # read the password
@@ -50,7 +50,7 @@ az group create --location "$location" --name "$rg_ngf"
 # Validate template
 echo "\nValidation deployment in $rg_ngf resource group ...\n"
 az group deployment validate --verbose --resource-group "$rg_ngf" \
-                           --template-file azuredeploy.json \
+                           --template-uri "https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/2NIC/azuredeploy.json" \
                            --parameters rootPassword=$passwd deploymentPrefix=$prefix
 result=$? 
 if [ $result != 0 ]; 
