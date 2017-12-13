@@ -141,9 +141,6 @@
             "name": "nicCopyLoop",
             "count": 2
           },
-          "dependsOn": [
-            "[resourceId('Microsoft.Network/loadBalancers/', concat(parameters('prefix'),'-ilb'))]"
-          ],
           "properties": {
               "ipConfigurations": [
                   {
