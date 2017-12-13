@@ -41,7 +41,7 @@
     },
     "firewallInternalSubnetAddress": {
       "type": "string",
-      "defaultValue": "172.16.25.25/25",
+      "defaultValue": "172.16.25.128/25",
       "minLength": 9,
       "metadata": {
         "description": "Subnet address for hosting firewalls. Do not use subnets smaller than /29"
