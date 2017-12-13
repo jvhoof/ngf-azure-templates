@@ -142,7 +142,7 @@
             "count": 2
           },
           "dependsOn": [
-            "[resourceId('Microsoft.Network/loadBalancers/', parameters('prefix'),'-ilb')]"
+            "[resourceId('Microsoft.Network/loadBalancers/', concat(parameters('prefix'),'-ilb'))]"
           ],
           "properties": {
               "ipConfigurations": [
