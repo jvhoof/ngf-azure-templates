@@ -455,10 +455,24 @@
               "subnet": {
                 "id": "[variables('subnetRef-external')]"
               },
+              "primary": true,
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[concat(variables('lbID-external'), '/backendAddressPools/loadBalancerBackend')]"
-                },
+                }
+              ]
+            }
+          },
+          {
+            "name": "internal",
+            "properties": {
+              "privateIPAddress": "172.16.136.6",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnetRef-external')]"
+              },
+              "primary": false,
+              "loadBalancerBackendAddressPools": [
                 {
                   "id": "[concat(variables('lbID-internal'), '/backendAddressPools/loadBalancerBackend')]"
                 }
@@ -492,10 +506,24 @@
               "subnet": {
                 "id": "[variables('subnetRef-external')]"
               },
+              "primary": true,
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[concat(variables('lbID-external'), '/backendAddressPools/loadBalancerBackend')]"
-                },
+                }
+              ]
+            }
+          },
+          {
+            "name": "internal",
+            "properties": {
+              "privateIPAddress": "172.16.136.7",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnetRef-external')]"
+              },
+              "primary": false,
+              "loadBalancerBackendAddressPools": [
                 {
                   "id": "[concat(variables('lbID-internal'), '/backendAddressPools/loadBalancerBackend')]"
                 }

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Input location 
 echo -n "Enter location (e.g. eastus2): "
