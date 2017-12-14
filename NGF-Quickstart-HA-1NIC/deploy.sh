@@ -9,6 +9,7 @@ if [ -z "$location" ]
 then
     location="eastus2"
 fi
+echo ""
 echo "--> Deployment in $location location ..."
 echo ""
 
@@ -21,6 +22,7 @@ if [ -z "$prefix" ]
 then
     prefix="CUDA"
 fi
+echo ""
 echo "--> Using prefix $prefix for all resources ..."
 echo ""
 rg_ngf="$prefix-RG"
@@ -31,9 +33,9 @@ stty_orig=`stty -g` # save original terminal setting.
 stty -echo          # turn-off echoing.
 read passwd         # read the password
 stty $stty_orig     # restore terminal setting.
-echo ""
 
 # Create resource group for NextGen Firewall resources
+echo ""
 echo "--> Creating $rg_ngf resource group ..."
 az group create --location "$location" --name "$rg_ngf"
 
