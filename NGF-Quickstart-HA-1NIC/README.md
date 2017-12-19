@@ -8,7 +8,7 @@ Azure ILB solves above problems, providing failover capabilities with zero integ
 
 This template deploys a VNet with 2 NGF instances with managed disks, an any-port ILB instance, and 2 empty subnets routed through NGF cluster.
 
-![Network diagram](https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/NGF-Quickstart-2NIC-HA/images/Azure%20-%20ha%20ilb%20with%20subnets.png)
+![Network diagram](https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/NGF-Quickstart-1NIC/images/ngf-ha.png)
 
 ## Prerequisites
 
@@ -18,8 +18,8 @@ The solution does a check of the template when you use the provide scripts. It d
 
 The package provides a deploy.ps1 and deploy.sh for Powershell or Azure CLI based deployments. This can be peformed from the Azure Portal as well as the any system that has either of these scripting infrastructures installed. Or you can deploy from the Azure Portal using the provided link.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-2NIC-HA%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-2NIC-HA%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-1NIC%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-1NIC%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
@@ -40,7 +40,7 @@ After successful deployment you can manage them using NextGen Admin application 
 
 You need to create manually a firewall *App Redirect* rule for ILB Probe traffic. The connection will use the port you indicated during template deployment and it will originate from 168.63.129.16 and can be redirected to any service running locally on NGF (e.g. 127.0.0.1:451 for firewall authentication service)
 
-![Example firewall probe redirection rule](https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/NGF-Quickstart-2NIC-HA/imagaes/Probe%20Firewall%20Rule.png)
+![Example firewall probe redirection rule](https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/NGF-Quickstart-1NIC/imagaes/Probe%20Firewall%20Rule.png)
 
 For more information on App Redirect rule consult Barracuda Campus: [How to Create an App Redirect Access Rule](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/FWCreateAppRedirRule/)
 
