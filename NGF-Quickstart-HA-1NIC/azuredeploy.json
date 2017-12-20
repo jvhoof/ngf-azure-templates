@@ -109,13 +109,13 @@
     "subnetNameGreen": "[concat(parameters('prefix'),'-SUBNET-GREEN')]",
     "rtableName-Red": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
     "rtableName-Green": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
-    "fwVmName1": "[concat(parameters('prefix'),'-VM-NGF-A')]",
-    "fwVmName2": "[concat(parameters('prefix'),'-VM-NGF-B')]",
-    "fwNicName1": "[concat(variables('fwVmName1'),'-NIC')]",
-    "fwNicName2": "[concat(variables('fwVmName2'),'-NIC')]",
-    "fwPIPAddressName1": "[concat(variables('fwVmName1'),'-PIP')]",
-    "fwPIPAddressName2": "[concat(variables('fwVmName2'),'-PIP')]",
-    "fwPIPAddressType": "Static",
+    "ngfVmName1": "[concat(parameters('prefix'),'-VM-NGF-A')]",
+    "ngfVmName2": "[concat(parameters('prefix'),'-VM-NGF-B')]",
+    "ngfNicName1": "[concat(variables('ngfVmName1'),'-NIC')]",
+    "ngfNicName2": "[concat(variables('ngfVmName2'),'-NIC')]",
+    "ngfPIPAddressName1": "[concat(variables('ngfVmName1'),'-PIP')]",
+    "ngfPIPAddressName2": "[concat(variables('ngfVmName2'),'-PIP')]",
+    "ngfPIPAddressType": "Static",
     "lbPIPAddressName": "[concat(parameters('prefix'),'-NGF-LB-PIP')]",
     "dnsNameForNGF": "[toLower( concat( parameters('prefix'), '-ngf-', uniqueString(resourceGroup().id) ) )]",
     "lbName-external": "[concat(parameters('prefix'),'-ELB-NGF')]",
@@ -129,23 +129,23 @@
     "lbBackEndPoolID-internal": "[concat(variables('lbID-internal'),'/backendAddressPools/loadBalancerBackend')]",
     "lbProbeID-external": "[concat(variables('lbID-external'),'/probes/TinaProbe')]",
     "lbProbeID-internal": "[concat(variables('lbID-internal'),'/probes/HAProbe')]",
-    "lbIPAddress-internal": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 10 ))]",
+    "lbIPAddress-internal": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 10 ))]",
     "adminUsername": "notused",
     "singleQuotationMark": "'",
-    "fwSubnetSplit-external": "[split( parameters( 'subnetNGF' ), '/' )]",
-    "fwSubnetAddrSplit-external": "[split( variables( 'fwSubnetSplit-external' )[0], '.' )]",
-    "fwSubnetMask-external": "[variables( 'fwSubnetSplit-external' )[1]]",
-    "fwSubnetDefaultGw-external": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 1 ))]",
-    "fwVmAddress1": {
-      "external": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 4 ))]",
-      "internal": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 5 ))]"
+    "ngfSubnetSplit-external": "[split( parameters( 'subnetNGF' ), '/' )]",
+    "ngfSubnetAddrSplit-external": "[split( variables( 'ngfSubnetSplit-external' )[0], '.' )]",
+    "ngfSubnetMask-external": "[variables( 'ngfSubnetSplit-external' )[1]]",
+    "ngfSubnetDefaultGw-external": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 1 ))]",
+    "ngfVmAddress1": {
+      "external": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 4 ))]",
+      "internal": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 5 ))]"
     },
-    "fwVmAddress2": {
-      "external": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 6 ))]",
-      "internal": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 7 ))]"
+    "ngfVmAddress2": {
+      "external": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 6 ))]",
+      "internal": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 7 ))]"
     },
-    "fwCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('fwVmAddress1').external, ' ', variables( 'fwSubnetMask-external' ), ' ', variables( 'fwSubnetDefaultGw-external' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', variables('fwVmAddress2').external, ' -n ', variables( 'fwSubnetMask-external' ), ' -g ', variables( 'fwSubnetDefaultGw-external' ), '\n'))]",
-    "fwCustomData2": "[Base64('\n')]"
+    "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('ngfVmAddress1').external, ' ', variables( 'ngfSubnetMask-external' ), ' ', variables( 'ngfSubnetDefaultGw-external' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', variables('ngfVmAddress2').external, ' -n ', variables( 'ngfSubnetMask-external' ), ' -g ', variables( 'ngfSubnetDefaultGw-external' ), '\n'))]",
+    "ngfCustomData2": "[Base64('\n')]"
   },
   "resources": [
     {
@@ -272,7 +272,7 @@
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[variables('fwPIPAddressType')]",
+        "publicIPAllocationMethod": "[variables('ngfPIPAddressType')]",
         "dnsSettings": {
           "domainNameLabel": "[variables('dnsNameForNGF')]"
         }
@@ -475,13 +475,13 @@
       "zones": [
         "1"
       ],
-      "name": "[variables('fwPIPAddressName1')]",
+      "name": "[variables('ngfPIPAddressName1')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[variables('fwPIPAddressType')]"
+        "publicIPAllocationMethod": "[variables('ngfPIPAddressType')]"
       }
     },
     {
@@ -490,22 +490,22 @@
       "zones": [
         "2"
       ],
-      "name": "[variables('fwPIPAddressName2')]",
+      "name": "[variables('ngfPIPAddressName2')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard"
       },
       "properties": {
-        "publicIPAllocationMethod": "[variables('fwPIPAddressType')]"
+        "publicIPAllocationMethod": "[variables('ngfPIPAddressType')]"
       }
     },
     {
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('fwNicName1')]",
+      "name": "[variables('ngfNicName1')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('fwPIPAddressName1'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('ngfPIPAddressName1'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
         "[variables('lbID-external')]"
       ],
@@ -516,9 +516,9 @@
             "name": "external",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables( 'fwVmAddress1' ).external]",
+              "privateIPAddress": "[variables( 'ngfVmAddress1' ).external]",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('fwPIPAddressName1'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('ngfPIPAddressName1'))]"
               },
               "subnet": {
                 "id": "[variables('subnetRefNGF')]"
@@ -534,7 +534,7 @@
           {
             "name": "internal",
             "properties": {
-              "privateIPAddress": "[variables( 'fwVmAddress1' ).internal]",
+              "privateIPAddress": "[variables( 'ngfVmAddress1' ).internal]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnetRefNGF')]"
@@ -553,10 +553,10 @@
     {
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('fwNicName2')]",
+      "name": "[variables('ngfNicName2')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('fwPIPAddressName2'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('ngfPIPAddressName2'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
         "[variables('lbID-external')]"
       ],
@@ -567,9 +567,9 @@
             "name": "external",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables( 'fwVmAddress2' ).external]",
+              "privateIPAddress": "[variables( 'ngfVmAddress2' ).external]",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('fwPIPAddressName2'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('ngfPIPAddressName2'))]"
               },
               "subnet": {
                 "id": "[variables('subnetRefNGF')]"
@@ -585,7 +585,7 @@
           {
             "name": "internal",
             "properties": {
-              "privateIPAddress": "[variables( 'fwVmAddress2' ).internal]",
+              "privateIPAddress": "[variables( 'ngfVmAddress2' ).internal]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnetRefNGF')]"
@@ -608,7 +608,7 @@
       "zones": [
         "1"
       ],
-      "name": "[variables('fwVmName1')]",
+      "name": "[variables('ngfVmName1')]",
       "location": "[resourceGroup().location]",
       "plan": {
         "name": "[parameters('imageSKU')]",
@@ -616,17 +616,17 @@
         "Publisher": "[variables('imagePublisher')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces/', variables('fwNicName1'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces/', variables('ngfNicName1'))]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[variables('fwVmName1')]",
+          "computerName": "[variables('ngfVmName1')]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[variables( 'fwCustomData1')]"
+          "customData": "[variables( 'ngfCustomData1')]"
         },
         "storageProfile": {
           "imageReference": {
@@ -636,7 +636,7 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[concat(variables('fwVmName1'),'-osdisk')]",
+            "name": "[concat(variables('ngfVmName1'),'-osdisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage"
           }
@@ -644,7 +644,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwNicName1'))]",
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ngfNicName1'))]",
               "properties": {
                 "primary": true
               }
@@ -660,7 +660,7 @@
       "zones": [
         "2"
       ],
-      "name": "[variables('fwVmName2')]",
+      "name": "[variables('ngfVmName2')]",
       "location": "[resourceGroup().location]",
       "plan": {
         "name": "[parameters('imageSKU')]",
@@ -668,17 +668,17 @@
         "Publisher": "[variables('imagePublisher')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces/', variables('fwNicName2'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces/', variables('ngfNicName2'))]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[variables('fwVMName2')]",
+          "computerName": "[variables('ngfVMName2')]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[variables( 'fwCustomData2')]"
+          "customData": "[variables( 'ngfCustomData2')]"
         },
         "storageProfile": {
           "imageReference": {
@@ -688,7 +688,7 @@
             "version": "latest"
           },
           "osDisk": {
-            "name": "[concat(variables('fwVMName2'),'-osdisk')]",
+            "name": "[concat(variables('ngfVMName2'),'-osdisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage"
           }
@@ -696,7 +696,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('fwNicName2'))]",
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('ngfNicName2'))]",
               "properties": {
                 "primary": true
               }
@@ -709,11 +709,11 @@
   "outputs": {
     "NGF-A": {
       "type": "string",
-      "value": "[reference(variables('fwPIPAddressName1')).ipAddress]"
+      "value": "[reference(variables('ngfPIPAddressName1')).ipAddress]"
     },
     "NGF-B": {
       "type": "string",
-      "value": "[reference(variables('fwPIPAddressName2')).ipAddress]"
+      "value": "[reference(variables('ngfPIPAddressName2')).ipAddress]"
     },
     "NGF-LB": {
       "type": "string",
