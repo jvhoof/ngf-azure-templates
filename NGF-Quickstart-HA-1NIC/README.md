@@ -25,7 +25,7 @@ The package provides a deploy.ps1 and deploy.sh for Powershell or Azure CLI base
 
 ## Deployed resources
 Following resources will be created by the template:
-- One Azure VNET with 4 subnets (2 for the NGF, additional subnets for a frontend and backend subnet)
+- One Azure VNET with 3 subnets (1 for the NGF, additional subnets for a red and green subnet)
 - Two route tables that will route all traffic for external and towards the other internal networks to the Barracuda NGF
 - Once internal standard load balancer and one external public load balancer to provide full HA for the Barracuda NGF
 - Two Barracuda NextGen Firewall F virtual machines with a 2 network interfaces each and public IP
