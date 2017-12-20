@@ -11,7 +11,7 @@
         "defaultValue": "Standard_F1s"
       },
       "ngfPassword": {
-        "type": "secureString"
+        "type": "securestring"
       },
       "ngfIpAddr1": {
         "type": "string",

@@ -104,7 +104,7 @@
     "vNetName": "[concat(parameters('prefix'),'-VNET')]",
     "vNetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vNetName'))]",
     "subnetNameNGF": "[concat(parameters('prefix'),'-SUBNET-NGF')]",
-    "subnetRef-external": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameNGF'))]",
+    "subnetRefNGF": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameNGF'))]",
     "subnetNameRed": "[concat(parameters('prefix'),'-SUBNET-RED')]",
     "subnetNameGreen": "[concat(parameters('prefix'),'-SUBNET-GREEN')]",
     "rtableName-Red": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
@@ -131,6 +131,7 @@
     "lbProbeID-internal": "[concat(variables('lbID-internal'),'/probes/HAProbe')]",
     "lbIPAddress-internal": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 10 ))]",
     "adminUsername": "notused",
+    "singleQuotationMark": "'",
     "fwSubnetSplit-external": "[split( parameters( 'subnetNGF' ), '/' )]",
     "fwSubnetAddrSplit-external": "[split( variables( 'fwSubnetSplit-external' )[0], '.' )]",
     "fwSubnetMask-external": "[variables( 'fwSubnetSplit-external' )[1]]",
@@ -142,7 +143,9 @@
     "fwVmAddress2": {
       "external": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 6 ))]",
       "internal": "[concat( variables( 'fwSubnetAddrSplit-external' )[0], '.', variables( 'fwSubnetAddrSplit-external' )[1], '.', variables( 'fwSubnetAddrSplit-external' )[2], '.', add( int( variables( 'fwSubnetAddrSplit-external' )[3]), 7 ))]"
-    }
+    },
+    "fwCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('fwVmAddress1').external, ' ', variables( 'fwSubnetMask-external' ), ' ', variables( 'fwSubnetDefaultGw-external' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', variables('fwVmAddress2').external, ' -n ', variables( 'fwSubnetMask-external' ), ' -g ', variables( 'fwSubnetDefaultGw-external' ), '\n'))]",
+    "fwCustomData2": "[Base64('\n')]"
   },
   "resources": [
     {
@@ -285,7 +288,7 @@
       },
       "comments": "External LoadBalancer for the Barracuda Next Gen Firewall F cluster",
       "tags": {
-        "displayName": "NGFLB"
+        "displayName": "NGFLB-External"
       },
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('lbPIPAddressName'))]",
@@ -421,7 +424,7 @@
               "privateIPAddress": "172.16.136.10",
               "privateIPAllocationMethod": "Static",
               "subnet": {
-                "id": "[variables('subnetRef-external')]"
+                "id": "[variables('subnetRefNGF')]"
               }
             }
           }
@@ -504,7 +507,7 @@
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('fwPIPAddressName1'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
-        "[concat('Microsoft.Network/loadBalancers/', variables('lbName-external'))]"
+        "[variables('lbID-external')]"
       ],
       "properties": {
         "enableIPForwarding": true,
@@ -518,12 +521,12 @@
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('fwPIPAddressName1'))]"
               },
               "subnet": {
-                "id": "[variables('subnetRef-external')]"
+                "id": "[variables('subnetRefNGF')]"
               },
               "primary": true,
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[concat(variables('lbID-external'), '/backendAddressPools/loadBalancerBackend')]"
+                  "id": "[variables('lbBackEndPoolID-external')]"
                 }
               ]
             }
@@ -534,12 +537,12 @@
               "privateIPAddress": "[variables( 'fwVmAddress1' ).internal]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
-                "id": "[variables('subnetRef-external')]"
+                "id": "[variables('subnetRefNGF')]"
               },
               "primary": false,
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[concat(variables('lbID-internal'), '/backendAddressPools/loadBalancerBackend')]"
+                  "id": "[variables('lbBackEndPoolID-internal')]"
                 }
               ]
             }
@@ -555,7 +558,7 @@
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('fwPIPAddressName2'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
-        "[concat('Microsoft.Network/loadBalancers/', variables('lbName-external'))]"
+        "[variables('lbID-external')]"
       ],
       "properties": {
         "enableIPForwarding": true,
@@ -564,17 +567,17 @@
             "name": "external",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables( 'fwVmAddress2' ).internal]",
+              "privateIPAddress": "[variables( 'fwVmAddress2' ).external]",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('fwPIPAddressName2'))]"
               },
               "subnet": {
-                "id": "[variables('subnetRef-external')]"
+                "id": "[variables('subnetRefNGF')]"
               },
               "primary": true,
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[concat(variables('lbID-external'), '/backendAddressPools/loadBalancerBackend')]"
+                  "id": "[variables('lbBackEndPoolID-external')]"
                 }
               ]
             }
@@ -585,12 +588,12 @@
               "privateIPAddress": "[variables( 'fwVmAddress2' ).internal]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
-                "id": "[variables('subnetRef-external')]"
+                "id": "[variables('subnetRefNGF')]"
               },
               "primary": false,
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "[concat(variables('lbID-internal'), '/backendAddressPools/loadBalancerBackend')]"
+                  "id": "[variables('lbBackEndPoolID-internal')]"
                 }
               ]
             }
@@ -623,7 +626,7 @@
           "computerName": "[variables('fwVmName1')]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('#!/bin/bash\n\n', '/opt/phion/bin/editconf -f /opt/phion/config/configroot/boxnet.conf -d REFS -s gendev_eth0\n', '/opt/phion/bin/editconf -f /opt/phion/config/configroot/boxnet.conf -d RENAMED -s gendev_eth0\n', '/opt/phion/bin/cloud-setmip ', variables('fwVmAddress2').internal, ' ', variables( 'fwSubnetMask-external' ), ' ', variables( 'fwSubnetDefaultGw-external' ), ' >> /tmp/setmip.log'))]"
+          "customData": "[variables( 'fwCustomData1')]"
         },
         "storageProfile": {
           "imageReference": {
@@ -675,7 +678,7 @@
           "computerName": "[variables('fwVMName2')]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[base64(concat('#!/bin/bash\n\n', '/opt/phion/bin/editconf -f /opt/phion/config/configroot/boxnet.conf -d REFS -s gendev_eth0\n', '/opt/phion/bin/editconf -f /opt/phion/config/configroot/boxnet.conf -d RENAMED -s gendev_eth0\n', '/opt/phion/bin/cloud-setmip ', variables('fwVmAddress2').external, ' ', variables( 'fwSubnetMask-external' ), ' ', variables( 'fwSubnetDefaultGw-external' ), ' >> /tmp/setmip.log'))]"
+          "customData": "[variables( 'fwCustomData2')]"
         },
         "storageProfile": {
           "imageReference": {
