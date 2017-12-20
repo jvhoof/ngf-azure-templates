@@ -50,7 +50,8 @@
       "allowedValues": [
         "hourly",
         "byol"
-      ]
+      ],
+      "defaultValue": "byol"
     },
     "vmSize": {
       "type": "string",
@@ -79,19 +80,19 @@
     },
     "ccClusterName": {
       "type": "string",
-      "defaultValue": ""
+      "defaultValue": "only used when ccManaged set to yes"
     },
     "ccRangeId": {
       "type": "string",
-      "defaultValue": ""
+      "defaultValue": "only used when ccManaged set to yes"
     },
     "ccIpAddress": {
       "type": "string",
-      "defaultValue": ""
+      "defaultValue": "only used when ccManaged set to yes"
     },
     "ccSecret": {
       "type": "securestring",
-      "defaultValue": ""
+      "defaultValue": "only used when ccManaged set to yes"
     }
   },
   "variables": {
@@ -112,8 +113,8 @@
     "fwVmName2": "[concat(parameters('prefix'),'-VM-NGF-B')]",
     "fwNicName1": "[concat(variables('fwVmName1'),'-NIC')]",
     "fwNicName2": "[concat(variables('fwVmName2'),'-NIC')]",
-    "fwPIPAddressNameA": "[concat(variables('fwVmName1'),'-PIP')]",
-    "fwPIPAddressNameB": "[concat(variables('fwVmName2'),'-PIP')]",
+    "fwPIPAddressName1": "[concat(variables('fwVmName1'),'-PIP')]",
+    "fwPIPAddressName2": "[concat(variables('fwVmName2'),'-PIP')]",
     "fwPIPAddressType": "Static",
     "lbPIPAddressName": "[concat(parameters('prefix'),'-NGF-LB-PIP')]",
     "dnsNameForNGF": "[toLower( concat( parameters('prefix'), '-ngf-', uniqueString(resourceGroup().id) ) )]",
@@ -471,7 +472,7 @@
       "zones": [
         "1"
       ],
-      "name": "[variables('fwPIPAddressNameA')]",
+      "name": "[variables('fwPIPAddressName1')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard"
@@ -486,7 +487,7 @@
       "zones": [
         "2"
       ],
-      "name": "[variables('fwPIPAddressNameB')]",
+      "name": "[variables('fwPIPAddressName2')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard"
@@ -501,7 +502,7 @@
       "name": "[variables('fwNicName1')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('fwPIPAddressNameA'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('fwPIPAddressName1'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
         "[concat('Microsoft.Network/loadBalancers/', variables('lbName-external'))]"
       ],
@@ -514,7 +515,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables( 'fwVmAddress1' ).external]",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('fwPIPAddressNameA'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('fwPIPAddressName1'))]"
               },
               "subnet": {
                 "id": "[variables('subnetRef-external')]"
@@ -552,7 +553,7 @@
       "name": "[variables('fwNicName2')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('fwPIPAddressNameB'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('fwPIPAddressName2'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
         "[concat('Microsoft.Network/loadBalancers/', variables('lbName-external'))]"
       ],
@@ -565,7 +566,7 @@
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[variables( 'fwVmAddress2' ).internal]",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('fwPIPAddressNameB'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('fwPIPAddressName2'))]"
               },
               "subnet": {
                 "id": "[variables('subnetRef-external')]"
@@ -705,11 +706,11 @@
   "outputs": {
     "NGF-A": {
       "type": "string",
-      "value": "[reference(variables('fwPIPAddressNameA')).ipAddress]"
+      "value": "[reference(variables('fwPIPAddressName1')).ipAddress]"
     },
     "NGF-B": {
       "type": "string",
-      "value": "[reference(variables('fwPIPAddressNameB')).ipAddress]"
+      "value": "[reference(variables('fwPIPAddressName2')).ipAddress]"
     },
     "NGF-LB": {
       "type": "string",
