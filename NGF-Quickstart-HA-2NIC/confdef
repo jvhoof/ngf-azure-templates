@@ -1,0 +1,139 @@
+CONFDEF box/boxnet partial 7.1
+
+[cards_10dynmod]
+GTARGET = 
+TYPE = eth
+MOD = dynmod.ko
+NUM = 2
+MODOPTS[] = 
+IFAMOD = n
+AMOD = 3c59x.ko
+AMODOPTS[] = 
+ACTSTATE = y
+BLTIN = module
+MTU1 = 1500
+
+[gendev_eth1]
+GGENDEV = 
+MTU = 1500
+STATE = 0
+REFS[] = none
+POBJ = 10dynmod
+TYPE = 
+DRV = dynmod.ko
+AUTONEG = 
+SPEED = 
+DUPLEX = 
+
+[addnet_eth1]
+GADDNET = 
+DEV = eth1
+IP = 172.16.136.132
+MASK = 7
+PING = y
+BIND = n
+NTPD = n
+REALM = 0
+NH = 
+PREF = 1
+MTU = 1500
+OSPF = n
+ACT = y
+
+[addroute_Backend]
+GTARGET = 
+TARGET = 172.16.138.0/8
+TYPE = gw
+DEV = 
+DEST = 172.16.136.129
+PREF = 
+SRC = 
+FOREIGN = n
+REALM = 0
+NH = 
+MTU = 1500
+OSPF = n
+PROBE[] = 
+ENABLESCRIPT = -----BEGIN Text-----
+-----END Text-----
+
+DISABLESCRIPT = -----BEGIN Text-----
+-----END Text-----
+
+EQUAL = n
+AUTO = User created
+ACT = y
+
+[addroute_Frontend]
+GTARGET = 
+TARGET = 172.16.137.0/8
+TYPE = gw
+DEV = 
+DEST = 172.16.136.129
+PREF = 
+SRC = 
+FOREIGN = n
+REALM = 0
+NH = 
+MTU = 1500
+OSPF = n
+PROBE[] = 
+ENABLESCRIPT = -----BEGIN Text-----
+-----END Text-----
+
+DISABLESCRIPT = -----BEGIN Text-----
+-----END Text-----
+
+EQUAL = n
+AUTO = User created
+ACT = y
+
+[rttable_External]
+GSRCNETS = 
+SRCNETS[] = 172.16.136.0/7
+GROUTE = 
+POS = postmain
+AUTO = 
+
+[rttable_External_route_Default]
+GTARGET = 
+TARGET = 0.0.0.0/32
+RTYPE = unicast
+DEST = 172.16.136.1
+EQUAL = n
+PREF = 
+MTU = 1500
+OSPF = n
+PROBE[] = 
+ENABLESCRIPT = -----BEGIN Text-----
+-----END Text-----
+
+DISABLESCRIPT = -----BEGIN Text-----
+-----END Text-----
+
+AUTO = 
+
+[rttable_internal]
+GSRCNETS = 
+SRCNETS[] = 172.16.136.128/7
+GROUTE = 
+POS = postmain
+AUTO = 
+
+[rttable_internal_route_Default]
+GTARGET = 
+TARGET = 0.0.0.0/32
+RTYPE = unicast
+DEST = 172.16.136.129
+EQUAL = n
+PREF = 
+MTU = 1500
+OSPF = n
+PROBE[] = 
+ENABLESCRIPT = -----BEGIN Text-----
+-----END Text-----
+
+DISABLESCRIPT = -----BEGIN Text-----
+-----END Text-----
+
+AUTO = 

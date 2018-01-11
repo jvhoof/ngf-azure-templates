@@ -1,4 +1,4 @@
-# Barracuda NextGen Firewall for Azure - High Availability Cluster using Internal Load Balancer with Availability Zones
+# Barracuda NextGen Firewall for Azure - High Availability Cluster using Internal Load Balancer with Availability Set
 
 ## Introduction
 
@@ -8,7 +8,7 @@ Azure ILB solves above problems, providing failover capabilities with zero integ
 
 This template deploys a VNet with 2 NGF instances with managed disks, an any-port ILB instance, and 2 empty subnets routed through NGF cluster.
 
-![Network diagram](https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/NGF-Quickstart-HA-1NIC/images/ngf-ha.png)
+![Network diagram](https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/NGF-Quickstart-HA-1NIC-AS/images/ngf-ha.png)
 
 ## Prerequisites
 
@@ -16,14 +16,12 @@ The solution does a check of the template when you use the provide scripts. It d
 
 This ARM template uses the Standard Load Balancer which is currently in preview. To enable this feature you need to run a couple of Powershell or Azure CLI 2.0 commands which can be found on the [Microsoft documentation page of this Standard Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-standard-overview#preview-sign-up)
 
-This ARM template also use Availability Zones which are in preview and available in a limited number of regions. To enable this feature in your subscription [click here](https://aka.ms/azenroll)
-
 ## Deployment
 
 The package provides a deploy.ps1 and deploy.sh for Powershell or Azure CLI based deployments. This can be peformed from the Azure Portal as well as the any system that has either of these scripting infrastructures installed. Or you can deploy from the Azure Portal using the provided link.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-HA-1NIC%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-HA-1NIC%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-HA-1NIC-AS%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-HA-1NIC-AS%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
@@ -33,7 +31,7 @@ Following resources will be created by the template:
 - Two route tables that will route all traffic for external and towards the other internal networks to the Barracuda NGF
 - Once internal standard load balancer and one external public load balancer to provide full HA for the Barracuda NGF
 - Two Barracuda NextGen Firewall F virtual machines with a 2 network interfaces each and public IP
-- This template uses 
+- Both NGF systems are deployed in an Availability Set
 
 **Note** Additional backend subnets and resources are *not* automatically created by the template. This has to be done manually after template deployment has finished or by adapting the ARM template.
 
