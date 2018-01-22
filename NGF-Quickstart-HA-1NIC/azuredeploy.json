@@ -107,8 +107,8 @@
     "subnetRefNGF": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameNGF'))]",
     "subnetNameRed": "[concat(parameters('prefix'),'-SUBNET-RED')]",
     "subnetNameGreen": "[concat(parameters('prefix'),'-SUBNET-GREEN')]",
-    "rtableName-Red": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
-    "rtableName-Green": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
+    "rtableNameRed": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
+    "rtableNameGreen": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
     "ngfVmName1": "[concat(parameters('prefix'),'-VM-NGF-A')]",
     "ngfVmName2": "[concat(parameters('prefix'),'-VM-NGF-B')]",
     "ngfNicName1": "[concat(variables('ngfVmName1'),'-NIC')]",
@@ -178,7 +178,9 @@
       "name": "[variables('vNetName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('nsgName')]"
+        "[variables('nsgName')]",
+        "[variables('rtableNameGreen')]",
+        "[variables('rtableNameRed')]"
       ],
       "properties": {
         "addressSpace": {
@@ -199,13 +201,25 @@
           {
             "name": "[variables('subnetNameRed')]",
             "properties": {
-              "addressPrefix": "[parameters('subnetRed')]"
+              "addressPrefix": "[parameters('subnetRed')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
+              },
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', variables('rtableNameRed'))]"
+              }
             }
           },
           {
             "name": "[variables('subnetNameGreen')]",
             "properties": {
-              "addressPrefix": "[parameters('subnetGreen')]"
+              "addressPrefix": "[parameters('subnetGreen')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
+              },
+              "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', variables('rtableNameGreen'))]"
+              }
             }
           }
         ]
@@ -214,7 +228,7 @@
     {
       "apiVersion": "[variables( 'networkApiVersion' )]",
       "type": "Microsoft.Network/routeTables",
-      "name": "[variables('rtableName-Red')]",
+      "name": "[variables('rtableNameRed')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "routes": [
@@ -240,7 +254,7 @@
     {
       "apiVersion": "[variables( 'networkApiVersion' )]",
       "type": "Microsoft.Network/routeTables",
-      "name": "[variables('rtableName-Green')]",
+      "name": "[variables('rtableNameGreen')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "routes": [
@@ -539,7 +553,7 @@
               "subnet": {
                 "id": "[variables('subnetRefNGF')]"
               },
-              "primary": false,
+              "primary": true,
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[variables('lbBackEndPoolID-internal')]"
