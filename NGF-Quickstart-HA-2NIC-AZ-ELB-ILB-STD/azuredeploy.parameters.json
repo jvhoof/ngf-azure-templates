@@ -11,11 +11,17 @@
     "vNetPrefix": {
       "value": "172.16.136.0/22"
     },
-    "subnetPrefixNGF-external": {
+    "subnetNGF-external": {
       "value": "172.16.136.0/25"
     },
-    "subnetPrefixNGF-internal": {
+    "subnetNGF-internal": {
       "value": "172.16.136.128/25"
+    },
+    "subnetRed": {
+      "value": "172.16.137.0/24"
+    },
+    "subnetGreen": {
+      "value": "172.16.138.0/24"
     },
     "imageSKU": {
       "value": "byol"
