@@ -13,7 +13,7 @@ The Barracuda NextGen Firewall (NGF) can be installed in different ways into the
 | [NGF-Quickstart-HighAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HighAvailability) | - | X | - | X | - | - | - | - | - 
 | [NGF-Custom-SingleAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Custom-SingleAvailability) | X | - | - | X | - | - | - | - | - 
 | [NGF-Custom-HighAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Custom-HighAvailability) | X | X | - | X | - | - | - | - | - 
-| [NGF-Quickstart-HA-1NIC](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC) | - | X | X | - | X | X | X | X | - 
+| [NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD) | - | X | X | - | X | X | X | X | - 
 | [NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD) | - | X | X | - | X | X | - | X | - 
 | [NGF-Quickstart-HA-1NIC-AS-ELB-STD](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AS-ELB-STD) | - | X | X | - | X | - | - | X | - 
 | [NGF-Quickstart-HA-2NIC-AZ-ELB-ILB-STD](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-2NIC-AZ-ELB-ILB-STD) | - | X | X | - | X | X | X | X | X 
