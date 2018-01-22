@@ -98,17 +98,23 @@
   "variables": {
     "computeApiVersion": "2017-03-30",
     "networkApiVersion": "2017-08-01",
+
     "imagePublisher": "barracudanetworks",
     "imageOffer": "barracuda-ng-firewall",
+
     "nsgName": "[concat(parameters('prefix'),'-NSG-NGF')]",
+    "avName": "[concat(parameters('prefix'),'-AV-NGF')]",
     "vNetName": "[concat(parameters('prefix'),'-VNET')]",
     "vNetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vNetName'))]",
     "subnetNameNGF": "[concat(parameters('prefix'),'-SUBNET-NGF')]",
     "subnetRefNGF": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameNGF'))]",
     "subnetNameRed": "[concat(parameters('prefix'),'-SUBNET-RED')]",
+    "subnetRefRed": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameRed'))]",
     "subnetNameGreen": "[concat(parameters('prefix'),'-SUBNET-GREEN')]",
-    "rtableNameRed": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
-    "rtableNameGreen": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
+    "subnetRefGreen": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameGreen'))]",
+    "rtableName-Red": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
+    "rtableName-Green": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
+
     "ngfVmName1": "[concat(parameters('prefix'),'-VM-NGF-A')]",
     "ngfVmName2": "[concat(parameters('prefix'),'-VM-NGF-B')]",
     "ngfNicName1": "[concat(variables('ngfVmName1'),'-NIC')]",
@@ -116,6 +122,7 @@
     "ngfPIPAddressName1": "[concat(variables('ngfVmName1'),'-PIP')]",
     "ngfPIPAddressName2": "[concat(variables('ngfVmName2'),'-PIP')]",
     "ngfPIPAddressType": "Static",
+
     "lbPIPAddressName": "[concat(parameters('prefix'),'-NGF-LB-PIP')]",
     "dnsNameForNGF": "[toLower( concat( parameters('prefix'), '-ngf-', uniqueString(resourceGroup().id) ) )]",
     "lbName-external": "[concat(parameters('prefix'),'-ELB-NGF')]",
@@ -130,8 +137,10 @@
     "lbProbeID-external": "[concat(variables('lbID-external'),'/probes/TinaProbe')]",
     "lbProbeID-internal": "[concat(variables('lbID-internal'),'/probes/HAProbe')]",
     "lbIPAddress-internal": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 10 ))]",
+
     "adminUsername": "notused",
     "singleQuotationMark": "'",
+
     "ngfSubnetSplit-external": "[split( parameters( 'subnetNGF' ), '/' )]",
     "ngfSubnetAddrSplit-external": "[split( variables( 'ngfSubnetSplit-external' )[0], '.' )]",
     "ngfSubnetMask-external": "[variables( 'ngfSubnetSplit-external' )[1]]",
@@ -178,9 +187,7 @@
       "name": "[variables('vNetName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('nsgName')]",
-        "[variables('rtableNameGreen')]",
-        "[variables('rtableNameRed')]"
+        "[variables('nsgName')]"
       ],
       "properties": {
         "addressSpace": {
@@ -201,25 +208,13 @@
           {
             "name": "[variables('subnetNameRed')]",
             "properties": {
-              "addressPrefix": "[parameters('subnetRed')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
-              },
-              "routeTable": {
-                "id": "[resourceId('Microsoft.Network/routeTables', variables('rtableNameRed'))]"
-              }
+              "addressPrefix": "[parameters('subnetRed')]"
             }
           },
           {
             "name": "[variables('subnetNameGreen')]",
             "properties": {
-              "addressPrefix": "[parameters('subnetGreen')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
-              },
-              "routeTable": {
-                "id": "[resourceId('Microsoft.Network/routeTables', variables('rtableNameGreen'))]"
-              }
+              "addressPrefix": "[parameters('subnetGreen')]"
             }
           }
         ]
@@ -228,8 +223,11 @@
     {
       "apiVersion": "[variables( 'networkApiVersion' )]",
       "type": "Microsoft.Network/routeTables",
-      "name": "[variables('rtableNameRed')]",
+      "name": "[variables('rtableName-Red')]",
       "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('vNetID')]"
+      ],
       "properties": {
         "routes": [
           {
@@ -248,13 +246,14 @@
               "nextHopIpAddress": "[variables('lbIPAddress-internal')]"
             }
           }
-        ]
+        ],
+        "subnets": "[variables('subnetRefRed')]"
       }
     },
     {
       "apiVersion": "[variables( 'networkApiVersion' )]",
       "type": "Microsoft.Network/routeTables",
-      "name": "[variables('rtableNameGreen')]",
+      "name": "[variables('rtableName-Green')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "routes": [
@@ -274,7 +273,22 @@
               "nextHopIpAddress": "[variables('lbIPAddress-internal')]"
             }
           }
-        ]
+        ],
+        "subnets": "[variables('subnetRefGreen')]"
+      }
+    },
+    {
+      "apiVersion": "[variables('computeApiVersion')]",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('avName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [],
+      "properties": {
+          "platformFaultDomainCount": 2,
+          "platformUpdateDomainCount": 5                
+      },
+      "sku": {
+        "name": "Aligned"
       }
     },
     {
@@ -435,10 +449,10 @@
           {
             "name": "loadBalancerFrontEnd",
             "properties": {
-              "privateIPAddress": "172.16.136.10",
+              "privateIPAddress": "172.16.138.10",
               "privateIPAllocationMethod": "Static",
               "subnet": {
-                "id": "[variables('subnetRefNGF')]"
+                "id": "[variables('subnetRefGreen')]"
               }
             }
           }
@@ -486,9 +500,6 @@
     {
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "zones": [
-        "1"
-      ],
       "name": "[variables('ngfPIPAddressName1')]",
       "location": "[resourceGroup().location]",
       "sku": {
@@ -501,9 +512,6 @@
     {
       "apiVersion": "[variables('networkApiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
-      "zones": [
-        "2"
-      ],
       "name": "[variables('ngfPIPAddressName2')]",
       "location": "[resourceGroup().location]",
       "sku": {
@@ -553,7 +561,7 @@
               "subnet": {
                 "id": "[variables('subnetRefNGF')]"
               },
-              "primary": true,
+              "primary": false,
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[variables('lbBackEndPoolID-internal')]"
@@ -619,9 +627,6 @@
       "condition": "[equals(parameters('ccManaged'),'no')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "zones": [
-        "1"
-      ],
       "name": "[variables('ngfVmName1')]",
       "location": "[resourceGroup().location]",
       "plan": {
@@ -630,9 +635,13 @@
         "Publisher": "[variables('imagePublisher')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces/', variables('ngfNicName1'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces/', variables('ngfNicName1'))]",
+        "[concat('Microsoft.Compute/availabilitySets/', variables('avName'))]"
       ],
       "properties": {
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('avName'))]"
+        },
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
@@ -671,9 +680,6 @@
       "condition": "[equals(parameters('ccManaged'),'no')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "zones": [
-        "2"
-      ],
       "name": "[variables('ngfVmName2')]",
       "location": "[resourceGroup().location]",
       "plan": {
@@ -682,9 +688,13 @@
         "Publisher": "[variables('imagePublisher')]"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces/', variables('ngfNicName2'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces/', variables('ngfNicName2'))]",
+        "[concat('Microsoft.Compute/availabilitySets/', variables('avName'))]"
       ],
       "properties": {
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('avName'))]"
+        },
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
