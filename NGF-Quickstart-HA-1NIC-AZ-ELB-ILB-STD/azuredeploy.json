@@ -98,8 +98,10 @@
   "variables": {
     "computeApiVersion": "2017-03-30",
     "networkApiVersion": "2017-08-01",
+
     "imagePublisher": "barracudanetworks",
     "imageOffer": "barracuda-ng-firewall",
+
     "nsgName": "[concat(parameters('prefix'),'-NSG-NGF')]",
     "vNetName": "[concat(parameters('prefix'),'-VNET')]",
     "vNetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vNetName'))]",
@@ -107,8 +109,12 @@
     "subnetRefNGF": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameNGF'))]",
     "subnetNameRed": "[concat(parameters('prefix'),'-SUBNET-RED')]",
     "subnetNameGreen": "[concat(parameters('prefix'),'-SUBNET-GREEN')]",
+    "subnetRefGreen": "[resourceID('Microsoft.Network/virtualNetworks/subnets',variables('vNetName'),variables('subnetNameGreen'))]",
     "rtableNameRed": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
+    "rtableRefRed": "[resourceID('Microsoft.Network/routeTables',variables('rtableNameRed'))]",
     "rtableNameGreen": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
+    "rtableRefGreen": "[resourceID('Microsoft.Network/routeTables',variables('rtableNameGreen'))]",
+
     "ngfVmName1": "[concat(parameters('prefix'),'-VM-NGF-A')]",
     "ngfVmName2": "[concat(parameters('prefix'),'-VM-NGF-B')]",
     "ngfNicName1": "[concat(variables('ngfVmName1'),'-NIC')]",
@@ -116,6 +122,7 @@
     "ngfPIPAddressName1": "[concat(variables('ngfVmName1'),'-PIP')]",
     "ngfPIPAddressName2": "[concat(variables('ngfVmName2'),'-PIP')]",
     "ngfPIPAddressType": "Static",
+
     "lbPIPAddressName": "[concat(parameters('prefix'),'-NGF-LB-PIP')]",
     "dnsNameForNGF": "[toLower( concat( parameters('prefix'), '-ngf-', uniqueString(resourceGroup().id) ) )]",
     "lbName-external": "[concat(parameters('prefix'),'-ELB-NGF')]",
@@ -130,8 +137,10 @@
     "lbProbeID-external": "[concat(variables('lbID-external'),'/probes/TinaProbe')]",
     "lbProbeID-internal": "[concat(variables('lbID-internal'),'/probes/HAProbe')]",
     "lbIPAddress-internal": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 10 ))]",
+
     "adminUsername": "notused",
     "singleQuotationMark": "'",
+
     "ngfSubnetSplit-external": "[split( parameters( 'subnetNGF' ), '/' )]",
     "ngfSubnetAddrSplit-external": "[split( variables( 'ngfSubnetSplit-external' )[0], '.' )]",
     "ngfSubnetMask-external": "[variables( 'ngfSubnetSplit-external' )[1]]",
@@ -206,7 +215,7 @@
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
               },
               "routeTable": {
-                "id": "[resourceId('Microsoft.Network/routeTables', variables('rtableNameRed'))]"
+                "id": "[variables('rtableRefRed')]"
               }
             }
           },
@@ -218,7 +227,7 @@
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
               },
               "routeTable": {
-                "id": "[resourceId('Microsoft.Network/routeTables', variables('rtableNameGreen'))]"
+                "id": "[variables('rtableRefGreen')]"
               }
             }
           }
