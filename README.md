@@ -8,7 +8,7 @@ The Barracuda NextGen Firewall (NGF) can be installed in different ways into the
 
 ## Template Parameters
 | Name | In existing VNET | HighAvailability | Preview | ELB Basic | ELB Standard | ILB with HA Ports | Availability Zones | 1 NIC | 2 NIC
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
 | [NGF-Quickstart-SingleAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-SingleAvailability) | - | - | - | x | - | - | - | - | - 
 | [NGF-Quickstart-HighAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HighAvailability) | - | X | - | X | - | - | - | - | - 
 | [NGF-Custom-SingleAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Custom-SingleAvailability) | X | - | - | X | - | - | - | - | - 
