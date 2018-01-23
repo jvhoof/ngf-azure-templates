@@ -562,7 +562,7 @@
               "subnet": {
                 "id": "[variables('subnetRefNGF')]"
               },
-              "primary": true,
+              "primary": false,
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[variables('lbBackEndPoolID-internal')]"
