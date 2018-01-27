@@ -62,9 +62,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Network/networkSecurityGroups'.
-                                 'Microsoft.Network/virtualNetworks',
-                                 'Microsoft.Network/routeTables',
+            $expectedResources = 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/publicIPAddresses',
@@ -89,9 +87,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'ccSecret',
                                           'imageSKU',
                                           'prefix',
+                                          'subnetGreen',
                                           'subnetNGF',
                                           'subnetRed',
-                                          'subnetGreen',
                                           'vmSize',
                                           'vNetAddressSpace'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name
@@ -127,13 +125,14 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             (Test-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile "azuredeploy.json" -TemplateParameterFile "azuredeploy.parameters.json" -adminPassword $testsAdminPassword -prefix $testsPrefix).Count | Should not BeGreaterThan 0
         }
         It "Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
-            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testsAdminPassword -prefix $testsprefix
+            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testsAdminPassword -prefix $testsPrefix
             Write-Host ($resultDeployment | Format-Table | Out-String)
-            Write-Host $resultDeployment.ProvisioningState
+            Write-Host "Deployment state: $resultDeployment.ProvisioningState"
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Do we have connection with Azure?" {
-            $result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
+            #$result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
+            $result = (Find-AzureRmResource -ResourceGroupNameContains $testsResourceGroupName | measure).Count
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
