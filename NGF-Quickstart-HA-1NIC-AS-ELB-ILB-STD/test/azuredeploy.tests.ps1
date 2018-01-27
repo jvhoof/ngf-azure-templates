@@ -109,7 +109,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
         $testsPrefix = "cudaqa-$testsRandom"
         $testsVM = "$testsPrefix-VM-NGF"
-        $testsResourceGroupLocation = "East US"
+        $testsResourceGroupLocation = "East US2"
 
         # List of all scripts + parameter files
         $testsTemplateList=@()
