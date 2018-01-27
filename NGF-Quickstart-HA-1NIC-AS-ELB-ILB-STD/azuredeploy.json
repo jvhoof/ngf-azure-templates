@@ -234,9 +234,6 @@
       "type": "Microsoft.Network/routeTables",
       "name": "[variables('rtableNameRed')]",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[variables('vNetID')]"
-      ],
       "properties": {
         "routes": [
           {
