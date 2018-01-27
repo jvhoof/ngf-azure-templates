@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Input location 
 echo -n "Enter location (e.g. eastus2): "
 stty_orig=`stty -g` # save original terminal setting.
