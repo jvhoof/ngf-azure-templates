@@ -8,11 +8,17 @@
     "prefix": {
       "value": "GEN-PREFIX"
     },
-    "vNetPrefix": {
+    "vNetAddressSpace": {
       "value": "172.16.136.0/22"
     },
-    "subnetPrefixNGF": {
+    "subnetNGF": {
       "value": "172.16.136.0/24"
+    },
+    "subnetRed": {
+      "value": "172.16.137.0/24"
+    },
+    "subnetGreen": {
+      "value": "172.16.138.0/24"
     },
     "imageSKU": {
       "value": "byol"

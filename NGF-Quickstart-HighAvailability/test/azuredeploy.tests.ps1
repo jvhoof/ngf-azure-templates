@@ -62,7 +62,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Network/virtualNetworks',
+            $expectedResources = 'Microsoft.Network/networkSecurityGroups'.
+                                 'Microsoft.Network/virtualNetworks',
+                                 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/publicIPAddresses',
@@ -71,8 +73,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/networkInterfaces',
                                  'Microsoft.Network/networkInterfaces',
-                                 'Microsoft.Compute/virtualMachines',
-                                 'Microsoft.Compute/virtualMachines',
                                  'Microsoft.Compute/virtualMachines',
                                  'Microsoft.Compute/virtualMachines'
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
@@ -88,9 +88,11 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'ccSecret',
                                           'imageSKU',
                                           'prefix',
-                                          'subnetPrefixNGF',
+                                          'subnetNGF',
+                                          'subnetRed',
+                                          'subnetGreen',
                                           'vmSize',
-                                          'vNetPrefix'
+                                          'vNetAddressSpace'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name
             $templateParameters | Should Be $expectedTemplateParameters
         }
@@ -102,11 +104,10 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
-        $testsResourceGroupName = "cudatests-ngf-quickstart-sa-$testsRandom"
+        $testsResourceGroupName = "cudaqa-ngf-quickstart-ha-1nic-as-elb-std-$testsRandom"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-        $testsPrefix = "cudatests-$testsRandom"
-        $testsVMA = "cudatests-$testsRandom-VM-NGF-A"
-        $testsVMB = "cudatests-$testsRandom-VM-NGF-B"
+        $testsPrefix = "cudaqa-$testsRandom"
+        $testsVM = "$testsPrefix-VM-NGF"
         $testsResourceGroupLocation = "East US"
 
         # List of all scripts + parameter files
@@ -131,14 +132,12 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Do we have connection with Azure?" {
-            $resulta = Get-AzurermVM | Where-Object { $_.Name -eq $testsVMA } 
-            Write-Host ($resulta | Format-Table | Out-String)
-            $resulta | Should Not Be $null
-            $resultb = Get-AzurermVM | Where-Object { $_.Name -eq $testsVMB } 
-            Write-Host ($resultb | Format-Table | Out-String)
-            $resultb | Should Not Be $null
+            $result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
+            Write-Host ($result | Format-Table | Out-String)
+            $result | Should Not Be $null
         }
         Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
+
     }
 
 }

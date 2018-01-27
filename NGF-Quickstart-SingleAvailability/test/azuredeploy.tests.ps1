@@ -62,7 +62,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Network/virtualNetworks',
+            $expectedResources = 'Microsoft.Network/networkSecurityGroups'.
+                                 'Microsoft.Network/virtualNetworks',
+                                 'Microsoft.Network/routeTables',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/networkInterfaces',
@@ -81,9 +83,11 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'ccSecret',
                                           'imageSKU',
                                           'prefix',
-                                          'subnetPrefixNGF',
+                                          'subnetGreen',
+                                          'subnetNGF',
+                                          'subnetRed',
                                           'vmSize',
-                                          'vNetPrefix'
+                                          'vNetAddressSpace'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name
             $templateParameters | Should Be $expectedTemplateParameters
         }

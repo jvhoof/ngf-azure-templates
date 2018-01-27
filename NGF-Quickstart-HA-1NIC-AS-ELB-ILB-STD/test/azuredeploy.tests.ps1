@@ -25,8 +25,8 @@ Function random-password ($length = 15)
     return $password
 }
 
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AS-ELB-STD"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AS-ELB-STD\test"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -69,6 +69,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                  'Microsoft.Compute/availabilitySets',
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/loadBalancers',
+                                 'Microsoft.Network/loadBalancers',
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/publicIPAddresses',
                                  'Microsoft.Network/networkInterfaces',
@@ -104,7 +105,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
-        $testsResourceGroupName = "cudaqa-ngf-quickstart-ha-1nic-as-elb-std-$testsRandom"
+        $testsResourceGroupName = "cudaqa-ngf-quickstart-ha-1nic-as-elb-ilb-std-$testsRandom"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
         $testsPrefix = "cudaqa-$testsRandom"
         $testsVM = "$testsPrefix-VM-NGF"
