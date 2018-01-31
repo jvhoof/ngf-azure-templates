@@ -1,5 +1,7 @@
 # Barracuda NextGen Firewall for Azure - High Availability Cluster using Internal Load Balancer with Availability Zones
 
+![Build status](https://img.shields.io/vso/build/cudajvhoof/19118fdb-7d82-4c41-a1fd-b16e490dc968/8.svg)
+
 ## Introduction
 
 Traditionally, Barracuda NextGen Firewall (NGF) uses UDR rewriting technique to redirect traffic when an HA failover happens. This method works well for smaller deployments, but has few drawbacks when using peered VNets or if corporate policy restricts saving AAD authentication keys in 3rd party software configuration.
