@@ -137,24 +137,18 @@
     "lbBackEndPoolID-internal": "[concat(variables('lbID-internal'),'/backendAddressPools/loadBalancerBackend')]",
     "lbProbeID-external": "[concat(variables('lbID-external'),'/probes/TinaProbe')]",
     "lbProbeID-internal": "[concat(variables('lbID-internal'),'/probes/HAProbe')]",
-    "lbIPAddress-internal": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 10 ))]",
+    "lbIPAddress-internal": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 10 ))]",
 
     "adminUsername": "notused",
     "singleQuotationMark": "'",
 
-    "ngfSubnetSplit-external": "[split( parameters( 'subnetNGF' ), '/' )]",
-    "ngfSubnetAddrSplit-external": "[split( variables( 'ngfSubnetSplit-external' )[0], '.' )]",
-    "ngfSubnetMask-external": "[variables( 'ngfSubnetSplit-external' )[1]]",
-    "ngfSubnetDefaultGw-external": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 1 ))]",
-    "ngfVmAddress1": {
-      "external": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 4 ))]",
-      "internal": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 5 ))]"
-    },
-    "ngfVmAddress2": {
-      "external": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 6 ))]",
-      "internal": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 7 ))]"
-    },
-    "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('ngfVmAddress1').external, ' ', variables( 'ngfSubnetMask-external' ), ' ', variables( 'ngfSubnetDefaultGw-external' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', variables('ngfVmAddress2').external, ' -n ', variables( 'ngfSubnetMask-external' ), ' -g ', variables( 'ngfSubnetDefaultGw-external' ), '\n'))]",
+    "ngfSubnetSplit": "[split( parameters( 'subnetNGF' ), '/' )]",
+    "ngfSubnetAddrSplit": "[split( variables( 'ngfSubnetSplit' )[0], '.' )]",
+    "ngfSubnetMask": "[variables( 'ngfSubnetSplit' )[1]]",
+    "ngfSubnetDefaultGw": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 1 ))]",
+    "ngfVmAddress1": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 4 ))]",
+    "ngfVmAddress2": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 6 ))]",
+    "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('ngfVmAddress1'), ' ', variables( 'ngfSubnetMask' ), ' ', variables( 'ngfSubnetDefaultGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', variables('ngfVmAddress2'), ' -n ', variables( 'ngfSubnetMask' ), ' -g ', variables( 'ngfSubnetDefaultGw' ), '\n'))]",
     "ngfCustomData2": "[Base64('\n')]"
   },
   "resources": [
@@ -554,10 +548,10 @@
         "enableIPForwarding": true,
         "ipConfigurations": [
           {
-            "name": "external",
+            "name": "ipconfig",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables( 'ngfVmAddress1' ).external]",
+              "privateIPAddress": "[variables( 'ngfVmAddress1' )]",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('ngfPIPAddressName1'))]"
               },
@@ -568,22 +562,6 @@
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[variables('lbBackEndPoolID-external')]"
-                }
-              ]
-            }
-          },
-          {
-            "name": "internal",
-            "properties": {
-              "privateIPAddress": "[variables( 'ngfVmAddress1' ).internal]",
-              "privateIPAllocationMethod": "Static",
-              "subnet": {
-                "id": "[variables('subnetRefNGF')]"
-              },
-              "primary": false,
-              "loadBalancerBackendAddressPools": [
-                {
-                  "id": "[variables('lbBackEndPoolID-internal')]"
                 }
               ]
             }
@@ -606,10 +584,10 @@
         "enableIPForwarding": true,
         "ipConfigurations": [
           {
-            "name": "external",
+            "name": "ipconfig",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables( 'ngfVmAddress2' ).external]",
+              "privateIPAddress": "[variables( 'ngfVmAddress2' )]",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('ngfPIPAddressName2'))]"
               },
@@ -620,22 +598,6 @@
               "loadBalancerBackendAddressPools": [
                 {
                   "id": "[variables('lbBackEndPoolID-external')]"
-                }
-              ]
-            }
-          },
-          {
-            "name": "internal",
-            "properties": {
-              "privateIPAddress": "[variables( 'ngfVmAddress2' ).internal]",
-              "privateIPAllocationMethod": "Static",
-              "subnet": {
-                "id": "[variables('subnetRefNGF')]"
-              },
-              "primary": false,
-              "loadBalancerBackendAddressPools": [
-                {
-                  "id": "[variables('lbBackEndPoolID-internal')]"
                 }
               ]
             }
