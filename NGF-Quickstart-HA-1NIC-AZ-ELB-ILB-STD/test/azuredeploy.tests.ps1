@@ -88,9 +88,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'ccSecret',
                                           'imageSKU',
                                           'prefix',
+                                          'subnetGreen',
                                           'subnetNGF',
                                           'subnetRed',
-                                          'subnetGreen',
                                           'vmSize',
                                           'vNetAddressSpace'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name
