@@ -165,7 +165,7 @@
       "properties": {
         "securityRules": [
           {
-            "name": "AllowAny",
+            "name": "AllowAnyInbound",
             "properties": {
               "description": "Allow Any",
               "protocol": "*",
@@ -176,6 +176,20 @@
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowAnyOutbound",
+            "properties": {
+              "description": "Allow Any",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "1-65535",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Outbound"
             }
           }
         ]
@@ -444,7 +458,7 @@
           {
             "name": "loadBalancerFrontEnd",
             "properties": {
-              "privateIPAddress": "172.16.136.10",
+              "privateIPAddress": "[variables('lbIPAddress-internal')]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnetRefNGF')]"
@@ -530,7 +544,8 @@
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('ngfPIPAddressName1'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
-        "[variables('lbID-external')]"
+        "[variables('lbID-external')]",
+        "[variables('lbID-internal')]"
       ],
       "properties": {
         "enableIPForwarding": true,
@@ -581,7 +596,8 @@
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('ngfPIPAddressName2'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]",
-        "[variables('lbID-external')]"
+        "[variables('lbID-external')]",
+        "[variables('lbID-internal')]"
       ],
       "properties": {
         "enableIPForwarding": true,

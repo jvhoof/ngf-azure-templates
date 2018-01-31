@@ -143,7 +143,7 @@
       "properties": {
         "securityRules": [
           {
-            "name": "AllowAny",
+            "name": "AllowAnyInbound",
             "properties": {
               "description": "Allow Any",
               "protocol": "*",
@@ -154,6 +154,20 @@
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowAnyOutbound",
+            "properties": {
+              "description": "Allow Any",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "1-65535",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Outbound"
             }
           }
         ]
@@ -445,6 +459,7 @@
         "[variables('lbID')]"
       ],
       "properties": {
+        "enableIPForwarding": true,
         "ipConfigurations": [
           {
             "name": "ipconfig1",
@@ -478,6 +493,7 @@
         "[variables('lbID')]"
       ],
       "properties": {
+        "enableIPForwarding": true,
         "ipConfigurations": [
           {
             "name": "ipconfig1",
