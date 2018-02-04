@@ -1,5 +1,5 @@
 param(
-    [string]$SourceDir = $env:BUILD_SOURCESDIRECTORY,
+    [string]$SourceDir = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD",
     [string]$TempDir = $env:TEMP
 )
  
