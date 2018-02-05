@@ -133,13 +133,7 @@ Describe "[$templateName] Template validation & test" {
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Deployment in Azure validation" {
-            Write-Host "Help help"
-            Get-AzureRmVM 
-            $r = Get-AzureRmVM 
-            Write-Host ("Help " + $r)
-            Write-Host ("testsPrefix " + $testsPrefix)
             $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" } 
-            Write-Host ("Help " + $result)
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
