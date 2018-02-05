@@ -25,8 +25,9 @@ Function random-password ($length = 15)
     return $password
 }
 
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD\test"
+$templateName = "NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -34,9 +35,9 @@ $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
 
-Describe 'ARM Templates Test : Validation & Test Deployment' {
+Describe "[$templateName] Template validation & test" {
     
-    Context 'Template Validation' {
+    Context "[$templateName] Template validation" {
         
         It 'Has a JSON template' {        
             $templateFileLocation | Should Exist
@@ -62,7 +63,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Network/networkecurityGroups',
+            $expectedResources = 'Microsoft.Network/networksecurityGroups',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/routeTables',
@@ -99,14 +100,13 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
     }
 
-
-    Context 'Template Test Deployment NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD' {
+    Context  "[$templateName] Template test deployment" {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
-        $testsResourceGroupName = "cudaqa-ngf-quickstart-ha-1nic-az-elb-ilb-std-$testsRandom"
+        $testsPrefix = "CUDAQA-$testsRandom"
+        $testsResourceGroupName = "CUDAQA-$testsRandom-$templateName"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-        $testsPrefix = "cudaqa-$testsRandom"
         $testsVM = "$testsPrefix-VM-NGF"
         $testsResourceGroupLocation = "East US2"
 
@@ -132,8 +132,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Do we have connection with Azure?" {
-            # $result = Get-AzureRmVM | Where-Object { $_.Name -eq $testsVM } 
-            $result = Get-AzureRmVM
+            $result = Get-AzureRmVM | Where-Object { $_.Name -eq $testsVM } 
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
