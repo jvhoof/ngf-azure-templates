@@ -62,7 +62,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Network/networkecurityGroups'.
+            $expectedResources = 'Microsoft.Network/networkecurityGroups',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/routeTables',
