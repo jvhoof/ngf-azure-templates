@@ -122,20 +122,22 @@ Describe "[$templateName] Template validation & test" {
         # Validate all ARM templates one by one
         $testsErrorFound = $false
 
-        It "Test Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
-            (Test-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile "azuredeploy.json" -TemplateParameterFile "azuredeploy.parameters.json" -adminPassword $testsAdminPassword -prefix $testsPrefix).Count | Should not BeGreaterThan 0
+        It "Test Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
+            (Test-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testsAdminPassword -prefix $testsPrefix).Count | Should not BeGreaterThan 0
         }
-        It "Deployment of ARM template $testsTemplateFile with parameter file $testsTemplateParemeterFile" {
-            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName $testsResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testsAdminPassword -prefix $testsprefix
+        It "Deployment of ARM template $templateFileName with parameter file $templateParameterFileName" {
+            $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName $testSResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testsAdminPassword -prefix $testsprefix
+            Write-Host "Provisioning result:"
             Write-Host ($resultDeployment | Format-Table | Out-String)
-            Write-Host $resultDeployment.ProvisioningState
+            Write-Host "Provisioning state: $resultDeployment.ProvisioningState"
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
-        It "Do we have connection with Azure?" {
+        It "Deployment in Azure validation" {
             $result = Get-AzureRmVM | Where-Object { $_.Name -eq $testsVM } 
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
+        Write-Host "Removing resourcegroup $testsResourceGroupName"
         Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
 
     }
