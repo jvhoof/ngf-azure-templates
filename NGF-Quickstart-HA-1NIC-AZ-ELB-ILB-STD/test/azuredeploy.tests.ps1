@@ -132,7 +132,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Do we have connection with Azure?" {
-            $result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
+            # $result = Get-AzureRmVM | Where-Object { $_.Name -eq $testsVM } 
+            $result = Get-AzureRmVM
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
