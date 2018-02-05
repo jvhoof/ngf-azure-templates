@@ -100,7 +100,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
     }
 
 
-    Context 'Template Test Deployment' {
+    Context 'Template Test Deployment NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD' {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
