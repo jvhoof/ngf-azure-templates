@@ -134,7 +134,8 @@ Describe "[$templateName] Template validation & test" {
         }
         It "Deployment in Azure validation" {
             Write-Host "Help help"
-            $r = Get-AzureRmVM | Where-Object { $_.Name -contains $testsPrefix } 
+            Get-AzureRmVM 
+            $r = Get-AzureRmVM 
             Write-Host "Help $r"
             $result = Get-AzureRmVM | Where-Object { $_.Name -contains $testsVM } 
             Write-Host ($result | Format-Table | Out-String)
