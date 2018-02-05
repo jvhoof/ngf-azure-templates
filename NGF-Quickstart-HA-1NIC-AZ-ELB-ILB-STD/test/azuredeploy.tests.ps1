@@ -129,15 +129,17 @@ Describe "[$templateName] Template validation & test" {
             $resultDeployment = New-AzureRmResourceGroupDeployment -ResourceGroupName $testSResourceGroupName -TemplateFile $templateFileLocation -TemplateParameterFile $templateParameterFileLocation -adminPassword $testsAdminPassword -prefix $testsprefix
             Write-Host "Provisioning result:"
             Write-Host ($resultDeployment | Format-Table | Out-String)
-            Write-Host "Provisioning state: $resultDeployment.ProvisioningState"
+            Write-Host ("Provisioning state: " + $resultDeployment.ProvisioningState)
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
         It "Deployment in Azure validation" {
             Write-Host "Help help"
             Get-AzureRmVM 
             $r = Get-AzureRmVM 
-            Write-Host "Help $r"
-            $result = Get-AzureRmVM | Where-Object { $_.Name -contains $testsVM } 
+            Write-Host ("Help " + $r)
+            Write-Host ("testsPrefix " + $testsPrefix)
+            $result = Get-AzureRmVM | Where-Object { $_.Name -contains $testsPrefix } 
+            Write-Host ("Help " + $result)
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
