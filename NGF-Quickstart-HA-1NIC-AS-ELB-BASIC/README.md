@@ -1,5 +1,7 @@
 # Barracuda NextGen Firewall F Series for Azure - High Availability Cluster with Cloud integration
 
+![Build status](https://img.shields.io/vso/build/cudajvhoof/19118fdb-7d82-4c41-a1fd-b16e490dc968/9.svg) 
+
 ## Introduction
 This Azure Resource Manager (ARM) template will deploy a cluster of Barracuda Next Gen Firewall F Series virtual machines in a new VNET. Deployment is done in a one-armed fashion where north-south, east-west and VPN tunnel traffic can be intercepted and inspected based on the User Defined Routing that is attached to the subnets that need this control. Additionally this template will deploy a Azure Load Balancer with an external IP to direct the traffic to the active unit in the cluster. Do not apply any UDR to the subnet where the NGF is located that points back to the NGF. This will cause routing loops.
 

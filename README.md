@@ -10,7 +10,7 @@ The Barracuda NextGen Firewall (NGF) can be installed in different ways into the
 | Status | Name | In existing VNET | HighAvailability | Preview | ELB Basic | ELB Standard | ILB with HA Ports | Availability Zones | 1 NIC | 2 NIC
 |---|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
 | | [NGF-Quickstart-SingleAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-SingleAvailability) | - | - | - | x | - | - | - | - | X 
-| | [NGF-Quickstart-HA-1NIC-AS-ELB-BASIC](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AS-ELB-BASIC) | - | X | - | X | - | - | - | - | X 
+| ![Build status](https://img.shields.io/vso/build/cudajvhoof/19118fdb-7d82-4c41-a1fd-b16e490dc968/9.svg) | [NGF-Quickstart-HA-1NIC-AS-ELB-BASIC](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AS-ELB-BASIC) | - | X | - | X | - | - | - | - | X 
 | | [NGF-Custom-SingleAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Custom-SingleAvailability) | X | - | - | X | - | - | - | - | X 
 | | [NGF-Custom-HighAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Custom-HighAvailability) | X | X | - | X | - | - | - | - | X 
 | ![Build status](https://img.shields.io/vso/build/cudajvhoof/19118fdb-7d82-4c41-a1fd-b16e490dc968/8.svg) | [NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD) | - | X | X | - | X | X | X | X | - 
