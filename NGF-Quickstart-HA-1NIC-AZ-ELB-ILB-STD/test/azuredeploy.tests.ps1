@@ -8,6 +8,10 @@
     This file has been created as an example of using Pester to evaluate ARM templates
 #>
 
+param (
+    [string]$templatename = ""
+)
+
 Function random-password ($length = 15)
 {
     $punc = 46..46
@@ -25,9 +29,8 @@ Function random-password ($length = 15)
     return $password
 }
 
-$templateName = "NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD"
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\$templateName"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\$templateName\test"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\$templatename"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\$templatename\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -35,9 +38,9 @@ $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
 
-Describe "[$templateName] Template validation & test" {
+Describe "[$templatename] Template validation & test" {
     
-    Context "[$templateName] Template validation" {
+    Context "[$templatename] Template validation" {
         
         It 'Has a JSON template' {        
             $templateFileLocation | Should Exist
@@ -100,12 +103,12 @@ Describe "[$templateName] Template validation & test" {
 
     }
 
-    Context  "[$templateName] Template test deployment" {
+    Context  "[$templatename] Template test deployment" {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
         $testsPrefix = "CUDAQA-$testsRandom"
-        $testsResourceGroupName = "CUDAQA-$testsRandom-$templateName"
+        $testsResourceGroupName = "CUDAQA-$testsRandom-$templatename"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
         $testsVM = "$testsPrefix-VM-NGF"
         $testsResourceGroupLocation = "East US2"
