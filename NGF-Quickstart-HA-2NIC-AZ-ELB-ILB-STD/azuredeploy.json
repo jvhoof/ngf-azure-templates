@@ -118,8 +118,10 @@
     "subnetRefRed": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameRed'))]",
     "subnetNameGreen": "[concat(parameters('prefix'),'-SUBNET-GREEN')]",
     "subnetRefGreen": "[concat(variables('vnetID'),'/subnets/',variables('subnetNameGreen'))]",
-    "rtableName-Red": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
-    "rtableName-Green": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
+    "rtableNameRed": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
+    "rtableRefRed": "[resourceID('Microsoft.Network/routeTables',variables('rtableNameRed'))]",
+    "rtableNameGreen": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
+    "rtableRefGreen": "[resourceID('Microsoft.Network/routeTables',variables('rtableNameGreen'))]",
 
     "ngfVmName1": "[concat(parameters('prefix'),'-VM-NGF-A')]",
     "ngfVmName2": "[concat(parameters('prefix'),'-VM-NGF-B')]",
@@ -147,6 +149,7 @@
     "lbIPAddress-internal": "[concat( variables( 'ngfSubnetAddrSplit-internal' )[0], '.', variables( 'ngfSubnetAddrSplit-internal' )[1], '.', variables( 'ngfSubnetAddrSplit-internal' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-internal' )[3]), 10 ))]",
 
     "adminUsername": "notused",
+    "singleQuotationMark": "'",
 
     "ngfSubnetSplit-external": "[split( parameters( 'subnetNGF-external' ), '/' )]",
     "ngfSubnetSplit-internal": "[split( parameters( 'subnetNGF-internal' ), '/' )]",
@@ -159,8 +162,8 @@
     "ngfVmAddress1-internal": "[concat( variables( 'ngfSubnetAddrSplit-internal' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-internal' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-internal' )[3]), 4 ))]",
     "ngfVmAddress2-external": "[concat( variables( 'ngfSubnetAddrSplit-external' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-external' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-external' )[3]), 5 ))]",
     "ngfVmAddress2-internal": "[concat( variables( 'ngfSubnetAddrSplit-internal' )[0], '.', variables( 'ngfSubnetAddrSplit-external' )[1], '.', variables( 'ngfSubnetAddrSplit-internal' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit-internal' )[3]), 5 ))]",
-
-    "defaultRouteTableName": "[concat( 'route-via-', parameters( 'prefix' ), 'VM-NGF-', resourceGroup().name )]"
+    "ngfCustomData1": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('ngfVmAddress1-external'), ' ', variables( 'ngfSubnetMask-external' ), ' ', variables( 'ngfSubnetDefaultGw-external' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), ' | /opb/create-dha -s S1 -c -o ', variables('ngfVmAddress2-external'), ' -n ', variables( 'ngfSubnetMask-external' ), ' -g ', variables( 'ngfSubnetDefaultGw-external' ), '\n'))]",
+    "ngfCustomData2": "[Base64('\n')]"
   },
   "resources": [
     {
@@ -233,6 +236,30 @@
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
               }
             }
+          },
+          {
+            "name": "[variables('subnetNameRed')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnetRed')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
+              },
+              "routeTable": {
+                "id": "[variables('rtableRefRed')]"
+              }
+            }
+          },
+          {
+            "name": "[variables('subnetNameGreen')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnetGreen')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
+              },
+              "routeTable": {
+                "id": "[variables('rtableRefGreen')]"
+              }
+            }
           }
         ]
       }
@@ -240,7 +267,7 @@
     {
       "apiVersion": "[variables( 'networkApiVersion' )]",
       "type": "Microsoft.Network/routeTables",
-      "name": "[variables('rtableName-Red')]",
+      "name": "[variables('rtableNameRed')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "routes": [
@@ -267,7 +294,7 @@
     {
       "apiVersion": "[variables( 'networkApiVersion' )]",
       "type": "Microsoft.Network/routeTables",
-      "name": "[variables('rtableName-Green')]",
+      "name": "[variables('rtableNameGreen')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "routes": [
