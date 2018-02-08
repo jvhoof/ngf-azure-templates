@@ -1,7 +1,9 @@
-param(
-    [string]$SourceDir = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD",
-    [string]$TempDir = $env:TEMP
+param (
+    [string]$templatename
 )
+
+$SourceDir = "$env:BUILD_SOURCESDIRECTORY\$templatename"
+$TempDir = $env:TEMP
  
 $modulePath = Join-Path $TempDir Pester-master\Pester.psm1
  

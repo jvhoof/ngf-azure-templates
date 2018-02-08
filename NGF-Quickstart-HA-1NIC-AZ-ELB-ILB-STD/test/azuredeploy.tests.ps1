@@ -8,18 +8,6 @@
     This file has been created as an example of using Pester to evaluate ARM templates
 #>
 
-Param (
-    [string]$templatename
-)
-
-write-host "TemplateName: $templatename"
-write-host "args: $args"
-write-host ("args.lenght: " + $args.Lenght)
-
-foreach ($argument in $args) {
-    write-host $argument
-  }
-
 Function random-password ($length = 15)
 {
     $punc = 46..46
@@ -37,8 +25,9 @@ Function random-password ($length = 15)
     return $password
 }
 
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\$templatename"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\$templatename\test"
+$templateName = "NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -46,9 +35,9 @@ $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
 
-Describe "[$templatename] Template validation & test" {
+Describe "[$templateName] Template validation & test" {
     
-    Context "[$templatename] Template validation" {
+    Context "[$templateName] Template validation" {
         
         It 'Has a JSON template' {        
             $templateFileLocation | Should Exist
@@ -111,12 +100,12 @@ Describe "[$templatename] Template validation & test" {
 
     }
 
-    Context  "[$templatename] Template test deployment" {
+    Context  "[$templateName] Template test deployment" {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
         $testsPrefix = "CUDAQA-$testsRandom"
-        $testsResourceGroupName = "CUDAQA-$testsRandom-$templatename"
+        $testsResourceGroupName = "CUDAQA-$testsRandom-$templateName"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
         $testsVM = "$testsPrefix-VM-NGF"
         $testsResourceGroupLocation = "East US2"
