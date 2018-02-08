@@ -8,7 +8,7 @@
     "prefix": {
       "value": "GEN-PREFIX"
     },
-    "vNetPrefix": {
+    "vNetAddressSpace": {
       "value": "172.16.136.0/22"
     },
     "subnetNGF-external": {
