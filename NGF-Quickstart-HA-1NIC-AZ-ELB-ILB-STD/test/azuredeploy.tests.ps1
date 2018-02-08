@@ -9,8 +9,14 @@
 #>
 
 param (
-    [string]$templatename = ""
+    [string]$templatename
 )
+
+write-host "TemplateName: $templatename"
+
+foreach ($argument in $args) {
+    write-host $argument
+  }
 
 Function random-password ($length = 15)
 {
