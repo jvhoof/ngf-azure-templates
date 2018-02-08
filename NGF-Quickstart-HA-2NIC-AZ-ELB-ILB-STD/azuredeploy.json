@@ -14,7 +14,7 @@
           "description": "identifying prefix for all VM's being build. e.g WeProd would become WeProd-VM-NGF (Max 19 char, no spaces, [A-Za-z0-9]"
       }
     },
-    "vNetPrefix": {
+    "vNetAddressSpace": {
       "type": "string",
       "metadata": {
           "description": "Network range of the VNET (e.g. 172.16.136.0/22)"
@@ -215,7 +215,7 @@
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[parameters('vNetPrefix')]"
+            "[parameters('vNetAddressSpace')]"
           ]
         },
         "subnets": [
