@@ -8,11 +8,13 @@
     This file has been created as an example of using Pester to evaluate ARM templates
 #>
 
-param (
+Param (
     [string]$templatename
 )
 
 write-host "TemplateName: $templatename"
+write-host "args: $args"
+write-host ("args.lenght: " + $args.Lenght)
 
 foreach ($argument in $args) {
     write-host $argument
