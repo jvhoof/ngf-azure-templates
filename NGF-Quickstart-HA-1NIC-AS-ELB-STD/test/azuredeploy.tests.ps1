@@ -25,8 +25,9 @@ Function random-password ($length = 15)
     return $password
 }
 
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AS-ELB-STD"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AS-ELB-STD\test"
+$templateName = "NGF-Quickstart-HA-1NIC-AS-ELB-STD"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -34,9 +35,9 @@ $templateMetadataFileLocation = "$sourcePath\$templateMetadataFileName"
 $templateParameterFileName = "azuredeploy.parameters.json"
 $templateParameterFileLocation = "$sourcePath\$templateParameterFileName" 
 
-Describe 'ARM Templates Test : Validation & Test Deployment' {
+Describe "[$templateName] Template validation & test" {
     
-    Context 'Template Validation' {
+    Context "[$templateName] Template validation" {
         
         It 'Has a JSON template' {        
             $templateFileLocation | Should Exist
@@ -62,7 +63,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
         
         It 'Creates the expected Azure resources' {
-            $expectedResources = 'Microsoft.Network/networkSecurityGroups'.
+            $expectedResources = 'Microsoft.Network/networkSecurityGroups',
                                  'Microsoft.Network/virtualNetworks',
                                  'Microsoft.Network/routeTables',
                                  'Microsoft.Network/routeTables',
@@ -88,9 +89,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'ccSecret',
                                           'imageSKU',
                                           'prefix',
+                                          'subnetGreen',
                                           'subnetNGF',
                                           'subnetRed',
-                                          'subnetGreen',
                                           'vmSize',
                                           'vNetAddressSpace'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name
@@ -99,16 +100,15 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
     }
 
-
-    Context 'Template Test Deployment' {
+    Context  "[$templateName] Template test deployment" {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
-        $testsResourceGroupName = "cudaqa-ngf-quickstart-ha-1nic-as-elb-std-$testsRandom"
+        $testsPrefix = "CUDAQA-$testsRandom"
+        $testsResourceGroupName = "CUDAQA-$testsRandom-$templateName"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-        $testsPrefix = "cudaqa-$testsRandom"
         $testsVM = "$testsPrefix-VM-NGF"
-        $testsResourceGroupLocation = "East US"
+        $testsResourceGroupLocation = "East US2"
 
         # List of all scripts + parameter files
         $testsTemplateList=@()
@@ -131,11 +131,12 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             Write-Host $resultDeployment.ProvisioningState
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
-        It "Do we have connection with Azure?" {
-            $result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
+        It "Deployment in Azure validation" {
+            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" } 
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
+        Write-Host "Removing resourcegroup $testsResourceGroupName"
         Remove-AzureRmResourceGroup -Name $testsResourceGroupName -Force
 
     }

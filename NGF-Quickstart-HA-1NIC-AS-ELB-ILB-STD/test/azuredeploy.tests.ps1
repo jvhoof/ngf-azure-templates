@@ -25,8 +25,9 @@ Function random-password ($length = 15)
     return $password
 }
 
-$sourcePath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD"
-$scriptPath = "$env:BUILD_SOURCESDIRECTORY\NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD\test"
+$templateName = "NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD"
+$sourcePath = "$env:BUILD_SOURCESDIRECTORY\$templateName"
+$scriptPath = "$env:BUILD_SOURCESDIRECTORY\$templateName\test"
 $templateFileName = "azuredeploy.json"
 $templateFileLocation = "$sourcePath\$templateFileName"
 $templateMetadataFileName = "metadata.json"
@@ -105,9 +106,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
-        $testsResourceGroupName = "cudaqa-ngf-quickstart-ha-1nic-as-elb-ilb-std-$testsRandom"
+        $testsPrefix = "CUDAQA-$testsRandom"
+        $testsResourceGroupName = "CUDAQA-$testsRandom-$templateName"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-        $testsPrefix = "cudaqa-$testsRandom"
         $testsVM = "$testsPrefix-VM-NGF"
         $testsResourceGroupLocation = "East US2"
 
@@ -132,9 +133,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
             Write-Host "Deployment state: $resultDeployment.ProvisioningState"
             $resultDeployment.ProvisioningState | Should Be "Succeeded"
         }
-        It "Do we have connection with Azure?" {
-            #$result = Get-AzurermVM | Where-Object { $_.Name -eq $testsVM } 
-            $result = (Find-AzureRmResource -ResourceGroupNameContains $testsResourceGroupName | measure).Count
+        It "Deployment in Azure validation" {
+            $result = Get-AzureRmVM | Where-Object { $_.Name -like "$testsPrefix*" } 
             Write-Host ($result | Format-Table | Out-String)
             $result | Should Not Be $null
         }
