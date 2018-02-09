@@ -14,39 +14,57 @@
 # Stop on error
 set +e
 
-# Input location 
-echo -n "Enter location (e.g. eastus2): "
-stty_orig=`stty -g` # save original terminal setting.
-read location         # read the location
-stty $stty_orig     # restore terminal setting.
-if [ -z "$location" ] 
+if [ -z "$DEPLOY_LOCATION" ]
 then
-    location="eastus2"
+    # Input location 
+    echo -n "Enter location (e.g. eastus2): "
+    stty_orig=`stty -g` # save original terminal setting.
+    read location         # read the location
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$location" ] 
+    then
+        location="eastus2"
+    fi
+else
+    location="$DEPLOY_LOCATION"
 fi
 echo ""
 echo "--> Deployment in $location location ..."
 echo ""
 
-# Input prefix 
-echo -n "Enter prefix: "
-stty_orig=`stty -g` # save original terminal setting.
-read prefix         # read the prefix
-stty $stty_orig     # restore terminal setting.
-if [ -z "$prefix" ] 
+if [ -z "$DEPLOY_PREFIX" ]
 then
-    prefix="CUDA"
+    # Input prefix 
+    echo -n "Enter prefix: "
+    stty_orig=`stty -g` # save original terminal setting.
+    read prefix         # read the prefix
+    stty $stty_orig     # restore terminal setting.
+    if [ -z "$prefix" ] 
+    then
+        prefix="CUDA"
+    fi
+else
+    prefix="$DEPLOY_PREFIX"
 fi
 echo ""
 echo "--> Using prefix $prefix for all resources ..."
 echo ""
 rg_ngf="$prefix-RG"
 
-# Input password 
-echo -n "Enter password: "
-stty_orig=`stty -g` # save original terminal setting.
-stty -echo          # turn-off echoing.
-read passwd         # read the password
-stty $stty_orig     # restore terminal setting.
+if [ -z "$DEPLOY_PASSWORD" ]
+then
+    # Input password 
+    echo -n "Enter password: "
+    stty_orig=`stty -g` # save original terminal setting.
+    stty -echo          # turn-off echoing.
+    read passwd         # read the password
+    stty $stty_orig     # restore terminal setting.
+else
+    passwd="$DEPLOY_PASSWORD"
+    echo ""
+    echo "--> Using password found in env variable DEPLOY_PASSWORD ..."
+    echo ""
+fi
 
 # Create resource group for NextGen Firewall resources
 echo ""
