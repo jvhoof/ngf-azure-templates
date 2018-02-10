@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "
 ##############################################################################################################
 #  ____                                      _       
 # | __ )  __ _ _ __ _ __ __ _  ___ _   _  __| | __ _ 
@@ -10,10 +11,14 @@
 # network infrastructure needed for it.
 #
 ##############################################################################################################
+"
 
 # Stop on error
 set +e
 
+echo ""
+echo "--> Deployment in $DEPLOY_LOCATION location ..."
+echo ""
 if [ -z "$DEPLOY_LOCATION" ]
 then
     # Input location 
@@ -32,6 +37,9 @@ echo ""
 echo "--> Deployment in $location location ..."
 echo ""
 
+echo ""
+echo "--> Using prefix $DEPLOY_PREFIX for all resources ..."
+echo ""
 if [ -z "$DEPLOY_PREFIX" ]
 then
     # Input prefix 
@@ -51,6 +59,9 @@ echo "--> Using prefix $prefix for all resources ..."
 echo ""
 rg_ngf="$prefix-RG"
 
+    echo ""
+    echo "--> Using $DEPLOY_PASSWORD found in env variable DEPLOY_PASSWORD ..."
+    echo ""
 if [ -z "$DEPLOY_PASSWORD" ]
 then
     # Input password 
