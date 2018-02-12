@@ -6,8 +6,8 @@
 # | |_) | (_| | |  | | | (_| | (__| |_| | (_| | (_| |
 # |____/ \__,_|_|  |_|  \__,_|\___|\__,_|\__,_|\__,_|
 #                                                    
-# Script to deploy the Windows servers into Microsoft Azure behind the Barracuda NextGen Firewall F. 
-# This will install a Windows Server in red, green or both tiers of the quickstart deployment.
+# Script to deploy the Linux servers into Microsoft Azure behind the Barracuda NextGen Firewall F. 
+# This will install a Linux Server in red, green or both tiers of the quickstart deployment.
 ##############################################################################################################
 
 # Stop on error
