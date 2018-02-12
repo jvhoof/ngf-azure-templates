@@ -58,6 +58,12 @@
         "description": "IP address of the second NGF in the cluster"
       }
     },
+    "fwVmAddressA": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address of the second NGF in the cluster"
+      }
+    },
     "fwVmAddressB": {
       "type": "string",
       "metadata": {
