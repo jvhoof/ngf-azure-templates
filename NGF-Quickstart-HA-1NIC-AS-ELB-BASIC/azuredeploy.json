@@ -18,7 +18,8 @@
       "type": "string",
       "metadata": {
           "description": "Network range of the VNET (e.g. 172.16.136.0/22)"
-      }
+      },
+      "defaultValue": "172.16.136.0/22"
     },
     "subnetNGF": {
       "type": "string",
