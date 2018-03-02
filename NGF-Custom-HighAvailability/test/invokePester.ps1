@@ -11,7 +11,6 @@ if (-not(Test-Path $modulePath)) {
  
     # Note: PSGet and chocolatey are not supported in hosted vsts build agent  
     $tempFile = Join-Path $TempDir pester.zip
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest https://github.com/pester/Pester/archive/master.zip -OutFile $tempFile
  
     [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') | Out-Null
