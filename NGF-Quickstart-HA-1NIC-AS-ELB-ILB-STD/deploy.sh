@@ -1,15 +1,16 @@
 #!/bin/bash
+echo "
 ##############################################################################################################
-#  ____                                      _       
-# | __ )  __ _ _ __ _ __ __ _  ___ _   _  __| | __ _ 
-# |  _ \ / _` | `__| `__/ _` |/ __| | | |/ _` |/ _` |
-# | |_) | (_| | |  | | | (_| | (__| |_| | (_| | (_| |
-# |____/ \__,_|_|  |_|  \__,_|\___|\__,_|\__,_|\__,_|
-#                                                    
-# Script to deploy the Barracuda Next Gen Firewall F into Microsoft Azure. This script also creates the
-# network infrastructure needed for it.
+#  _                         
+# |_) _  __ __ _  _     _| _ 
+# |_)(_| |  | (_|(_ |_|(_|(_|
+#
+# Script to deploy the Barracuda CloudGen Firewall into Microsoft Azure. This is a quickstart script which 
+# also creates the network infrastructure needed for it.
 #
 ##############################################################################################################
+
+"
 
 # Stop on error
 set +e
@@ -95,4 +96,21 @@ if [[ $result != 0 ]];
 then 
     echo "--> Deployment failed ..."
     exit $rc; 
+else 
+echo "
+##############################################################################################################
+#  _                         
+# |_) _  __ __ _  _     _| _ 
+# |_)(_| |  | (_|(_ |_|(_|(_|
+#
+# Thank you for deploying the Barracuda CloudGen Firewall for more information:
+#
+# Campus website:
+# https://campus.barracuda.com/product/cloudgenfirewall/doc/73719655/microsoft-azure-deployment/
+#
+# Connect via email:
+# azure_support@barracuda.com
+#
+##############################################################################################################
+"
 fi
