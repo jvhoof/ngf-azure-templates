@@ -210,6 +210,9 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('lbPIPAddressName')]",
       "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard"
+      },
       "properties": {
         "publicIPAllocationMethod": "[variables('ngfPIPAddressType')]",
         "dnsSettings": {
@@ -230,8 +233,8 @@
           "displayName": "NGFLB-External"
       },
       "dependsOn": [
-          "[concat('Microsoft.Network/publicIPAddresses/', variables('lbPIPAddressName'))]",
-          "[variables('vnetID')]"
+          "[concat('Microsoft.Network/publicIPAddresses/', variables('lbPIPAddressName'))]"
+          
       ],
       "properties": {
           "frontendIPConfigurations": [
@@ -348,9 +351,7 @@
       "sku": {
         "name": "Standard"
       },
-      "dependsOn": [
-        "[variables('vNetID')]"
-      ],
+      "dependsOn": [ ],
       "comments": "Internal LoadBalancer for the Barracuda Next Gen Firewall F cluster",
       "tags": {
         "displayName": "NGFLB-Internal"
@@ -439,7 +440,6 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('ngfPIPAddressName1'))]",
-        "[variables('vnetID')]",
         "[variables('lbID-external')]",
         "[variables('lbID-internal')]"
       ],
@@ -473,7 +473,6 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('ngfPIPAddressName2'))]",
-        "[variables('vnetID')]",
         "[variables('lbID-external')]",
         "[variables('lbID-internal')]"
       ],
