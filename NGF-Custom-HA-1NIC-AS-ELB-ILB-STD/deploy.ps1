@@ -4,7 +4,7 @@
 Write-Host "`nCreating Resource Group $rg for the networking configuration"
 New-AzureRMResourceGroup -Name $rg -Location "$location"
 
-Write-Host "Deploying Barracuda Next Gen Firewall F Series"
+Write-Host "Deploying Barracuda CloudGen Firewall"
 New-AzureRMResourceGroupDeployment -Name "Deploy_$rg" -ResourceGroupName "$rg" `
     -TemplateFile "azuredeploy.json" -TemplateParameterFile "azuredeploy.parameters.json" `
     -adminPassword $password 

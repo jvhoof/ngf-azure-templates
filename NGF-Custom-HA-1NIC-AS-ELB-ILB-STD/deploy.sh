@@ -5,7 +5,7 @@ echo "
 # |_) _  __ __ _  _     _| _ 
 # |_)(_| |  | (_|(_ |_|(_|(_|
 #                                                    
-# Script to deploy the Barracuda Next Gen Firewall F into Microsoft Azure. This script does NOT create the
+# Script to deploy the Barracuda CloudGen Firewall into Microsoft Azure. This script does NOT create the
 # network infrastructure needed for it. This can be injected into an existing network infrastructure.
 # Edit the azuredeploy.parameters.json file according to your network infrastructure.
 #

@@ -5,7 +5,7 @@ echo "
 # |_) _  __ __ _  _     _| _ 
 # |_)(_| |  | (_|(_ |_|(_|(_|
 #                                                    
-# Script to deploy test network infrastructure for the custom NGF HA setup.
+# Script to deploy test network infrastructure for the custom CGF HA setup.
 #
 ##############################################################################################################
 "
@@ -62,7 +62,7 @@ echo ""
 rg_vnet="$prefix-RG-VNET"
 vnet_name="$prefix-VNET"
 vnet_address_space="172.16.136.0/22"
-subnet_ngf_name="$prefix-SUBNET-NGF"
+subnet_ngf_name="$prefix-SUBNET-CGF"
 subnet_ngf="172.16.136.0/24"
 subnet_red_name="$prefix-SUBNET-RED"
 subnet_red="172.16.137.0/24"
