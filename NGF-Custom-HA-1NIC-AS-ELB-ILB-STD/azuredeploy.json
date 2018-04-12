@@ -524,7 +524,7 @@
           "computerName": "[variables('gcfVmName1')]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[if(equals(parameters('ccManaged'), 'Yes'), variables('gcfCustomDataCC1'), variables('gcfCustomData1'))]"
+          "customData": "[if(equals(parameters('ccManaged'), 'yes'), variables('gcfCustomDataCC1'), variables('gcfCustomData1'))]"
         },
         "storageProfile": {
           "imageReference": {
@@ -576,7 +576,7 @@
           "computerName": "[variables('gcfVmName2')]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]",
-          "customData": "[if(equals(parameters('ccManaged'), 'Yes'), variables('gcfCustomDataCC2'), variables('gcfCustomData2'))]"
+          "customData": "[if(equals(parameters('ccManaged'), 'yes'), variables('gcfCustomDataCC2'), variables('gcfCustomData2'))]"
         },
         "storageProfile": {
           "imageReference": {
