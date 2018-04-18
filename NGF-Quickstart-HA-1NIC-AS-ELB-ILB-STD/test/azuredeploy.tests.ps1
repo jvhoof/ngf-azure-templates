@@ -106,10 +106,9 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
 
         # Basic Variables
         $testsRandom = Get-Random 10001
-        $testsPrefix = "CUDAQA-$testsRandom"
+        $testsPrefix = "CUDAQA"
         $testsResourceGroupName = "CUDAQA-$testsRandom-$templateName"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-        $testsVM = "$testsPrefix-VM-NGF"
         $testsResourceGroupLocation = "East US2"
 
         # List of all scripts + parameter files
