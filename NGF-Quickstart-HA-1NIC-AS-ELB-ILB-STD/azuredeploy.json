@@ -597,7 +597,6 @@
       }
     },
     {
-      "condition": "[equals(parameters('ccManaged'),'no')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('ngfVmName1')]",
@@ -650,7 +649,6 @@
       }
     },
     {
-      "condition": "[equals(parameters('ccManaged'),'no')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('ngfVmName2')]",
