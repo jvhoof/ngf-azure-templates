@@ -14,10 +14,10 @@
     "vNetName": {
       "value": "CUDA-VNET"
     },
-    "subnetNameNGF": {
-      "value": "CUDA-SUBNET-NGF"
+    "subnetNameCGF": {
+      "value": "CUDA-SUBNET-CGF"
     },
-    "subnetNGF": {
+    "subnetCGF": {
       "value": "172.16.136.0/24"
     },
     "imageSKU": {
