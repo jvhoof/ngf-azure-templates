@@ -1,0 +1,526 @@
+  {
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "adminPassword": {
+        "type": "securestring",
+        "metadata": {
+          "description": "Password for the Virtual Machine."
+        }
+      },
+      "prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "identifying prefix for all VM's being build. e.g WeProd would become WeProd-VM-NGF (Max 19 char, no spaces, [A-Za-z0-9]"
+        }
+      },
+      "vNetAddressSpace": {
+        "type": "string",
+        "metadata": {
+            "description": "Network range of the VNET (e.g. 172.16.136.0/22)"
+        },
+        "defaultValue": "172.16.136.0/22"
+      },
+      "subnetNGF": {
+        "type": "string",
+        "metadata": {
+          "description": "Network range of the Subnet containing the NextGen Firewall (e.g. 172.16.136.0/24)"
+        },
+        "defaultValue": "172.16.136.0/24"
+      },
+      "subnetRed": {
+        "type": "string",
+        "metadata": {
+          "description": "Network range of the red subnet (e.g. 172.16.137.0/24)"
+        },
+        "defaultValue": "172.16.137.0/24"
+      },
+      "subnetGreen": {
+        "type": "string",
+        "metadata": {
+          "description": "Network range of the green subnet (e.g. 172.16.138.0/24)"
+        },
+        "defaultValue": "172.16.138.0/24"
+      },
+      "imageSKU": {
+        "type": "string",
+        "metadata": {
+            "description": "SKU Hourly (PAYG) or BYOL (Bring your own license)"
+        },
+        "allowedValues": [
+            "hourly",
+            "byol"
+        ],
+        "defaultValue": "byol"
+      },
+      "vmSize": {
+        "type": "string",
+        "defaultValue": "Standard_F1s",
+        "allowedValues": [ "Standard_F1s", "Standard_F2s", "Standard_F4s", "Standard_F8s", "Standard_D1_v2", "Standard_D2_v2", "Standard_D4_v2", "Standard_D8_v2" ],
+        "metadata": {
+          "description": "Size of the VMs to be created"
+        }
+      }
+    },
+    "variables": {
+      "computeApiVersion": "2017-03-30",
+      "networkApiVersion": "2017-08-01",
+  
+      "cgfImagePublisher": "barracudanetworks",
+      "cgfImageOffer": "barracuda-ng-firewall",
+      "wafImagePublisher": "barracudanetworks",
+      "wafImageOffer": "waf",
+      "webImagePublisher": "Canonical",
+      "webImageOffer": "UbuntuServer",
+      "webImageSKU": "16.04.0-LTS",
+      "webExtensionName": "DockerExtension",
+  
+      "nsgName": "[concat(parameters('prefix'),'-NSG')]",
+      "vNetName": "[concat(parameters('prefix'),'-VNET')]",
+      "vNetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vNetName'))]",
+      "subnetNameNGF": "[concat(parameters('prefix'),'-SUBNET-NGF')]",
+      "subnetRefNGF": "[resourceID('Microsoft.Network/virtualNetworks/subnets',variables('vNetName'),variables('subnetNameNGF'))]",
+      "subnetNameRed": "[concat(parameters('prefix'),'-SUBNET-RED')]",
+      "subnetRefRed": "[resourceID('Microsoft.Network/virtualNetworks/subnets',variables('vNetName'),variables('subnetNameRed'))]",
+      "subnetNameGreen": "[concat(parameters('prefix'),'-SUBNET-GREEN')]",
+      "subnetRefGreen": "[resourceID('Microsoft.Network/virtualNetworks/subnets',variables('vNetName'),variables('subnetNameGreen'))]",
+      "rtableNameRed": "[concat( parameters('prefix'), '-RT-FOR-RED' )]",
+      "rtableRefRed": "[resourceID('Microsoft.Network/routeTables',variables('rtableNameRed'))]",
+      "rtableNameGreen": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
+      "rtableRefGreen": "[resourceID('Microsoft.Network/routeTables',variables('rtableNameGreen'))]",
+  
+      "cgfVmName": "[concat(parameters('prefix'),'-VM-NGF')]",
+      "cgfNicName": "[concat(variables('cgfVmName'),'-NIC')]",
+      "cgfPIPAddressName": "[concat(variables('cgfVmName'),'-PIP')]",
+      "cgfPIPAddressType": "Static",
+
+      "wafVmName": "[concat(parameters('prefix'),'-VM-WAF')]",
+      "wafNicName": "[concat(variables('wafVmName'),'-NIC')]",
+      "wafPIPAddressName": "[concat(variables('wafVmName'),'-PIP')]",
+      "wafPIPAddressType": "Static",
+
+      "webVmName": "[concat(parameters('prefix'),'-VM-WEB')]",
+      "webNicName": "[concat(variables('webVmName'),'-NIC')]",
+      "webPIPAddressName": "[concat(variables('webVmName'),'-PIP')]",
+      "webPIPAddressType": "Static",
+  
+      "dnsNameForWEB": "[toLower( concat( parameters('prefix'), '-web-', uniqueString(resourceGroup().id) ) )]",
+  
+      "adminUsername": "azureuser",
+      "singleQuotationMark": "'",
+  
+      "cgfSubnetSplit": "[split( parameters( 'subnetNGF' ), '/' )]",
+      "cgfSubnetAddrSplit": "[split( variables( 'cgfSubnetSplit' )[0], '.' )]",
+      "cgfSubnetMask": "[variables( 'cgfSubnetSplit' )[1]]",
+      "cgfSubnetDefaultGw": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 1 ))]",
+      "cgfVmAddress": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 4 ))]",
+      "cgfCustomData": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('cgfVmAddress'), ' ', variables( 'cgfSubnetMask' ), ' ', variables( 'cgfSubnetDefaultGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), '\n'))]",
+
+      "wafSubnetSplit": "[split( parameters( 'subnetRed' ), '/' )]",
+      "wafSubnetAddrSplit": "[split( variables( 'wafSubnetSplit' )[0], '.' )]",
+      "wafSubnetMask": "[variables( 'wafSubnetSplit' )[1]]",
+      "wafSubnetDefaultGw": "[concat( variables( 'wafSubnetAddrSplit' )[0], '.', variables( 'wafSubnetAddrSplit' )[1], '.', variables( 'wafSubnetAddrSplit' )[2], '.', add( int( variables( 'wafSubnetAddrSplit' )[3]), 1 ))]",
+      "wafVmAddress": "[concat( variables( 'wafSubnetAddrSplit' )[0], '.', variables( 'wafSubnetAddrSplit' )[1], '.', variables( 'wafSubnetAddrSplit' )[2], '.', add( int( variables( 'wafSubnetAddrSplit' )[3]), 4 ))]",
+      "wafCustomData": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('wafVmAddress'), ' ', variables( 'wafSubnetMask' ), ' ', variables( 'wafSubnetDefaultGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), '\n'))]",
+
+      "webSubnetSplit": "[split( parameters( 'subnetGreen' ), '/' )]",
+      "webSubnetAddrSplit": "[split( variables( 'webSubnetSplit' )[0], '.' )]",
+      "webVmAddress": "[concat( variables( 'webSubnetAddrSplit' )[0], '.', variables( 'webSubnetAddrSplit' )[1], '.', variables( 'webSubnetAddrSplit' )[2], '.', add( int( variables( 'webSubnetAddrSplit' )[3]), 4 ))]"
+    },
+    "resources": [
+      {
+        "apiVersion": "[variables('networkApiVersion')]",
+        "type": "Microsoft.Network/networkSecurityGroups",
+        "name": "[variables('nsgName')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "securityRules": [
+            {
+              "name": "AllowAnyInbound",
+              "properties": {
+                "description": "Allow Any",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "1-65535",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound"
+              }
+            },
+            {
+              "name": "AllowAnyOutbound",
+              "properties": {
+                "description": "Allow Any",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "1-65535",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Outbound"
+              }
+            }
+          ]
+        }
+      },    
+      {
+        "apiVersion": "[variables('networkApiVersion')]",
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[variables('vNetName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
+        ],
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "[parameters('vNetAddressSpace')]"
+            ]
+          },
+          "subnets": [
+            {
+              "name": "[variables('subnetNameNGF')]",
+              "properties": {
+                "addressPrefix": "[parameters('subnetNGF')]",
+                "networkSecurityGroup": {
+                  "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+                }
+              }
+            },
+            {
+              "name": "[variables('subnetNameRed')]",
+              "properties": {
+                "addressPrefix": "[parameters('subnetRed')]",
+                "routeTable": {
+                  "id": "[variables('rtableRefRed')]"
+                }
+              }
+            },
+            {
+              "name": "[variables('subnetNameGreen')]",
+              "properties": {
+                "addressPrefix": "[parameters('subnetGreen')]",
+                "routeTable": {
+                  "id": "[variables('rtableRefGreen')]"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "apiVersion": "[variables( 'networkApiVersion' )]",
+        "type": "Microsoft.Network/routeTables",
+        "name": "[variables('rtableNameRed')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "routes": [
+          ]
+        }
+      },
+      {
+        "apiVersion": "[variables( 'networkApiVersion' )]",
+        "type": "Microsoft.Network/routeTables",
+        "name": "[variables('rtableNameGreen')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "routes": [
+          ]
+        }
+      },
+      {
+        "apiVersion": "[variables('networkApiVersion')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('cgfPIPAddressName')]",
+        "location": "[resourceGroup().location]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+          "publicIPAllocationMethod": "[variables('cgfPIPAddressType')]"
+        }
+      },
+      {
+        "apiVersion": "[variables('networkApiVersion')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('cgfNicName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/publicIPAddresses/', variables('cgfPIPAddressName'))]",
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]"
+        ],
+        "properties": {
+          "enableIPForwarding": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig",
+              "properties": {
+                "privateIPAllocationMethod": "Static",
+                "privateIPAddress": "[variables( 'cgfVmAddress' )]",
+                "publicIPAddress": {
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('cgfPIPAddressName'))]"
+                },
+                "subnet": {
+                  "id": "[variables('subnetRefNGF')]"
+                },
+                "primary": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "apiVersion": "[variables('computeApiVersion')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('cgfVmName')]",
+        "location": "[resourceGroup().location]",
+        "plan": {
+          "name": "[parameters('imageSKU')]",
+          "Product": "[variables('cgfImageOffer')]",
+          "Publisher": "[variables('cgfImagePublisher')]"
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkInterfaces/', variables('cgfNicName'))]"
+        ],
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize')]"
+          },
+          "osProfile": {
+            "computerName": "[variables('cgfVmName')]",
+            "adminUsername": "[variables('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]",
+            "customData": "[variables('cgfCustomData')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "[variables('cgfImagePublisher')]",
+              "offer": "[variables('cgfImageOffer')]",
+              "sku": "[parameters('imageSKU')]",
+              "version": "latest"
+            },
+            "osDisk": {
+              "name": "[concat(variables('cgfVmName'),'-osdisk')]",
+              "caching": "ReadWrite",
+              "createOption": "FromImage"
+            }
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('cgfNicName'))]",
+                "properties": {
+                  "primary": true
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "apiVersion": "[variables('networkApiVersion')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('wafPIPAddressName')]",
+        "location": "[resourceGroup().location]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+          "publicIPAllocationMethod": "[variables('wafPIPAddressType')]"
+        }
+      },
+      {
+        "apiVersion": "[variables('networkApiVersion')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('wafNicName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/publicIPAddresses/', variables('wafPIPAddressName'))]",
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]"
+        ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig",
+              "properties": {
+                "privateIPAllocationMethod": "Static",
+                "privateIPAddress": "[variables( 'wafVmAddress' )]",
+                "publicIPAddress": {
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('wafPIPAddressName'))]"
+                },
+                "subnet": {
+                  "id": "[variables('subnetRefRed')]"
+                },
+                "primary": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "apiVersion": "[variables('computeApiVersion')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('wafVmName')]",
+        "location": "[resourceGroup().location]",
+        "plan": {
+          "name": "[parameters('imageSKU')]",
+          "Product": "[variables('wafImageOffer')]",
+          "Publisher": "[variables('wafImagePublisher')]"
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkInterfaces/', variables('wafNicName'))]"
+        ],
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize')]"
+          },
+          "osProfile": {
+            "computerName": "[variables('wafVmName')]",
+            "adminUsername": "[variables('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "[variables('wafImagePublisher')]",
+              "offer": "[variables('wafImageOffer')]",
+              "sku": "[parameters('imageSKU')]",
+              "version": "latest"
+            },
+            "osDisk": {
+              "name": "[concat(variables('wafVmName'),'-osdisk')]",
+              "caching": "ReadWrite",
+              "createOption": "FromImage"
+            }
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('wafNicName'))]",
+                "properties": {
+                  "primary": true
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "apiVersion": "[variables('networkApiVersion')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('webPIPAddressName')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "publicIPAllocationMethod": "[variables('webPIPAddressType')]"
+        }
+      },
+      {
+        "apiVersion": "[variables('networkApiVersion')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('webNicName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/publicIPAddresses/', variables('webPIPAddressName'))]",
+          "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]"
+        ],
+        "properties": {
+          "enableIPForwarding": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Static",
+                "privateIPAddress": "[variables( 'webVmAddress' )]",
+                "publicIPAddress": {
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('webPIPAddressName'))]"
+                },
+                "subnet": {
+                  "id": "[variables('subnetRefGreen')]"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "apiVersion": "[variables('computeApiVersion')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('webVmName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', variables('webNicName'))]"
+        ],
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize')]"
+          },
+          "osProfile": {
+            "computerName": "[variables('webVmName')]",
+            "adminUsername": "[variables('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "[variables('webImagePublisher')]",
+              "offer": "[variables('webImageOffer')]",
+              "sku": "[variables('webImageSKU')]",
+              "version": "latest"
+            },
+            "osDisk": {
+                "name": "[concat(variables('webVmName'),'-osdisk')]",
+                "caching": "ReadWrite",
+                "createOption": "FromImage"
+            }
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('webNicName'))]"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "apiVersion": "[variables('computeApiVersion')]",
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(variables('webVmName'),'/', variables('webExtensionName'))]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', variables('webVmName'))]"
+        ],
+        "properties": {
+          "publisher": "Microsoft.Azure.Extensions",
+          "type": "DockerExtension",
+          "typeHandlerVersion": "1.0",
+          "autoUpgradeMinorVersion": true,
+          "settings": {
+            "compose": {
+              "badstore": {
+                "image": "jvhoof/badstore-docker",
+                "ports": [
+                  "80:80"
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outputs": {
+      "CGF": {
+        "type": "string",
+        "value": "[reference(variables('cgfPIPAddressName')).ipAddress]"
+      },
+      "WAF": {
+        "type": "string",
+        "value": "[reference(variables('wafPIPAddressName')).ipAddress]"
+      },
+      "WEB-Server": {
+        "type": "string",
+        "value": "[reference(variables('webPIPAddressName')).ipAddress]"
+      }
+    }
+  }
