@@ -114,14 +114,13 @@
       "cgfSubnetMask": "[variables( 'cgfSubnetSplit' )[1]]",
       "cgfSubnetDefaultGw": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 1 ))]",
       "cgfVmAddress": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 4 ))]",
-      "cgfCustomData": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('cgfVmAddress'), ' ', variables( 'cgfSubnetMask' ), ' ', variables( 'cgfSubnetDefaultGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), '\n'))]",
+      "cgfCustomData": "[base64(concat('#!/bin/bash\n\n', 'echo \"*/2 * * * * root TMP=/tmp/cloudinit.log && echo \\\"Fetch PAR FILE\\\" >> $TMP && /usr/bin/curl -o /opt/phion/update/box.par https://www.jvh.be/azure/box.par && >> /tmp/getpar.log && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && rm /etc/cron.d/getpar\" > /etc/cron.d/getpar\n'))]",
 
       "wafSubnetSplit": "[split( parameters( 'subnetRed' ), '/' )]",
       "wafSubnetAddrSplit": "[split( variables( 'wafSubnetSplit' )[0], '.' )]",
       "wafSubnetMask": "[variables( 'wafSubnetSplit' )[1]]",
       "wafSubnetDefaultGw": "[concat( variables( 'wafSubnetAddrSplit' )[0], '.', variables( 'wafSubnetAddrSplit' )[1], '.', variables( 'wafSubnetAddrSplit' )[2], '.', add( int( variables( 'wafSubnetAddrSplit' )[3]), 1 ))]",
       "wafVmAddress": "[concat( variables( 'wafSubnetAddrSplit' )[0], '.', variables( 'wafSubnetAddrSplit' )[1], '.', variables( 'wafSubnetAddrSplit' )[2], '.', add( int( variables( 'wafSubnetAddrSplit' )[3]), 4 ))]",
-      "wafCustomData": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('wafVmAddress'), ' ', variables( 'wafSubnetMask' ), ' ', variables( 'wafSubnetDefaultGw' ), '\n', 'echo ', variables('singleQuotationMark'), parameters( 'adminPassword' ), variables('singleQuotationMark'), '\n'))]",
 
       "webSubnetSplit": "[split( parameters( 'subnetGreen' ), '/' )]",
       "webSubnetAddrSplit": "[split( variables( 'webSubnetSplit' )[0], '.' )]",
@@ -317,6 +316,12 @@
                 }
               }
             ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": true,
+              "storageUri": "[concat('http://312059eastus2.blob.core.windows.net')]"
+            }
           }
         }
       },
