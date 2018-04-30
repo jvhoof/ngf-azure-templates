@@ -114,7 +114,8 @@
       "cgfSubnetMask": "[variables( 'cgfSubnetSplit' )[1]]",
       "cgfSubnetDefaultGw": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 1 ))]",
       "cgfVmAddress": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 4 ))]",
-      "cgfCustomData": "[base64(concat('#!/bin/bash\n\n', 'echo \"*/2 * * * * root echo \\\"Fetch PAR file...\\\" >> /tmp/fetchpar.log && /usr/bin/curl -o /opt/phion/update/box.par https://www.jvh.be/azure/box.par >> /tmp/getpar.log && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && rm /etc/cron.d/getpar\" > /etc/cron.d/getpar\n'))]",
+      "cgfCustomData2": "[base64(concat('#!/bin/bash\n\n', 'echo \"*/2 * * * * root echo \\\"Fetch PAR file...\\\" >> /tmp/fetchpar.log && /usr/bin/curl -o /opt/phion/update/box.par https://www.jvh.be/azure/box.par >> /tmp/fetchpar.log && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && rm /etc/cron.d/getpar\" > /etc/cron.d/getpar\n'))]",
+      "cgfCustomData": "[base64(concat('#!/bin/bash\n\necho \"Fetch PAR file...\" >> /tmp/fetchpar.log\n\n/usr/bin/curl -o /opt/phion/update/box.par https://www.jvh.be/azure/box.par >> /tmp/fetchpar.log\n'))]",
 
       "wafSubnetSplit": "[split( parameters( 'subnetRed' ), '/' )]",
       "wafSubnetAddrSplit": "[split( variables( 'wafSubnetSplit' )[0], '.' )]",
