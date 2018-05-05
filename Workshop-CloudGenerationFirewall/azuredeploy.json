@@ -191,19 +191,13 @@
             {
               "name": "[variables('subnetNameRed')]",
               "properties": {
-                "addressPrefix": "[parameters('subnetRed')]",
-                "routeTable": {
-                  "id": "[variables('rtableRefRed')]"
-                }
+                "addressPrefix": "[parameters('subnetRed')]"
               }
             },
             {
               "name": "[variables('subnetNameGreen')]",
               "properties": {
-                "addressPrefix": "[parameters('subnetGreen')]",
-                "routeTable": {
-                  "id": "[variables('rtableRefGreen')]"
-                }
+                "addressPrefix": "[parameters('subnetGreen')]"
               }
             }
           ]
@@ -216,6 +210,14 @@
         "location": "[resourceGroup().location]",
         "properties": {
           "routes": [
+            {
+              "name": "to-Green",
+              "properties": {
+                "addressPrefix": "[parameters('subnetGreen')]",
+                "nextHopType": "VirtualAppliance",
+                "nextHopIpAddress": "[variables('cgfVmAddress')]"
+              }
+            }
           ]
         }
       },
@@ -226,6 +228,22 @@
         "location": "[resourceGroup().location]",
         "properties": {
           "routes": [
+            {
+              "name": "to-Internet",
+              "properties": {
+                "addressPrefix": "0.0.0.0/0",
+                "nextHopType": "VirtualAppliance",
+                "nextHopIpAddress": "[variables('cgfVmAddress')]"
+              }
+            },
+            {
+              "name": "to-Red",
+              "properties": {
+                "addressPrefix": "[parameters('subnetRed')]",
+                "nextHopType": "VirtualAppliance",
+                "nextHopIpAddress": "[variables('cgfVmAddress')]"
+              }
+            }
           ]
         }
       },
@@ -423,7 +441,6 @@
           "[concat('Microsoft.Network/virtualNetworks/', variables('vNetName'))]"
         ],
         "properties": {
-          "enableIPForwarding": true,
           "ipConfigurations": [
             {
               "name": "ipconfig1",
