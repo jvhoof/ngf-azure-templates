@@ -17,14 +17,17 @@
     "subnetNameNGF": {
       "value": "CUDA-SUBNET-NGF"
     },
-    "subnetPrefixNGF": {
+    "subnetNGF": {
       "value": "172.16.136.0/24"
     },
     "imageSKU": {
       "value": "byol"
     },
+    "imageVersion": {
+      "value": "latest"
+    },
     "vmSize": {
-      "value": "Standard_DS1_v2"
+      "value": "Standard_F1s"
     },
     "fwVmAddress": {
       "value": "172.16.136.10"
