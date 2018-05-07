@@ -252,9 +252,6 @@
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "[variables('cgfPIPAddressName')]",
         "location": "[resourceGroup().location]",
-        "sku": {
-          "name": "Standard"
-        },
         "properties": {
           "publicIPAllocationMethod": "[variables('cgfPIPAddressType')]"
         }
@@ -340,9 +337,6 @@
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "[variables('wafPIPAddressName')]",
         "location": "[resourceGroup().location]",
-        "sku": {
-          "name": "Standard"
-        },
         "properties": {
           "publicIPAllocationMethod": "[variables('wafPIPAddressType')]"
         }
