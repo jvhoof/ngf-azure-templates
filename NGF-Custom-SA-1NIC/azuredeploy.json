@@ -205,7 +205,7 @@
         "enableIPForwarding": true,
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
-        }
+        },
         "ipConfigurations": [
           {
             "name": "ipconfig1",
