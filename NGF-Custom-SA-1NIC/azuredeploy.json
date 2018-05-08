@@ -198,9 +198,14 @@
       "name": "[variables('cgfNicName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]",
         "[concat('Microsoft.Network/publicIPAddresses/', variables('cgfPIPAddressName'))]"
       ],
       "properties": {
+        "enableIPForwarding": true,
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+        }
         "ipConfigurations": [
           {
             "name": "ipconfig1",
