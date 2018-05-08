@@ -38,6 +38,13 @@
             "description": "Network range of the Subnet containing the CloudGen Firewall (e.g. 172.16.136.0/24)"
         }
     },
+    "ipAddressCGF": {
+        "type": "string",
+        "metadata": {
+            "description": "OPTIONAL IP Address of the CloudGen Firewall (e.g. 172.16.136.0/24). If not filled we will use the first private IP in the subnet"
+        },
+        "defaultValue": ""
+    },
     "imageSKU": {
       "type": "string",
       "metadata": {
@@ -75,19 +82,19 @@
     },
     "ccClusterName": {
       "type": "string",
-      "defaultValue": ""
+      "defaultValue": "only used when ccManaged set to yes"
     },
     "ccRangeId": {
       "type": "string",
-      "defaultValue": ""
+      "defaultValue": "only used when ccManaged set to yes"
     },
     "ccIpAddress": {
       "type": "string",
-      "defaultValue": ""
+      "defaultValue": "only used when ccManaged set to yes"
     },
     "ccSecret": {
       "type": "securestring",
-      "defaultValue": ""
+      "defaultValue": "only used when ccManaged set to yes"
     }
   },
   "variables": {
@@ -107,13 +114,13 @@
     "cgfPIPAddressType": "Static",
 
     "adminUsername": "notused",
-    "singleQuotationMark": "'",
 
     "cgfSubnetSplit": "[split( parameters( 'subnetCGF' ), '/' )]",
     "cgfSubnetAddrSplit": "[split( variables( 'cgfSubnetSplit' )[0], '.' )]",
     "cgfSubnetMask": "[variables( 'cgfSubnetSplit' )[1]]",
     "cgfSubnetDefaultGw": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 1 ))]",
-    "cgfVmAddress": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 4 ))]",
+    "cgfVmAddressCalc": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 4 ))]",
+    "cgfVmAddress": "[if(empty('ipAddressCGF'), variables('cgfVmAddressCalc'), parameters('ipAddressCGF'))]",
     "cgfCustomData": "[Base64(concat( '#!/bin/bash\n\n/opb/cloud-setmip ', variables('cgfVmAddress'), ' ', variables( 'cgfSubnetMask' ), ' ', variables( 'cgfSubnetDefaultGw' ), '\n'))]",
     "cgfCustomDataCC": "[base64(concat('#!/bin/bash\n\n', 'echo \"*/2 * * * * root echo \\\"', parameters( 'ccSecret' ), '\\\" | /opt/phion/bin/getpar -a ', parameters('ccIpAddress'), ' -r ', parameters( 'ccRangeId' ), ' -c ', parameters( 'ccClusterName' ), ' -b ', variables( 'cgfVmName' ), ' -d /opt/phion/update/box.par -s --verbosity 10 >> /tmp/getpar.log && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && rm /etc/cron.d/getpar\" > /etc/cron.d/getpar\n'))]",
 

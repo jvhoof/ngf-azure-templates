@@ -1,11 +1,11 @@
-# Barracuda Next Gen Firewall F Series Custom Single Availability
+# Barracuda CloudGen Firewall - Custom Single Availability
 
 ## Introduction
 This Azure Resource Manager (ARM) template will deploy the Barracuda CloudGen Firewall F Series in an existing VNET. Deployment is done with in a one-armed fashion where north-south, east-west and VPN tunnel traffic can be intercepted and inspected based on the User Defined Routing that is attached to the subnets that need this control. Do not apply any UDR to the subnet where the NGF is located that points back to the NGF. This will cause routing loops.
 
 To adapt this deployment to your requirements you can modify the azuredeploy.paramters.json file and/or the deployment script in Powershell or Azure CLI (Bash).
 
-![CGF Azure Network Architecture](images/ngf-sa.png)
+![CGF Azure Network Architecture](images/cgf-sa.png)
 
 ## Prerequisites
 The solution does a check of the template when you use the provide scripts. It does require that [Programmatic Deployment](https://azure.microsoft.com/en-us/blog/working-with-marketplace-images-on-azure-resource-manager/) is enabled for the Barracuda CloudGen Firewall F BYOL or PAYG images. Barracuda recommends use of **D**, **D_v2**, **F** or newer series. 
