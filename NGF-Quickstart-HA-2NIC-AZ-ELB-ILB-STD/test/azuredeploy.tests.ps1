@@ -95,6 +95,7 @@ Describe "[$templateName] Template validation & test" {
                                           'subnetNGF-external',
                                           'subnetNGF-internal',
                                           'subnetRed',
+                                          'version',
                                           'vmSize',
                                           'vNetAddressSpace'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name
