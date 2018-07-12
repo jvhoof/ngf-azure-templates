@@ -93,6 +93,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'subnetGreen',
                                           'subnetNGF',
                                           'subnetRed',
+                                          'version',
                                           'vmSize',
                                           'vNetAddressSpace'
             $templateParameters = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Parameters | Get-Member -MemberType NoteProperty | % Name

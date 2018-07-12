@@ -53,6 +53,14 @@
       ],
       "defaultValue": "byol"
     },
+    "version": {
+      "type": "string",
+      "metadata": {
+        "description": "Version of the Barracuda CloudGen Firewall to install"
+      },
+      "allowedValues": [ "latest", "7.2.112901", "7.1.210401", "7.0.407401", "", "6.2.411301" ],
+      "defaultValue": "latest"
+    },
     "vmSize": {
       "type": "string",
       "defaultValue": "Standard_F1s",
@@ -538,7 +546,7 @@
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
             "sku": "[parameters('imageSKU')]",
-            "version": "latest"
+            "version": "[parameters('version')]"
           },
           "osDisk": {
             "name": "[concat(variables('ngfVmName1'),'-osdisk')]",
@@ -591,7 +599,7 @@
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
             "sku": "[parameters('imageSKU')]",
-            "version": "latest"
+            "version": "[parameters('version')]"
           },
           "osDisk": {
             "name": "[concat(variables('ngfVmName2'),'-osdisk')]",
