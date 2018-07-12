@@ -11,10 +11,10 @@
     "vNetAddressSpace": {
       "value": "172.16.136.0/22"
     },
-    "subnetNGF-external": {
+    "subnetCGF-external": {
       "value": "172.16.136.0/25"
     },
-    "subnetNGF-internal": {
+    "subnetCGF-internal": {
       "value": "172.16.136.128/25"
     },
     "subnetRed": {

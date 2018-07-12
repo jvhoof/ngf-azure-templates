@@ -25,7 +25,7 @@ Function random-password ($length = 15)
     return $password
 }
 
-$templateName = "NGF-Quickstart-HA-2NIC-AZ-ELB-ILB-STD"
+$templateName = "CGF-Quickstart-HA-2NIC-AZ-ELB-ILB-STD"
 $sourcePath = "$env:BUILD_SOURCESDIRECTORY\$templateName"
 $scriptPath = "$env:BUILD_SOURCESDIRECTORY\$templateName\test"
 $templateFileName = "azuredeploy.json"
@@ -92,8 +92,8 @@ Describe "[$templateName] Template validation & test" {
                                           'imageSKU',
                                           'prefix',
                                           'subnetGreen',
-                                          'subnetNGF-external',
-                                          'subnetNGF-internal',
+                                          'subnetCGF-external',
+                                          'subnetCGF-internal',
                                           'subnetRed',
                                           'version',
                                           'vmSize',
@@ -111,7 +111,7 @@ Describe "[$templateName] Template validation & test" {
         $testsPrefix = "CUDAQA-$testsRandom"
         $testsResourceGroupName = "CUDAQA-$testsRandom-$templateName"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-        $testsVM = "$testsPrefix-VM-NGF"
+        $testsVM = "$testsPrefix-VM-CGF"
         $testsResourceGroupLocation = "East US2"
 
         # List of all scripts + parameter files
