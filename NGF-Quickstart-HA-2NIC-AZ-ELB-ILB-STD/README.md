@@ -1,20 +1,20 @@
-# Barracuda NextGen Firewall for Azure - High Availability Cluster using Internal Load Balancer and in Availability Zones
+# Barracuda CloudGen Firewall for Azure - High Availability Cluster using Internal Load Balancer and in Availability Zones
 
 ![Build status](https://img.shields.io/vso/build/cudajvhoof/19118fdb-7d82-4c41-a1fd-b16e490dc968/11.svg) 
 
 ## Introduction
 
-Traditionally, Barracuda NextGen Firewall (NGF) uses UDR rewriting technique to redirect traffic when an HA failover happens. This method works well for smaller deployments, but has few drawbacks when using peered VNets or if corporate policy restricts saving AAD authentication keys in 3rd party software configuration.
+Traditionally, Barracuda CloudGen Firewall (NGF) uses UDR rewriting technique to redirect traffic when an HA failover happens. This method works well for smaller deployments, but has few drawbacks when using peered VNets or if corporate policy restricts saving AAD authentication keys in 3rd party software configuration.
 
 Azure ILB solves above problems, providing failover capabilities with zero integration with the cloud fabric, offers shorter failover times (~15 seconds) independent of network complexity, and provides stateful failover.
 
 This template deploys a VNet with 2 NGF instances with managed disks, an any-port ILB instance, and 2 empty subnets routed through NGF cluster.
 
-![Network diagram](images/ngf-ha-2nic-elb-ilb.png)
+![Network diagram](images/cgf-ha-2nic-elb-ilb.png)
 
 ## Prerequisites
 
-The solution does a check of the template when you use the provided scripts. It does require that [Programmatic Deployment](https://azure.microsoft.com/en-us/blog/working-with-marketplace-images-on-azure-resource-manager/) is enabled for the Barracuda Next Gen Firewall F BYOL or PAYG images. Barracuda recommends use of **D**, **D_v2**, **F** or newer series. 
+The solution does a check of the template when you use the provided scripts. It does require that [Programmatic Deployment](https://azure.microsoft.com/en-us/blog/working-with-marketplace-images-on-azure-resource-manager/) is enabled for the Barracuda Next Gen Firewall BYOL or PAYG images. Barracuda recommends use of **D**, **D_v2**, **F** or newer series. 
 
 This ARM template uses the Standard Load Balancer which is currently in preview. To enable this feature you need to run a couple of Powershell or Azure CLI 2.0 commands which can be found on the [Microsoft documentation page of this Standard Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-standard-overview#preview-sign-up)
 
@@ -33,14 +33,14 @@ Following resources will be created by the template:
 - Two route tables that will route all traffic for external and towards the other internal networks to the Barracuda NGF
 - One internal standard Azure Load Balancer as the default gateway for all traffic that needs inspection
 - One external standard Azure Load Balancer containing the deployed virtual machines with a public IP and services for IPSEC and TINA VPN tunnels available
-- Two Barracuda NextGen Firewall F virtual machines with 1 network interface each and public IP
+- Two Barracuda CloudGen Firewall virtual machines with 1 network interface each and public IP
 - Both NGF systems are deployed in different Availability Zones
 
 **Note** Additional backend subnets and resources are *not* automatically created by the template. This has to be done manually after template deployment has finished or by adapting the ARM template.
 
 ## Next Steps
 
-After successful deployment you can manage them using NextGen Admin application available from Barracuda Download Portal. Management IP addresses you'll find in firewall instances properties, username is *root* and the password is what you provided during template deployment.
+After successful deployment you can manage them using CloudGen Admin application available from Barracuda Download Portal. Management IP addresses you'll find in firewall instances properties, username is *root* and the password is what you provided during template deployment.
 
 ## Post Deployment Configuration
 
@@ -58,8 +58,8 @@ It is also recommended you harden management access by enabling multifactor or k
 adminPassword | Password for the Next Gen Admin tool 
 prefix | identifying prefix for all VM's being build. e.g WeProd would become WeProd-VM-NGF (Max 19 char, no spaces, [A-Za-z0-9]
 vNetAddressSpace | Network range of the VNET (e.g. 172.16.136.0/22)
-subnetNGF-external | Network range of the subnet containing the external NextGen Firewall (e.g. 172.16.136.0/25)
-subnetNGF-external | Network range of the subnet containing the internal NextGen Firewall (e.g. 172.16.136.128/25)
+subnetNGF-external | Network range of the subnet containing the external CloudGen Firewall (e.g. 172.16.136.0/25)
+subnetNGF-external | Network range of the subnet containing the internal CloudGen Firewall (e.g. 172.16.136.128/25)
 subnetRed | Network range of the red subnet (e.g. 172.16.137.0/24)
 subnetGreen | Network range of the green subnet (e.g. 172.16.138.0/24)
 imageSKU | SKU Hourly (PAYG) or BYOL (Bring your own license)
