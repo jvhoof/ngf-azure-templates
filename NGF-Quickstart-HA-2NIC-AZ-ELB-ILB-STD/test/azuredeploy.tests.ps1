@@ -81,7 +81,7 @@ Describe "[$templateName] Template validation & test" {
             $templateResources = (get-content $templateFileLocation | ConvertFrom-Json -ErrorAction SilentlyContinue).Resources.type
             $templateResources | Should Be $expectedResources
         }
-        
+
         It 'Contains the expected parameters' {
             $expectedTemplateParameters = 'adminPassword',
                                           'ccClusterName',
@@ -91,9 +91,9 @@ Describe "[$templateName] Template validation & test" {
                                           'ccSecret',
                                           'imageSKU',
                                           'prefix',
-                                          'subnetGreen',
                                           'subnetCGF-external',
                                           'subnetCGF-internal',
+                                          'subnetGreen',
                                           'subnetRed',
                                           'version',
                                           'vmSize',
