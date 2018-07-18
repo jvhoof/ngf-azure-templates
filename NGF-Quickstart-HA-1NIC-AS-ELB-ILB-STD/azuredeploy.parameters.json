@@ -40,6 +40,12 @@
     },
     "ccSecret": {
       "value": ""
+    },
+    "ccAdmin": {
+      "value": ""
+    },
+    "ccAdminPasswd": {
+      "value": ""
     }
   }
 }
