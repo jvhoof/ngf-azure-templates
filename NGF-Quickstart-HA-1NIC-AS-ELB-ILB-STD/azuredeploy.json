@@ -163,8 +163,8 @@
     "ngfCustomDataCCup2": "[base64(concat('#!/bin/bash\n\n', 'echo \"*/2 * * * * root echo \\\"', parameters( 'ccAdminPasswd' ), '\\\" | /opt/phion/bin/getpar -a ', parameters('ccIpAddress'), ' -r ', parameters( 'ccRangeId' ), ' -c ', parameters( 'ccClusterName' ), ' -b ', variables( 'ngfVmName2' ), ' -u ', parameters( 'ccAdmin' ), ' -d /opt/phion/update/box.par -s --verbosity 10 >> /tmp/getpar.log && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && rm /etc/cron.d/getpar\" > /etc/cron.d/getpar\n'))]",
     "ngfCustomDataCCss1": "[base64(concat('#!/bin/bash\n\n', 'echo \"*/2 * * * * root echo \\\"', parameters( 'ccSecret' ), '\\\" | /opt/phion/bin/getpar -a ', parameters('ccIpAddress'), ' -r ', parameters( 'ccRangeId' ), ' -c ', parameters( 'ccClusterName' ), ' -b ', variables( 'ngfVmName1' ), ' -d /opt/phion/update/box.par -s --verbosity 10 >> /tmp/getpar.log && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && rm /etc/cron.d/getpar\" > /etc/cron.d/getpar\n'))]",
     "ngfCustomDataCCss2": "[base64(concat('#!/bin/bash\n\n', 'echo \"*/2 * * * * root echo \\\"', parameters( 'ccSecret' ), '\\\" | /opt/phion/bin/getpar -a ', parameters('ccIpAddress'), ' -r ', parameters( 'ccRangeId' ), ' -c ', parameters( 'ccClusterName' ), ' -b ', variables( 'ngfVmName2' ), ' -d /opt/phion/update/box.par -s --verbosity 10 >> /tmp/getpar.log && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && rm /etc/cron.d/getpar\" > /etc/cron.d/getpar\n'))]",
-    "ngfCustomDataCCss1": "[if( empty( parameters( 'ccAdmin' )), variables( 'ngfCustomDataCCss1' ), variables( 'ngfCustomDataCCup1' ))]",
-    "ngfCustomDataCCss2": "[if( empty( parameters( 'ccAdmin' )), variables( 'ngfCustomDataCCss2' ), variables( 'ngfCustomDataCCup2' ))]"
+    "ngfCustomDataCC1": "[if( empty( parameters( 'ccAdmin' )), variables( 'ngfCustomDataCCss1' ), variables( 'ngfCustomDataCCup1' ))]",
+    "ngfCustomDataCC2": "[if( empty( parameters( 'ccAdmin' )), variables( 'ngfCustomDataCCss2' ), variables( 'ngfCustomDataCCup2' ))]"
   },
   "resources": [
     {
