@@ -1,8 +1,8 @@
-# Barracuda NextGen Firewall for Azure - ARM templates
+# Barracuda CloudGen Firewall for Azure - ARM templates
 
 ## Introduction
 
-The Barracuda NextGen Firewall (NGF) can be installed in different ways into the Microsoft Azure platform. This repository contains different methods using existing supported methods as well as methods that are in Preview on the Microsoft Azure platform. In the table below you can see which ARM Template contains which features.
+The Barracuda CloudGen Firewall (CGF) can be installed in different ways into the Microsoft Azure platform. This repository contains different methods using existing supported methods as well as methods that are in Preview on the Microsoft Azure platform. In the table below you can see which ARM Template contains which features.
 
 ![Network diagram](https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD/images/ngf-ha-1nic-elb-ilb.png)
 
