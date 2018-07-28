@@ -4,11 +4,11 @@
 
 The Barracuda CloudGen Firewall (CGF) can be installed in different ways into the Microsoft Azure platform. This repository contains different methods using existing supported methods as well as methods that are in Preview on the Microsoft Azure platform. In the table below you can see which ARM Template contains which features.
 
-![Network diagram](NGF-Quickstart-HA-1NIC-AZ-ELB-ILB-STD/images/cgf-ha-1nic-elb-ilb.png)
+![Network diagram](NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD/images/cgf-ha-1nic-elb-ilb.png)
 
 ## Template Parameters
 | Status | Name | In existing VNET | HighAvailability | ELB Basic | ELB Standard | ILB with HA Ports | Availability Zones | 1 NIC | 2 NIC
-|---|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
+|---|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
 | | [NGF-Quickstart-SingleAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-SingleAvailability) | - | - | x | - | - | - | - | X 
 | ![Build status](https://img.shields.io/vso/build/cudajvhoof/19118fdb-7d82-4c41-a1fd-b16e490dc968/9.svg) | [NGF-Quickstart-HA-1NIC-AS-ELB-BASIC](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AS-ELB-BASIC) | - | X | X | - | - | - | - | X 
 | | [NGF-Custom-SingleAvailability](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Custom-SingleAvailability) | X | - | X | - | - | - | - | X 
