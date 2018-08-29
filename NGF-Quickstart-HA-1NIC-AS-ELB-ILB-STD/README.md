@@ -16,6 +16,17 @@ This template deploys a VNet with 2 NGF instances with managed disks, an any-por
 
 The solution does a check of the template when you use the provided scripts. It does require that [Programmatic Deployment](https://azure.microsoft.com/en-us/blog/working-with-marketplace-images-on-azure-resource-manager/) is enabled for the Barracuda CloudGen Firewall BYOL or PAYG images. Barracuda recommends use of **D**, **D_v2**, **F** or newer series. 
 
+## Deployed resources
+Following resources will be created by the template:
+- One Azure VNET with 3 subnets (1 for the NGF, additional subnets for a red and green subnet)
+- Two route tables that will route all traffic for external and towards the other internal networks to the Barracuda NGF
+- One internal standard Azure Load Balancer as the default gateway for all traffic that needs inspection
+- One external standard Azure Load Balancer containing the deployed virtual machines with a public IP and services for IPSEC and TINA VPN tunnels available
+- Two Barracuda CloudGen Firewall virtual machines with 1 network interface each and public IP
+- Both NGF systems are deployed in an Availability Set
+
+**Note** Additional backend subnets and resources are *not* automatically created by the template. This has to be done manually after template deployment has finished or by adapting the ARM template.
+
 ## Deployment
 
 Deployment of the ARM template is possible via the Azure Portal, Powershell or Azure CLI. 
@@ -36,7 +47,9 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 - Start up Azure Cloud Shell from the Azure Portal or go directly to [https://shell.azure.com](https://shell.azure.com/)
 - Download the latest version of the ARM templates in the persistant clouddrive:
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/ngf-azure-templates/archive/master.zip | jar xv && cd ~/clouddrive/ngf-azure-templates-master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD/ && ./deploy.sh`
-- Answer the questions asked by the script: location, prefix and password.
+- Answer the questions asked by the script on the following variables: location, prefix and password.
+
+![Azure Cloud Shell Bash Edition](images/azurecloudshell1.png)
 
 ### Azure Powershell 
 
@@ -45,18 +58,9 @@ To deploy via Azure Cloud Shell you can connect to the Azure Cloud Shell via [ht
 - Start up Azure Cloud Shell from the Azure Portal or go directly to [https://shell.azure.com](https://shell.azure.com/)
 - Download the latest version of the ARM templates in the persistant clouddrive:
 `cd ~\clouddrive\; Invoke-WebRequest -Uri "https://github.com/jvhoof/ngf-azure-templates/archive/master.zip" -OutFile "~/clouddrive/master.zip"; jar xf master.zip; cd "~/clouddrive/ngf-azure-templates-master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD/"; .\deploy.ps1`
-- Answer the questions asked by the script: location, prefix and password.
+- Answer the questions asked by the script on the following variables: location, prefix and password.
 
-## Deployed resources
-Following resources will be created by the template:
-- One Azure VNET with 3 subnets (1 for the NGF, additional subnets for a red and green subnet)
-- Two route tables that will route all traffic for external and towards the other internal networks to the Barracuda NGF
-- One internal standard Azure Load Balancer as the default gateway for all traffic that needs inspection
-- One external standard Azure Load Balancer containing the deployed virtual machines with a public IP and services for IPSEC and TINA VPN tunnels available
-- Two Barracuda CloudGen Firewall virtual machines with 1 network interface each and public IP
-- Both NGF systems are deployed in an Availability Set
-
-**Note** Additional backend subnets and resources are *not* automatically created by the template. This has to be done manually after template deployment has finished or by adapting the ARM template.
+![Azure Cloud Shell Powershell Edition](images/azurecloudshell2.png)
 
 ## Next Steps
 
