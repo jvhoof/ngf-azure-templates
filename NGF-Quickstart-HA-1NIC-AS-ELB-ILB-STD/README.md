@@ -71,6 +71,7 @@ To deploy via Azure Cloud Shell you can connect to the Azure Cloud Shell via [ht
 ## Next Steps
 
 Administration of the Barracuda CloudGen Firewall appliance is typically done with a Windows-based client application called as [Barracuda CloudGen Firewall Admin](https://dlportal.barracudanetworks.com/#/search).
+
 Note: The username to login to the appliance is root and the password is the one you have configured on Azure portal while deploying the VM. Also a forward for TCP/807 and TCP-UDP/691 endpoints will be created automatically when you deploy this VM. Click here for more details.
 
 ## Post Deployment Configuration
