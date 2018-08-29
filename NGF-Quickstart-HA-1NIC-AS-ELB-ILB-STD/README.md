@@ -1,12 +1,12 @@
-# Barracuda NextGen Firewall for Azure - High Availability Cluster using Internal Load Balancer and an Availability Set
+# Barracuda CloudGen Firewall for Azure - High Availability Cluster in an Availability Set using an Internal Standard Load Balancer
 
 ![Build status](https://img.shields.io/vso/build/cudajvhoof/19118fdb-7d82-4c41-a1fd-b16e490dc968/7.svg)
 
 ## Introduction
 
-Traditionally, Barracuda NextGen Firewall (NGF) uses UDR rewriting technique to redirect traffic when an HA failover happens. This method works well for smaller deployments, but has few drawbacks when using peered VNets or if corporate policy restricts saving AAD authentication keys in 3rd party software configuration.
+To provide high availability in the Azure platform a VM needs to use a Load Balancer or use the Cloud platform's rest api cloud integration to adapt the platform on failover. Since several years, the Barracuda CloudGen Firewall (NGF) uses cloud integration functionality to perform UDR rewriting to redirect traffic when an HA failover happens. This method works well for smaller deployments, but has few drawbacks when using peered VNets or if corporate policy restricts saving AAD authentication keys in 3rd party software configuration.
 
-Azure ILB solves above problems, providing failover capabilities with zero integration with the cloud fabric, offers shorter failover times (~15 seconds) independent of network complexity, and provides stateful failover.
+The Azure Standard Load Balancer solves the above problems, providing failover capabilities with no integration with the cloud fabric, offers shorter failover times (~15 seconds) independent of network complexity and provides stateful failover.
 
 This template deploys a VNet with 2 NGF instances with managed disks, an any-port ILB instance, and 2 empty subnets routed through NGF cluster.
 
@@ -14,18 +14,38 @@ This template deploys a VNet with 2 NGF instances with managed disks, an any-por
 
 ## Prerequisites
 
-The solution does a check of the template when you use the provided scripts. It does require that [Programmatic Deployment](https://azure.microsoft.com/en-us/blog/working-with-marketplace-images-on-azure-resource-manager/) is enabled for the Barracuda Next Gen Firewall F BYOL or PAYG images. Barracuda recommends use of **D**, **D_v2**, **F** or newer series. 
-
-This ARM template uses the Standard Load Balancer which is currently in preview. To enable this feature you need to run a couple of Powershell or Azure CLI 2.0 commands which can be found on the [Microsoft documentation page of this Standard Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-standard-overview#preview-sign-up)
+The solution does a check of the template when you use the provided scripts. It does require that [Programmatic Deployment](https://azure.microsoft.com/en-us/blog/working-with-marketplace-images-on-azure-resource-manager/) is enabled for the Barracuda CloudGen Firewall BYOL or PAYG images. Barracuda recommends use of **D**, **D_v2**, **F** or newer series. 
 
 ## Deployment
 
+Deployment of the ARM template is possible via the Azure Portal, Powershell or Azure CLI. 
 The package provides a deploy.ps1 and deploy.sh for Powershell or Azure CLI based deployments. This can be peformed from the Azure Portal as well as the any system that has either of these scripting infrastructures installed. Or you can deploy from the Azure Portal using the provided link.
 
+### Azure Portal
+
+To deploy via Azure Portal you can use the button below to deploy this reference architecture into your Azure subscription. Once you click on this the Azure Portal will ask you for your credentials and you are presented with a page to fill in minimal variables: Resource Group, Location, Admin password and Prefix.
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
+
+### Azure CLI
+
+To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/). 
+
+- Start up Azure Cloud Shell from the Azure Portal or go directly to [https://shell.azure.com](https://shell.azure.com/)
+- Download the latest version of the ARM templates in the persistant clouddrive:
+`cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/ngf-azure-templates/archive/master.zip | jar xv && cd ~/clouddrive/ngf-azure-templates-master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD/ && ./deploy.sh`
+- Answer the questions asked by the script: location, prefix and password.
+
+### Azure Powershell 
+
+To deploy via Azure Cloud Shell you can connect to the Azure Cloud Shell via [https://shell.azure.com/](https://shell.azure.com/). 
+
+- Start up Azure Cloud Shell from the Azure Portal or go directly to [https://shell.azure.com](https://shell.azure.com/)
+- Download the latest version of the ARM templates in the persistant clouddrive:
+`cd ~\clouddrive\; Invoke-WebRequest -Uri "https://github.com/jvhoof/ngf-azure-templates/archive/master.zip" -OutFile "~/clouddrive/master.zip"; jar xf master.zip; cd "~/clouddrive/ngf-azure-templates-master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD/"; .\deploy.ps1`
+- Answer the questions asked by the script: location, prefix and password.
 
 ## Deployed resources
 Following resources will be created by the template:
@@ -33,14 +53,15 @@ Following resources will be created by the template:
 - Two route tables that will route all traffic for external and towards the other internal networks to the Barracuda NGF
 - One internal standard Azure Load Balancer as the default gateway for all traffic that needs inspection
 - One external standard Azure Load Balancer containing the deployed virtual machines with a public IP and services for IPSEC and TINA VPN tunnels available
-- Two Barracuda NextGen Firewall F virtual machines with 1 network interface each and public IP
+- Two Barracuda CloudGen Firewall virtual machines with 1 network interface each and public IP
 - Both NGF systems are deployed in an Availability Set
 
 **Note** Additional backend subnets and resources are *not* automatically created by the template. This has to be done manually after template deployment has finished or by adapting the ARM template.
 
 ## Next Steps
 
-After successful deployment you can manage them using NextGen Admin application available from Barracuda Download Portal. Management IP addresses you'll find in firewall instances properties, username is *root* and the password is what you provided during template deployment.
+Administration of the Barracuda CloudGen Firewall appliance is typically done with a Windows-based client application called as [Barracuda CloudGen Firewall Admin](https://dlportal.barracudanetworks.com/#/search).
+Note: The username to login to the appliance is root and the password is the one you have configured on Azure portal while deploying the VM. Also a forward for TCP/807 and TCP-UDP/691 endpoints will be created automatically when you deploy this VM. Click here for more details.
 
 ## Post Deployment Configuration
 
@@ -55,16 +76,16 @@ It is also recommended you harden management access by enabling multifactor or k
 ## Template Parameters
 | Parameter Name | Description
 |---|---
-adminPassword | Password for the Next Gen Admin tool 
+adminPassword | Password for the Firewall Admin tool
 prefix | identifying prefix for all VM's being build. e.g WeProd would become WeProd-VM-NGF (Max 19 char, no spaces, [A-Za-z0-9]
 vNetAddressSpace | Network range of the VNET (e.g. 172.16.136.0/22)
-subnetNGF | Network range of the subnet containing the NextGen Firewall (e.g. 172.16.136.0/24)
+subnetNGF | Network range of the subnet containing the CloudGen Firewall (e.g. 172.16.136.0/24)
 subnetRed | Network range of the red subnet (e.g. 172.16.137.0/24)
 subnetGreen | Network range of the green subnet (e.g. 172.16.138.0/24)
 imageSKU | SKU Hourly (PAYG) or BYOL (Bring your own license)
 vmSize | Size of the VMs to be created
-ccManaged | Is this instance managed via a Next Gen Control Center (Yes/No)
-ccClusterName | The name of the cluster of this instance in the Next Gen Control Center
-ccRangeId | The range location of this instance in the Next Gen Control Center
-ccIpAddress | IP address of the Next Gen Control Center
-ccSecret | Secret to retrieve the configuration from the Next Gen Control Center
+ccManaged | Is this instance managed via a CloudGen Firewall Control Center (Yes/No)
+ccClusterName | The name of the cluster of this instance in the CloudGen Firewall Control Center
+ccRangeId | The range location of this instance in the CloudGen Firewall Control Center
+ccIpAddress | IP address of the CloudGen Firewall Control Center
+ccSecret | Secret to retrieve the configuration from the CloudGen Firewall Control Center

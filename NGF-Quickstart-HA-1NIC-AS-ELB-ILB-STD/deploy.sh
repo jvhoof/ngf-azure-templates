@@ -50,7 +50,7 @@ fi
 echo ""
 echo "--> Using prefix $prefix for all resources ..."
 echo ""
-rg_ngf="$prefix-RG"
+rg_cgf="$prefix-RG"
 
 if [ -z "$DEPLOY_PASSWORD" ]
 then
@@ -69,12 +69,12 @@ fi
 
 # Create resource group for NextGen Firewall resources
 echo ""
-echo "--> Creating $rg_ngf resource group ..."
-az group create --location "$location" --name "$rg_ngf"
+echo "--> Creating $rg_cgf resource group ..."
+az group create --location "$location" --name "$rg_cgf"
 
 # Validate template
-echo "--> Validation deployment in $rg_ngf resource group ..."
-az group deployment validate --resource-group "$rg_ngf" \
+echo "--> Validation deployment in $rg_cgf resource group ..."
+az group deployment validate --resource-group "$rg_cgf" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
                            --parameters adminPassword=$passwd prefix=$prefix
@@ -86,8 +86,8 @@ then
 fi
 
 # Deploy NextGen Firewall resources
-echo "--> Deployment of $rg_ngf resources ..."
-az group deployment create --resource-group "$rg_ngf" \
+echo "--> Deployment of $rg_cgf resources ..."
+az group deployment create --resource-group "$rg_cgf" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
                            --parameters adminPassword=$passwd prefix=$prefix
