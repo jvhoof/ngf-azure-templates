@@ -17,6 +17,7 @@ This template deploys a VNet with 2 NGF instances with managed disks, an any-por
 The solution does a check of the template when you use the provided scripts. It does require that [Programmatic Deployment](https://azure.microsoft.com/en-us/blog/working-with-marketplace-images-on-azure-resource-manager/) is enabled for the Barracuda CloudGen Firewall BYOL or PAYG images. Barracuda recommends use of **D**, **D_v2**, **F** or newer series. 
 
 ## Deployed resources
+
 Following resources will be created by the template:
 - One Azure VNET with 3 subnets (1 for the NGF, additional subnets for a red and green subnet)
 - Two route tables that will route all traffic for external and towards the other internal networks to the Barracuda NGF
@@ -35,6 +36,7 @@ The package provides a deploy.ps1 and deploy.sh for Powershell or Azure CLI base
 ### Azure Portal
 
 To deploy via Azure Portal you can use the button below to deploy this reference architecture into your Azure subscription. Once you click on this the Azure Portal will ask you for your credentials and you are presented with a page to fill in minimal variables: Resource Group, Location, Admin password and Prefix.
+
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
@@ -46,7 +48,9 @@ To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly
 
 - Start up Azure Cloud Shell from the Azure Portal or go directly to [https://shell.azure.com](https://shell.azure.com/)
 - Download the latest version of the ARM templates in the persistant clouddrive:
+
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/ngf-azure-templates/archive/master.zip | jar xv && cd ~/clouddrive/ngf-azure-templates-master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD/ && ./deploy.sh`
+
 - Answer the questions asked by the script on the following variables: location, prefix and password.
 
 ![Azure Cloud Shell Bash Edition](images/azurecloudshell1.png)
@@ -57,7 +61,9 @@ To deploy via Azure Cloud Shell you can connect to the Azure Cloud Shell via [ht
 
 - Start up Azure Cloud Shell from the Azure Portal or go directly to [https://shell.azure.com](https://shell.azure.com/)
 - Download the latest version of the ARM templates in the persistant clouddrive:
+
 `cd ~\clouddrive\; Invoke-WebRequest -Uri "https://github.com/jvhoof/ngf-azure-templates/archive/master.zip" -OutFile "~/clouddrive/master.zip"; jar xf master.zip; cd "~/clouddrive/ngf-azure-templates-master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD/"; .\deploy.ps1`
+
 - Answer the questions asked by the script on the following variables: location, prefix and password.
 
 ![Azure Cloud Shell Powershell Edition](images/azurecloudshell2.png)
