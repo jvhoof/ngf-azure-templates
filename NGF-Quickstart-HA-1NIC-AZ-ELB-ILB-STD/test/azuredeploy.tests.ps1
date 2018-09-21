@@ -90,7 +90,7 @@ Describe "[$templateName] Template validation & test" {
                                           'imageSKU',
                                           'prefix',
                                           'subnetGreen',
-                                          'subnetNGF',
+                                          'subnetCGF',
                                           'subnetRed',
                                           'version',
                                           'vmSize',
@@ -108,7 +108,7 @@ Describe "[$templateName] Template validation & test" {
         $testsPrefix = "CUDAQA-$testsRandom"
         $testsResourceGroupName = "CUDAQA-$testsRandom-$templateName"
         $testsAdminPassword = $testsResourceGroupName | ConvertTo-SecureString -AsPlainText -Force
-        $testsVM = "$testsPrefix-VM-NGF"
+        $testsVM = "$testsPrefix-VM-CGF"
         $testsResourceGroupLocation = "East US2"
 
         # List of all scripts + parameter files
