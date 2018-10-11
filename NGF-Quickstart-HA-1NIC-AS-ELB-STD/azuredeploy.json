@@ -528,6 +528,9 @@
       "condition": "[equals(parameters('ccManaged'),'no')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
+      "identity": { 
+        "type": "SystemAssigned"
+      },
       "name": "[variables('ngfVmName1')]",
       "location": "[resourceGroup().location]",
       "plan": {
@@ -581,6 +584,9 @@
       "condition": "[equals(parameters('ccManaged'),'no')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
+      "identity": { 
+        "type": "SystemAssigned"
+      },
       "name": "[variables('ngfVmName2')]",
       "location": "[resourceGroup().location]",
       "plan": {

@@ -681,6 +681,9 @@
       "condition": "[equals(parameters('ccManaged'),'no')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
+      "identity": { 
+        "type": "SystemAssigned"
+      },
       "zones": [
         "1"
       ],
@@ -740,6 +743,9 @@
       "condition": "[equals(parameters('ccManaged'),'no')]",
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
+      "identity": { 
+        "type": "SystemAssigned"
+      },
       "zones": [
         "2"
       ],

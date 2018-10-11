@@ -510,6 +510,9 @@
     {
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
+      "identity": { 
+        "type": "SystemAssigned"
+      },
       "name": "[variables('gcfVmName1')]",
       "location": "[resourceGroup().location]",
       "plan": {
@@ -562,6 +565,9 @@
     {
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
+      "identity": { 
+        "type": "SystemAssigned"
+      },
       "name": "[variables('gcfVmName2')]",
       "location": "[resourceGroup().location]",
       "plan": {
