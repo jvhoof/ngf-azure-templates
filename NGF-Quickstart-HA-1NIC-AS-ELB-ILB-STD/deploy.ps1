@@ -41,20 +41,19 @@ New-AzureRMResourceGroupDeployment -Name "Deploy_$rg" -ResourceGroupName "$rg" `
     -TemplateFile "azuredeploy.json" -TemplateParameterFile "azuredeploy.parameters.json" `
     -adminPassword $password -prefix $prefix
 
-    echo "
-    ##############################################################################################################
-    #  _                         
-    # |_) _  __ __ _  _     _| _ 
-    # |_)(_| |  | (_|(_ |_|(_|(_|
-    #
-    # Thank you for deploying the Barracuda CloudGen Firewall for more information:
-    #
-    # Campus website:
-    # https://campus.barracuda.com/product/cloudgenfirewall/doc/73719655/microsoft-azure-deployment/
-    #
-    # Connect via email:
-    # azure_support@barracuda.com
-    #
-    ##############################################################################################################
-    "
-    fi
+Write-Host "
+##############################################################################################################
+#  _                         
+# |_) _  __ __ _  _     _| _ 
+# |_)(_| |  | (_|(_ |_|(_|(_|
+#
+# Thank you for deploying the Barracuda CloudGen Firewall for more information:
+#
+# Campus website:
+# https://campus.barracuda.com/product/cloudgenfirewall/doc/73719655/microsoft-azure-deployment/
+#
+# Connect via email:
+# azure_support@barracuda.com
+#
+##############################################################################################################
+"
