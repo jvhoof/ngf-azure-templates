@@ -21,7 +21,7 @@
       "value": "172.16.138.0/24"
     },
     "imageSKU": {
-      "value": "byol"
+      "value": "hourly"
     },
     "vmSize": {
       "value": "Standard_F1s"
