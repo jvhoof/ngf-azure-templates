@@ -69,6 +69,7 @@ fi
 
 # Create resource group for NextGen Firewall resources
 echo ""
+echo ""
 echo "--> Creating $rg_cgf resource group ..."
 az group create --location "$location" --name "$rg_cgf"
 
