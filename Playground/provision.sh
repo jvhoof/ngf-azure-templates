@@ -11,7 +11,7 @@ cp /root/quickstart-blue.par /opt/phion/update/box.par && \
     /etc/rc.d/init.d/phion start && \
     /opb/cloud-setmip 172.16.136.4 24 172.16.136.1 
 echo "Restore PAR file ... "
-echo 'Q1w2e34567890--' | /opb/create-dha -s S1 -c -o '172.16.136.5' '24' '172.16.136.1'
+echo 'Q1w2e34567890--' | /opb/create-dha -s S1 -c -o '172.16.136.5' -n '24' -g '172.16.136.1'
 echo "Restoring PAYG license ... "
 /opb/cloud-restore-license -f
 } > /tmp/provision.log 2>&1
