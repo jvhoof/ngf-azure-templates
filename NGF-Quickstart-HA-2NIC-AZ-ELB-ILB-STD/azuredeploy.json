@@ -471,7 +471,7 @@
           {
             "name": "loadBalancerFrontEnd",
             "properties": {
-              "privateIPAddress": "172.16.136.140",
+              "privateIPAddress": "[variables('lbIPAddress-internal')]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
                 "id": "[variables('subnetRefCGF-internal')]"
