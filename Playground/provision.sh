@@ -6,9 +6,7 @@ echo "nameserver 168.63.129.16" > /etc/resolv.conf
 echo "Download PAR file ... "
 curl https://raw.githubusercontent.com/jvhoof/quickstart-blue-green-azure/master/resources/quickstart-blue.par --output /root/quickstart-blue.par
 echo "Restore PAR file ... "
-cp /root/quickstart-blue.par /opt/phion/update/box.par && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start
-echo "Restoring MIP ... "
-/opb/cloud-setmip 172.16.136.4 24 172.16.136.1
+cp /root/quickstart-blue.par /opt/phion/update/box.par && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && /opb/cloud-setmip 172.16.136.4 24 172.16.136.1
 echo "Restoring PAYG license ... "
 /opb/cloud-restore-license -f
 } > /tmp/provision.log 2>&1
