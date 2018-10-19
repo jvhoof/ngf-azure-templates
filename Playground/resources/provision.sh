@@ -9,7 +9,7 @@ echo "Restore PAR file ... "
 cp /root/config-payg.par /opt/phion/update/box.par && \
     /etc/rc.d/init.d/phion stop && \
     /etc/rc.d/init.d/phion start && \
-    /opb/cloud-setmip "$2" "$5"
+    /opb/cloud-setmip "$2" "$4" "$5"
 echo "Restoring PAYG license ... "
 /opb/cloud-restore-license -f
 echo "Creating CGF cluster ... "
