@@ -4,9 +4,9 @@ echo "Starting Barracuda CloudGen Firewall bootstrap script"
 echo "Setting DNS server ... "
 echo "nameserver 168.63.129.16" > /etc/resolv.conf
 echo "Download PAR file ... "
-curl https://raw.githubusercontent.com/jvhoof/quickstart-blue-green-azure/master/resources/quickstart-blue.par --output /root/quickstart-blue.par
+curl https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/Playground/resources/config-payg.par --output /root/config-payg.par
 echo "Restore PAR file ... "
-cp /root/quickstart-blue.par /opt/phion/update/box.par && \
+cp /root/config-payg.par /opt/phion/update/box.par && \
     /etc/rc.d/init.d/phion stop && \
     /etc/rc.d/init.d/phion start && \
     /opb/cloud-setmip 172.16.136.4 24 172.16.136.1 
