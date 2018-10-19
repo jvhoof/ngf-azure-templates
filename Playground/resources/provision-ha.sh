@@ -10,4 +10,6 @@ cp /root/config-payg-ha.par /opt/phion/update/box.par && \
     /etc/rc.d/init.d/phion stop && \
     /etc/rc.d/init.d/phion start && \
     /opb/cloud-setmip "$2" "$4" "$5"
+echo "Restoring PAYG license ... "
+/opb/cloud-restore-license -f
 } > /tmp/provision.log 2>&1
