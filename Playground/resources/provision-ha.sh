@@ -1,6 +1,8 @@
 #!/bin/bash
 {
 echo "Starting Barracuda CloudGen Firewall bootstrap script"
+/opt/phion/bin/editconf -f /opt/phion/config/active/boxadm.conf -p RPASSWDENFORCE -v 0
+/opt/phion/bin/editconf -f /opt/phion/config/configroot/boxadm.conf -p RPASSWDENFORCE -v 0
 #echo "Setting DNS server ... "
 #echo "nameserver 168.63.129.16" > /etc/resolv.conf
 #echo "Download PAR file ... "
