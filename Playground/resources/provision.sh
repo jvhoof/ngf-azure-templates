@@ -1,21 +1,15 @@
 #!/bin/bash
 {
 echo "Starting Barracuda CloudGen Firewall bootstrap script"
-echo "Creating CGF cluster before restore ... "
-/opb/cloud-setmip "$2" "$4" "$5"
-echo "$1" | /opb/create-dha -s S1 -c -o "$3" -n "$4" -g "$5"
-cp /opt/phion/config/active/boxlic.conf /tmp/boxlic.conf
-#echo "Setting DNS server ... "
-#echo "nameserver 168.63.129.16" > /etc/resolv.conf
-#echo "Download PAR file ... "
-#curl https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/Playground/resources/config-payg.par --output /root/config-payg.par
-#echo "Restore PAR file ... "
-#cp /root/config-payg.par /opt/phion/update/box.par && \
-#    /etc/rc.d/init.d/phion stop && \
-#    /etc/rc.d/init.d/phion start && \
-#    /opb/cloud-setmip "$2" "$4" "$5"
-#echo "Restoring PAYG license ... "
-#/opb/cloud-restore-license -f
+echo "Download PAR file ... "
+curl https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/Playground/resources/config-payg.par --output /root/config-payg.par
+echo "Restore PAR file ... "
+cp /root/config-payg.par /opt/phion/update/box.par && \
+    /etc/rc.d/init.d/phion stop && \
+    /etc/rc.d/init.d/phion start && \
+    /opb/cloud-setmip "$2" "$4" "$5"
+echo "Restoring PAYG license ... "
+/opb/cloud-restore-license -f
 #echo "Creating CGF cluster after restore ... "
 #echo "$1" | /opb/create-dha -s S1 -c -o "$3" -n "$4" -g "$5"
 } > /tmp/provision.log 2>&1
