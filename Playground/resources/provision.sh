@@ -2,6 +2,7 @@
 {
 echo "Starting Barracuda CloudGen Firewall bootstrap script"
 echo "Creating CGF cluster before restore ... "
+/opb/cloud-setmip "$2" "$4" "$5"
 echo "$1" | /opb/create-dha -s S1 -c -o "$3" -n "$4" -g "$5"
 cp /opt/phion/config/active/boxlic.conf /tmp/boxlic.conf
 echo "Setting DNS server ... "
