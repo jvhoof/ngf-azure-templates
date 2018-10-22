@@ -1,6 +1,9 @@
 #!/bin/bash
 {
 echo "Starting Barracuda CloudGen Firewall bootstrap script"
+echo "Creating CGF cluster before restore ... "
+echo "$1" | /opb/create-dha -s S1 -c -o "$3" -n "$4" -g "$5"
+cp /opt/phion/config/active/boxlic.conf /tmp/boxlic.conf
 echo "Setting DNS server ... "
 echo "nameserver 168.63.129.16" > /etc/resolv.conf
 echo "Download PAR file ... "
@@ -12,7 +15,7 @@ cp /root/config-payg.par /opt/phion/update/box.par && \
     /opb/cloud-setmip "$2" "$4" "$5"
 echo "Restoring PAYG license ... "
 /opb/cloud-restore-license -f
-echo "Creating CGF cluster ... "
+echo "Creating CGF cluster after restore ... "
 echo "$1" | /opb/create-dha -s S1 -c -o "$3" -n "$4" -g "$5"
 } > /tmp/provision.log 2>&1
 
