@@ -11,7 +11,7 @@
     "prefix": {
       "type": "string",
       "metadata": {
-        "description": "identifying prefix for all VM's being build. e.g WeProd would become WeProd-VM-NGF (Max 19 char, no spaces, [A-Za-z0-9]"
+        "description": "identifying prefix for all VM's being build. e.g WeProd would become WeProd-VM-CGF (Max 19 char, no spaces, [A-Za-z0-9]"
       }
     },
     "vNetAddressSpace": {
@@ -21,7 +21,7 @@
       },
       "defaultValue": "172.16.136.0/22"
     },
-    "subnetNGF": {
+    "subnetCGF": {
       "type": "string",
       "metadata": {
         "description": "Network range of the Subnet containing the NextGen Firewall (e.g. 172.16.136.0/24)"
@@ -105,12 +105,12 @@
     "storageAccountType": "Standard_LRS",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id),'storage')]",
 
-    "nsgName": "[concat(parameters('prefix'),'-NSG-NGF')]",
-    "avName": "[concat(parameters('prefix'),'-AV-NGF')]",
+    "nsgName": "[concat(parameters('prefix'),'-NSG-CGF')]",
+    "avName": "[concat(parameters('prefix'),'-AV-CGF')]",
     "vNetName": "[concat(parameters('prefix'),'-VNET')]",
     "vNetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vNetName'))]",
-    "subnetNameNGF": "[concat(parameters('prefix'),'-SUBNET-NGF')]",
-    "subnetRefNGF": "[resourceID('Microsoft.Network/virtualNetworks/subnets',variables('vNetName'),variables('subnetNameNGF'))]",
+    "subnetNameCGF": "[concat(parameters('prefix'),'-SUBNET-CGF')]",
+    "subnetRefCGF": "[resourceID('Microsoft.Network/virtualNetworks/subnets',variables('vNetName'),variables('subnetNameCGF'))]",
     "subnetNameRed": "[concat(parameters('prefix'),'-SUBNET-RED')]",
     "subnetNameGreen": "[concat(parameters('prefix'),'-SUBNET-GREEN')]",
     "subnetRefGreen": "[resourceID('Microsoft.Network/virtualNetworks/subnets',variables('vNetName'),variables('subnetNameGreen'))]",
@@ -119,18 +119,18 @@
     "rtableNameGreen": "[concat( parameters('prefix'), '-RT-FOR-GREEN' )]",
     "rtableRefGreen": "[resourceID('Microsoft.Network/routeTables',variables('rtableNameGreen'))]",
 
-    "ngfVmName1": "[concat(parameters('prefix'),'-VM-NGF-A')]",
-    "ngfVmName2": "[concat(parameters('prefix'),'-VM-NGF-B')]",
+    "ngfVmName1": "[concat(parameters('prefix'),'-VM-CGF-A')]",
+    "ngfVmName2": "[concat(parameters('prefix'),'-VM-CGF-B')]",
     "ngfNicName1": "[concat(variables('ngfVmName1'),'-NIC')]",
     "ngfNicName2": "[concat(variables('ngfVmName2'),'-NIC')]",
     "ngfPIPAddressName1": "[concat(variables('ngfVmName1'),'-PIP')]",
     "ngfPIPAddressName2": "[concat(variables('ngfVmName2'),'-PIP')]",
     "ngfPIPAddressType": "Static",
 
-    "lbPIPAddressName": "[concat(parameters('prefix'),'-NGF-LB-PIP')]",
-    "dnsNameForNGF": "[toLower( concat( parameters('prefix'), '-ngf-', uniqueString(resourceGroup().id) ) )]",
-    "lbName-external": "[concat(parameters('prefix'),'-ELB-NGF')]",
-    "lbName-internal": "[concat(parameters('prefix'),'-ILB-NGF')]",
+    "lbPIPAddressName": "[concat(parameters('prefix'),'-CGF-LB-PIP')]",
+    "dnsNameForCGF": "[toLower( concat( parameters('prefix'), '-ngf-', uniqueString(resourceGroup().id) ) )]",
+    "lbName-external": "[concat(parameters('prefix'),'-ELB-CGF')]",
+    "lbName-internal": "[concat(parameters('prefix'),'-ILB-CGF')]",
     "lbID-external": "[resourceId('Microsoft.Network/loadBalancers',variables('lbName-external'))]",
     "lbID-internal": "[resourceId('Microsoft.Network/loadBalancers',variables('lbName-internal'))]",
     "lbPIPID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('lbPIPAddressName'))]",
@@ -145,7 +145,7 @@
     "adminUsername": "notused",
     "singleQuotationMark": "'",
 
-    "ngfSubnetSplit": "[split( parameters( 'subnetNGF' ), '/' )]",
+    "ngfSubnetSplit": "[split( parameters( 'subnetCGF' ), '/' )]",
     "ngfSubnetAddrSplit": "[split( variables( 'ngfSubnetSplit' )[0], '.' )]",
     "ngfSubnetMask": "[variables( 'ngfSubnetSplit' )[1]]",
     "ngfSubnetDefaultGw": "[concat( variables( 'ngfSubnetAddrSplit' )[0], '.', variables( 'ngfSubnetAddrSplit' )[1], '.', variables( 'ngfSubnetAddrSplit' )[2], '.', add( int( variables( 'ngfSubnetAddrSplit' )[3]), 1 ))]",
@@ -222,9 +222,9 @@
         },
         "subnets": [
           {
-            "name": "[variables('subnetNameNGF')]",
+            "name": "[variables('subnetNameCGF')]",
             "properties": {
-              "addressPrefix": "[parameters('subnetNGF')]",
+              "addressPrefix": "[parameters('subnetCGF')]",
               "networkSecurityGroup": {
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
               }
@@ -328,7 +328,7 @@
       "properties": {
         "publicIPAllocationMethod": "[variables('ngfPIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[variables('dnsNameForNGF')]"
+          "domainNameLabel": "[variables('dnsNameForCGF')]"
         }
       }
     },
@@ -342,7 +342,7 @@
       },
       "comments": "External LoadBalancer for the Barracuda Next Gen Firewall F cluster",
       "tags": {
-        "displayName": "NGFLB-External"
+        "displayName": "CGFLB-External"
       },
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('lbPIPAddressName'))]",
@@ -468,7 +468,7 @@
       ],
       "comments": "Internal LoadBalancer for the Barracuda Next Gen Firewall F cluster",
       "tags": {
-        "displayName": "NGFLB-Internal"
+        "displayName": "CGFLB-Internal"
       },
       "properties": {
         "frontendIPConfigurations": [
@@ -478,7 +478,7 @@
               "privateIPAddress": "[variables('lbIPAddress-internal')]",
               "privateIPAllocationMethod": "Static",
               "subnet": {
-                "id": "[variables('subnetRefNGF')]"
+                "id": "[variables('subnetRefCGF')]"
               }
             }
           }
@@ -570,7 +570,7 @@
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('ngfPIPAddressName1'))]"
               },
               "subnet": {
-                "id": "[variables('subnetRefNGF')]"
+                "id": "[variables('subnetRefCGF')]"
               },
               "primary": true,
               "loadBalancerBackendAddressPools": [
@@ -605,7 +605,7 @@
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('ngfPIPAddressName2'))]"
               },
               "subnet": {
-                "id": "[variables('subnetRefNGF')]"
+                "id": "[variables('subnetRefCGF')]"
               },
               "primary": true,
               "loadBalancerBackendAddressPools": [
@@ -742,15 +742,15 @@
     }
   ],
   "outputs": {
-    "NGF-A": {
+    "CGF-A": {
       "type": "string",
       "value": "[reference(variables('ngfPIPAddressName1')).ipAddress]"
     },
-    "NGF-B": {
+    "CGF-B": {
       "type": "string",
       "value": "[reference(variables('ngfPIPAddressName2')).ipAddress]"
     },
-    "NGF-LB": {
+    "CGF-LB": {
       "type": "string",
       "value": "[reference(variables('lbPIPAddressName')).dnsSettings.fqdn]"
     }
