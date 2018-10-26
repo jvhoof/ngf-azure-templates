@@ -12,6 +12,9 @@ echo "Restoring PAYG license ... "
 /opb/cloud-restore-license -f
 echo "Enable SSH ..."
 /opb/cloud-enable-ssh --password
+echo "Download license script ... "
+curl https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/Playground/PAYG-DHA/resources/restore-ha-lic.sh --output /root/restore-ha-lic.sh
+chmod 755 /root/restore-ha-lic.sh
 } > /tmp/provision.log 2>&1
 
 #    "ngfCustomData1": "[base64(concat('#!/bin/bash\n\n', '{ echo \"Starting Barracuda CloudGen Firewall bootstrap.\"\necho \"nameserver 168.63.129.16\" > /etc/resolv.conf\ncurl \"https://raw.githubusercontent.com/jvhoof/quickstart-blue-green-azure/master/resources/quickstart-blue.par\" --output /root/backupdeployment.par\ncp /root/backupdeployment.par /opt/phion/update/box.par && /etc/rc.d/init.d/phion stop && /etc/rc.d/init.d/phion start && /opb/cloud-setmip', variables('ngfVmAddress1'), variables( 'ngfSubnetMask' ), variables( 'ngfSubnetDefaultGw' ), '\n/opb/cloud-restore-license -f\n} > /tmp/provision.log\n'))]",
