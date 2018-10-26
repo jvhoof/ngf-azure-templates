@@ -14,6 +14,7 @@ echo "Enable SSH ..."
 /opb/cloud-enable-ssh --password
 echo "Download license script ... "
 curl https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/Playground/PAYG-DHA/resources/restore-ha-lic.sh --output /root/restore-ha-lic.sh
+curl https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/Playground/PAYG-DHA/resources/get-ha-ip.py --output /root/get-ha-ip.py
 chmod 755 /root/restore-ha-lic.sh
 } > /tmp/provision.log 2>&1
 
