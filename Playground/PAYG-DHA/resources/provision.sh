@@ -2,7 +2,7 @@
 {
 echo "Starting Barracuda CloudGen Firewall bootstrap script"
 echo "Download PAR file ... "
-curl https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/Playground/resources/config-payg.par --output /root/config-payg.par
+curl https://raw.githubusercontent.com/jvhoof/ngf-azure-templates/master/Playground/PAYG-DHA/resources/config-payg.par --output /root/config-payg.par
 echo "Restore PAR file ... "
 cp /root/config-payg.par /opt/phion/update/box.par && \
     /etc/rc.d/init.d/phion stop && \
