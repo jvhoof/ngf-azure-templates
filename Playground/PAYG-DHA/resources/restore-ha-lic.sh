@@ -14,9 +14,13 @@ Copy license from secondary unit
 "
 haip=`python2.7 /root/get-ha-ip.py`
 scp root@$haip:/var/phion/preserve/cloud/license/boxlic.conf .
-echo "\nAdd license into configuration\n"
+echo "
+Add license into configuration
+"
 sed -e '1,2d' < boxlic.conf >> /opt/phion/config/configroot/boxother/boxlic.conf 
-echo "\nActivate changes\n"
+echo "
+Activate changes
+"
 cd /opt/phion/modules/box/boxother/boxlic/bin
 ./activate
 

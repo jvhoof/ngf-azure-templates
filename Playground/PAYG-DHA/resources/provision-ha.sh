@@ -14,5 +14,4 @@ cp /root/config-payg-ha.par /opt/phion/update/box.par && \
 #/opb/cloud-restore-license -f
 echo "Enable SSH ..."
 /opb/cloud-enable-ssh --password
-}
 } > /tmp/provision-ha.log 2>&1
