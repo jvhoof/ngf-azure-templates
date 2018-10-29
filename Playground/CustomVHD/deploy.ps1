@@ -25,6 +25,9 @@ Write-Host "--> Using prefix $prefix for all resources location ..."
 
 $rg="$prefix-RG"
 
+$osdiskvhduri = Read-Host -Prompt 'Enter uri of the existing VHD in ARM standard or premium storage: '
+Write-Host "--> Deployment with disk located here: $osdiskvhduri ..."
+
 $password = Read-Host -AsSecureString 'Enter password
 !! BEWARE: Password complexity rules 12 characters, [A-Za-z0-9] and special char !!' 
 
@@ -34,12 +37,12 @@ New-AzureRMResourceGroup -Name $rg -Location "$location"
 Write-Host "Validationg deployment in $rg resource group ..."
 Test-AzureRmResourceGroupDeployment -ResourceGroupName "$rg" `
     -TemplateFile "azuredeploy.json" -TemplateParameterFile "azuredeploy.parameters.json" `
-    -adminPassword $password -prefix $prefix
+    -adminPassword $password -prefix $prefix -osDiskVhdUri=$osdiskvhduri
 
 Write-Host "`nDeployment of $rg resources ..."
 New-AzureRMResourceGroupDeployment -Name "Deploy_$rg" -ResourceGroupName "$rg" `
     -TemplateFile "azuredeploy.json" -TemplateParameterFile "azuredeploy.parameters.json" `
-    -adminPassword $password -prefix $prefix
+    -adminPassword $password -prefix $prefix -osDiskVhdUri=$osdiskvhduri
 
 Write-Host "
 ##############################################################################################################
