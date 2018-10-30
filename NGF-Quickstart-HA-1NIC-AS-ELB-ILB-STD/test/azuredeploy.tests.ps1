@@ -91,7 +91,7 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'imageSKU',
                                           'prefix',
                                           'subnetGreen',
-                                          'subnetNGF',
+                                          'subnetCGF',
                                           'subnetRed',
                                           'version',
                                           'vmSize',
