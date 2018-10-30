@@ -1,4 +1,4 @@
-# Barracuda CloudGen Firewall for Azure - Pay As You Go High Availability Cluster in an Availability Set using an Internal Standard Load Balancer
+# Barracuda CloudGen Firewall for Azure - Pay As You Go, Standalone, High Availability Cluster
 
 ## Introduction
 
