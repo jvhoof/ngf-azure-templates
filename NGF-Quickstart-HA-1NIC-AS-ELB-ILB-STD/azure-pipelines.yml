@@ -1,7 +1,8 @@
 resources: 
 - repo: self
-queue:
-  name: vs2017-win2016
+
+pool:
+  vmImage: 'vs2017-win2016'
   demands: azureps
 
 steps:
