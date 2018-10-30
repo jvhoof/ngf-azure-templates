@@ -193,7 +193,7 @@
             "properties": {
               "addressPrefix": "0.0.0.0/0",
               "nextHopType": "VirtualAppliance",
-              "nextHopIpAddress": "[variables('gcfVmAddress1')]"
+              "nextHopIpAddress": "[variables('lbIPAddress-internal')]"
             }
           }
         ]
