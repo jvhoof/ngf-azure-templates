@@ -4,8 +4,6 @@
 
 This ARM Template is a variation of the [NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD) template. In this template the use of PAYG is enforced and a backup of the configuration is retrieved from GitHub.
 
-![Network diagram](images/cgf-ha-1nic-elb-ilb.png)
-
 ## Prerequisites
 
 Verify the prerequisites [here](https://github.com/jvhoof/ngf-azure-templates/tree/master/NGF-Quickstart-HA-1NIC-AS-ELB-ILB-STD#prerequisites)
