@@ -90,8 +90,8 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
                                           'ccSecret',
                                           'imageSKU',
                                           'prefix',
-                                          'subnetGreen',
                                           'subnetCGF',
+                                          'subnetGreen',
                                           'subnetRed',
                                           'version',
                                           'vmSize',
@@ -101,7 +101,6 @@ Describe 'ARM Templates Test : Validation & Test Deployment' {
         }
 
     }
-
 
     Context 'Template Test Deployment' {
 
