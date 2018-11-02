@@ -12,6 +12,7 @@
     validate_certs: False
   register: service
   ignore_errors: True
+  until: result.status != -1
 #- debug:
 #    msg: "{{service.json}}"
 
@@ -43,3 +44,4 @@
       Content-Type: "application/json"
     status_code: 204
     validate_certs: False
+    until: result.status != -1
