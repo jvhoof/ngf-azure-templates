@@ -129,10 +129,12 @@ $prefix-VM-CGF-A ansible_host=$cgfipaddress ansible_port=8443 ansible_connection
 cgf
 EOF
 
+sleep 2m
+
 echo ""
 echo "--> Ansible configuration of CloudGen Firewall cluster"
 echo ""
-ansible-playbook ansible/all.yml -i "ansible/inventory/all" 
+ansible-playbook ansible/all.yml -i "ansible/inventory/all" --extra-vars "CGF_PASSWORD=$passwd"
 if [[ $? != 0 ]]; 
 then 
     echo "--> ERROR: Deployment failed ..."
