@@ -129,8 +129,6 @@ $prefix-VM-CGF-A ansible_host=$cgfipaddress ansible_port=8443 ansible_connection
 cgf
 EOF
 
-sleep 5m
-
 echo ""
 echo "--> Ansible configuration of CloudGen Firewall cluster"
 echo ""
