@@ -117,8 +117,8 @@ else
 echo ""
 echo "--> Create Ansible inventory"
 echo ""
+mkdir -p ansible/inventory/
 query="[?virtualMachine.name == '$prefix-VM-CGF-A'].{publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress}"
-echo $query
 cgfipaddress=`az vm list-ip-addresses --query "$query" --output tsv`
 
 cat <<EOF > ansible/inventory/all
