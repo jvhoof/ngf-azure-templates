@@ -1,0 +1,6 @@
+---
+# Variables
+cgf_base_url: "http://{{ hostvars[inventory_hostname].ansible_host }}:8000"
+waf_username: "admin"
+waf_device_name: "Welcome to CUDALAB.EU - Blue"
+waf_domain: "cudalab.eu"
