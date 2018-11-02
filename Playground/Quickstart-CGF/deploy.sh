@@ -83,6 +83,7 @@ fi
 
 # Create resource group for NextGen Firewall resources
 echo ""
+echo ""
 echo "--> Creating $rg_cgf resource group ..."
 az group create --location "$location" --name "$rg_cgf"
 
@@ -132,7 +133,7 @@ EOF
 echo ""
 echo "--> Ansible configuration of CloudGen Firewall cluster"
 echo ""
-ansible-playbook ansible/all.yml -i "ansible/inventory/all" --extra-vars "CGF_PASSWORD=$passwd"
+ansible-playbook ansible/all.yml -i "ansible/inventory/all" --extra-vars "cgf_prefix=$prefix cgf_password=$passwd"
 if [[ $? != 0 ]]; 
 then 
     echo "--> ERROR: Deployment failed ..."
