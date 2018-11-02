@@ -28,8 +28,8 @@
 - include_tasks: cgf-change-password.yml
   vars:
     request_user: "root"
-    request_password: "{{ CGF_PASSWORD }}"
-    request_new_password: "{{ CGF_PASSWORD }}"
+    request_password: "{{ cgf_password }}"
+    request_new_password: "{{ cgf_password }}"
     request_url: "{{ cgf_base_url }}"
 
 ### Create REST API admin
@@ -38,6 +38,6 @@
     request_comment: "Create REST API admin"
     request_url: "{{ cgf_base_url }}"
     request_user: "root"
-    request_password: "{{ CGF_PASSWORD }}"
+    request_password: "{{ cgf_password }}"
     request_new_user: "{{ cgf_rest_admin }}"
-    request_new_password: "{{ CGF_PASSWORD }}"
+    request_new_password: "{{ cgf_password }}"
