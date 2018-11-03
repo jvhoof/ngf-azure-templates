@@ -44,5 +44,5 @@
       Content-Type: "application/json"
     status_code: 204
     validate_certs: False
-    register: result
-    until: result.status != -1
+  register: result
+  until: result.status != -1
