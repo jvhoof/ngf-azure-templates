@@ -10,14 +10,14 @@
       Content-Type: "application/json"
     status_code: 200
     validate_certs: False
-  register: service
+  register: result
   ignore_errors: True
   until: result.status != -1
 #- debug:
 #    msg: "{{service.json}}"
 
 - name: "CGF - Create new user {{ request_new_user }}"
-  when: service is failed
+  when: result is failed
   uri:
     url: "{{ request_url }}/rest/config/v1/box/admins"
     method: POST
@@ -44,4 +44,5 @@
       Content-Type: "application/json"
     status_code: 204
     validate_certs: False
+    register: result
     until: result.status != -1
