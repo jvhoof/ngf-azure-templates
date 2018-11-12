@@ -147,4 +147,3 @@ query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualM
 az vm list-ip-addresses --query "$query" --output tsv
 echo "
 ##############################################################################################################"
-fi

@@ -38,14 +38,14 @@ New-AzureRMResourceGroup -Name $rg -Location "$location"
 Write-Host "`nValidationg deployment in $rg resource group ..."
 Test-AzureRmResourceGroupDeployment -ResourceGroupName "$rg" `
     -TemplateFile "azuredeploy.json" -TemplateParameterFile "azuredeploy.parameters.json" `
-    -adminPassword $password -prefix $prefix -osDiskVhdUri=$osdiskvhduri
+    -adminPassword $password -prefix $prefix 
 
 Write-Host "`nDeployment of $rg resources ..."
 New-AzureRMResourceGroupDeployment -Name "Deploy_$rg" -ResourceGroupName "$rg" `
     -TemplateFile "azuredeploy.json" -TemplateParameterFile "azuredeploy.parameters.json" `
     -adminPassword $password -prefix $prefix
 
-$cgfipaddress = (Get-AzureRMPublicIpAddress -ResourceGroup JVH83-RG -Name JVH83-VM-CGF-A-PIP).IpAddress
+$cgfipaddress = (Get-AzureRMPublicIpAddress -ResourceGroup $rg -Name "$prefix-VM-CGF-A-PIP").IpAddress
 
 mkdir -p ansible/inventory/
 $ansibleinventory = @"

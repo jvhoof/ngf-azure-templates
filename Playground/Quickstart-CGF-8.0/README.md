@@ -56,7 +56,7 @@ To deploy via Azure Cloud Shell you can connect to the Azure Cloud Shell via [ht
 - Start up Azure Cloud Shell from the Azure Portal or go directly to [https://shell.azure.com](https://shell.azure.com/)
 - Download the latest version of the ARM templates in the persistant clouddrive:
 
-`cd ~\clouddrive\; Invoke-WebRequest -Uri "https://github.com/jvhoof/ngf-azure-templates/archive/master.zip" -OutFile "~/clouddrive/master.zip"; jar xf master.zip; cd "~/clouddrive/ngf-azure-templates-master/Quickstart-CGF-8.0/"; .\deploy.ps1`
+`cd ~\clouddrive\; Invoke-WebRequest -Uri "https://github.com/jvhoof/ngf-azure-templates/archive/master.zip" -OutFile "~/clouddrive/master.zip"; jar xf master.zip; cd "~/clouddrive/ngf-azure-templates-master/Playground/Quickstart-CGF-8.0/"; .\deploy.ps1`
 
 - Answer the questions asked by the script on the following variables: location, prefix and password.
 
