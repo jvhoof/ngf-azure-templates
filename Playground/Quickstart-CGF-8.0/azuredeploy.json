@@ -58,7 +58,7 @@
       "metadata": {
         "description": "Version of the Barracuda CloudGen Firewall to install"
       },
-      "allowedValues": [ "latest", "7.2.205701", "7.2.112901", "7.1.306101", "7.1.210401", "7.0.407401", "6.2.411301" ],
+      "allowedValues": [ "latest", "8.0.0047501", "7.2.205701", "7.2.112901", "7.1.306101", "7.1.210401" ],
       "defaultValue": "latest"
     },
     "vmSize": {
@@ -92,16 +92,10 @@
     "ccSecret": {
       "type": "securestring",
       "defaultValue": "only used when ccManaged set to yes"
-    },
-    "osDiskVhdUri": {
-      "type": "string",
-      "metadata": {
-        "description": "Uri of the existing VHD in ARM standard or premium storage in the same subscription"
-      }
     }
   },
   "variables": {
-    "computeApiVersion": "2018-04-01",
+    "computeApiVersion": "2018-06-01",
     "networkApiVersion": "2018-04-01",
     "storageApiVersion": "2018-07-01",
 
@@ -628,40 +622,6 @@
       }
     },
     {
-      "type": "Microsoft.Compute/images",
-      "apiVersion": "2018-04-01",
-      "name": "[variables('cgfDiskName1')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "storageProfile": {
-          "osDisk": {
-            "osType": "[variables('osType')]",
-            "osState": "Generalized",
-            "blobUri": "[parameters('osDiskVhdUri')]",
-            "caching": "ReadWrite",
-            "storageAccountType": "Standard_LRS"
-          }
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/images",
-      "apiVersion": "2018-04-01",
-      "name": "[variables('cgfDiskName2')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "storageProfile": {
-          "osDisk": {
-            "osType": "[variables('osType')]",
-            "osState": "Generalized",
-            "blobUri": "[parameters('osDiskVhdUri')]",
-            "caching": "ReadWrite",
-            "storageAccountType": "Standard_LRS"
-          }
-        }
-      }
-    },
-    {
       "apiVersion": "[variables('computeApiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
       "identity": { 
@@ -669,10 +629,14 @@
       },
       "name": "[variables('cgfVmName1')]",
       "location": "[resourceGroup().location]",
+      "plan": {
+        "name": "[parameters('imageSKU')]",
+        "Product": "[variables('imageOffer')]",
+        "Publisher": "[variables('imagePublisher')]"
+      },
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces/', variables('cgfNicName1'))]",
-        "[concat('Microsoft.Compute/availabilitySets/', variables('avName'))]",
-        "[concat('Microsoft.Compute/images/', variables('cgfDiskName1'))]"
+        "[concat('Microsoft.Compute/availabilitySets/', variables('avName'))]"
       ],
       "properties": {
         "availabilitySet": {
@@ -689,7 +653,15 @@
         },
         "storageProfile": {
           "imageReference": {
-            "id": "[resourceId('Microsoft.Compute/images', variables('cgfDiskName1'))]"
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('imageSKU')]",
+            "version": "[parameters('version')]"
+          },
+          "osDisk": {
+            "name": "[concat(variables('cgfVMName1'),'-osdisk')]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
           }
         },
         "networkProfile": {
@@ -718,10 +690,14 @@
       },
       "name": "[variables('cgfVmName2')]",
       "location": "[resourceGroup().location]",
+      "plan": {
+        "name": "[parameters('imageSKU')]",
+        "Product": "[variables('imageOffer')]",
+        "Publisher": "[variables('imagePublisher')]"
+      },
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces/', variables('cgfNicName2'))]",
-        "[concat('Microsoft.Compute/availabilitySets/', variables('avName'))]",
-        "[concat('Microsoft.Compute/images/', variables('cgfDiskName2'))]"
+        "[concat('Microsoft.Compute/availabilitySets/', variables('avName'))]"
       ],
       "properties": {
         "availabilitySet": {
@@ -738,7 +714,15 @@
         },
         "storageProfile": {
           "imageReference": {
-            "id": "[resourceId('Microsoft.Compute/images', variables('cgfDiskName1'))]"
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[parameters('imageSKU')]",
+            "version": "[parameters('version')]"
+          },
+          "osDisk": {
+            "name": "[concat(variables('cgfVMName2'),'-osdisk')]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
           }
         },
         "networkProfile": {

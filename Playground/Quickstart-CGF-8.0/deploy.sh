@@ -52,20 +52,6 @@ echo "--> Using prefix $prefix for all resources ..."
 echo ""
 rg_cgf="$prefix-RG"
 
-if [ -z "$DEPLOY_VHD" ]
-then
-    # Input osdiskvhduri 
-    echo -n "Enter uri of the existing VHD in ARM standard or premium storage: "
-    stty_orig=`stty -g` # save original terminal setting.
-    read osdiskvhduri         # read the location
-    stty $stty_orig     # restore terminal setting.
-else
-    osdiskvhduri="$DEPLOY_VHD"
-fi
-echo ""
-echo "--> Deployment with disk located here: $osdiskvhduri ..."
-echo ""
-
 if [ -z "$DEPLOY_PASSWORD" ]
 then
     # Input password 
@@ -106,7 +92,7 @@ echo "--> Deployment of $rg_cgf resources ..."
 az group deployment create --resource-group "$rg_cgf" \
                            --template-file azuredeploy.json \
                            --parameters "@azuredeploy.parameters.json" \
-                           --parameters adminPassword=$passwd prefix=$prefix osDiskVhdUri="$osdiskvhduri"
+                           --parameters adminPassword=$passwd prefix=$prefix
 result=$? 
 if [[ $result != 0 ]]; 
 then 
