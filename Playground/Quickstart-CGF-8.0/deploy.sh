@@ -124,8 +124,7 @@ if [[ $? != 0 ]];
 then 
     echo "--> ERROR: Deployment failed ..."
     exit $rc; 
-fi 
-
+else
 echo "
 ##############################################################################################################
 #  _                         
@@ -147,3 +146,4 @@ query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualM
 az vm list-ip-addresses --query "$query" --output tsv
 echo "
 ##############################################################################################################"
+fi
