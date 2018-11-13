@@ -98,7 +98,7 @@ if [[ $result != 0 ]];
 then 
     echo "--> Deployment failed ..."
     exit $rc; 
-else 
+fi 
 
 # Create inventory for Ansible configuration of CloudGen Firewall resources
 echo ""
@@ -145,5 +145,6 @@ echo "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
 echo "
-##############################################################################################################"
+##############################################################################################################
+"
 fi
