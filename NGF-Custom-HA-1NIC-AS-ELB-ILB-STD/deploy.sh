@@ -177,8 +177,34 @@ az group deployment create --resource-group "$rg_ngf" \
                            --parameters adminPassword=$passwd prefix=$prefix vNetResourceGroup=$vnetresourcegroup \
                                         vNetName=$vnetname subnetNameNGF=$subnetnamengf subnetNGF=$subnetngf
 result=$? 
-if [ $result != 0 ]; 
+if [[ $result != 0 ]]; 
 then 
     echo "--> Deployment failed ..."
     exit $rc; 
+else 
+echo "
+##############################################################################################################
+#  _                         
+# |_) _  __ __ _  _     _| _ 
+# |_)(_| |  | (_|(_ |_|(_|(_|
+#
+# Thank you for deploying the Barracuda CloudGen Firewall for more information:
+#
+# Campus website:
+# https://campus.barracuda.com/product/cloudgenfirewall/doc/73719655/microsoft-azure-deployment/
+#
+# Connect via email:
+# azure_support@barracuda.com
+#
+##############################################################################################################
+ IP Assignment:
+"
+query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
+az vm list-ip-addresses --query "$query" --output tsv
+echo "
+##############################################################################################################
+
+"
 fi
+
+exit 0

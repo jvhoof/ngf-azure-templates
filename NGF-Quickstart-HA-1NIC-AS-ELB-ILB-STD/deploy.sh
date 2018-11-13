@@ -112,5 +112,13 @@ echo "
 # azure_support@barracuda.com
 #
 ##############################################################################################################
+ IP Assignment:
+"
+query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
+az vm list-ip-addresses --query "$query" --output tsv
+echo "
+##############################################################################################################
 "
 fi
+
+exit 0
