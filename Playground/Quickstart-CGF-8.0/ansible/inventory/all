@@ -1,5 +1,0 @@
-[cgf]
-JVH82-VM-CGF-A ansible_host=40.67.220.243 ansible_port=8443 ansible_connection=local gather_facts=no
-
-[cgf-group:children]
-cgf

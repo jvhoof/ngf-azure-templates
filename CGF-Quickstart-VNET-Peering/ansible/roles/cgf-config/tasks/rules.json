@@ -1,0 +1,212 @@
+{
+  "rules": [
+    {
+      "position": {
+        "placement": "after",
+        "reference": "CLOUD-LB-PROBE"
+      },
+      "source": {
+        "references": "JVH50-VNET"
+      },
+      "destination": {
+        "explicit": {
+          "included": [
+            {
+              "references": "JVH50-VNET"
+            },
+            {
+              "references": "JVH50-VNET-SPOKE1"
+            },
+            {
+              "references": "JVH50-VNET-SPOKE2"
+            }
+          ],
+          "excluded": [],
+          "name": "<explicit>",
+          "type": "generic"
+        }
+      },
+      "service": {
+        "references": "Any"
+      },
+      "policies": {
+        "ips": "Default"
+      },
+      "action": {
+        "connection": {
+          "references": "Original Source IP"
+        },
+        "type": "pass"
+      },
+      "name": "HUB-2-SPOKE",
+      "bidirectional": false,
+      "deactivated": false,
+      "dynamic": false,
+      "ipVersion": "IPv4"
+    },
+    {
+      "position": {
+        "placement": "after",
+        "reference": "CLOUD-LB-PROBE"
+      },
+       "source": {
+        "explicit": {
+          "included": [
+            {
+              "references": "JVH50-VNET-SPOKE1"
+            },
+            {
+              "references": "JVH50-VNET-SPOKE2"
+            }
+          ],
+          "excluded": [],
+          "name": "<explicit>",
+          "type": "generic"
+        }
+      },
+      "destination": {
+        "references": "JVH50-VNET"
+      },
+      "service": {
+        "references": "Any"
+      },
+      "policies": {
+        "ips": "Default"
+      },
+      "action": {
+        "connection": {
+          "references": "Original Source IP"
+        },
+        "type": "pass"
+      },
+      "name": "SPOKE-2-HUB",
+      "bidirectional": false,
+      "deactivated": false,
+      "dynamic": false,
+      "ipVersion": "IPv4"
+    },
+    {
+      "position": {
+        "placement": "after",
+        "reference": "CLOUD-LB-PROBE"
+      },
+      "source": {
+        "explicit": {
+          "included": [
+            {
+              "references": "JVH50-VNET-SPOKE1"
+            },
+            {
+              "references": "JVH50-VNET-SPOKE2"
+            }
+          ],
+          "excluded": [],
+          "name": "<explicit>",
+          "type": "generic"
+        }
+      },
+      "destination": {
+        "explicit": {
+          "included": [
+            {
+              "references": "JVH50-VNET-SPOKE1"
+            },
+            {
+              "references": "JVH50-VNET-SPOKE2"
+            }
+          ],
+          "excluded": [],
+          "name": "<explicit>",
+          "type": "generic"
+        }
+      },
+      "service": {
+        "references": "Any"
+      },
+      "policies": {
+        "ips": "Default"
+      },
+      "action": {
+        "connection": {
+          "references": "Original Source IP"
+        },
+        "type": "pass"
+      },
+      "name": "SPOKE-2-SPOKE",
+      "bidirectional": false,
+      "deactivated": false,
+      "dynamic": false,
+      "ipVersion": "IPv4"
+    },
+    {
+      "position": {
+        "placement": "after",
+        "reference": "CLOUD-LB-PROBE"
+      },
+      "source": {
+        "references": "JVH50-VNET"
+      },
+      "destination": {
+        "references": "Internet"
+      },
+      "service": {
+        "references": "Any"
+      },
+      "policies": {
+        "ips": "Default"
+      },
+      "action": {
+        "connection": {
+          "references": "Dynamic NAT"
+        },
+        "type": "pass"
+      },
+      "name": "HUB-2-INTERNET",
+      "bidirectional": false,
+      "deactivated": false,
+      "dynamic": false,
+      "ipVersion": "IPv4"
+    },
+    {
+      "position": {
+        "placement": "after",
+        "reference": "CLOUD-LB-PROBE"
+      },
+      "source": {
+        "explicit": {
+          "included": [
+            {
+              "references": "JVH50-VNET-SPOKE1"
+            },
+            {
+              "references": "JVH50-VNET-SPOKE2"
+            }
+          ],
+          "excluded": [],
+          "name": "<explicit>",
+          "type": "generic"
+        }
+      },
+      "destination": {
+        "references": "Internet"
+      },
+      "service": {
+        "references": "Any"
+      },
+      "policies": {
+        "ips": "Default"
+      },
+      "action": {
+        "connection": {
+          "references": "Dynamic NAT"
+        },
+        "type": "pass"
+      },
+      "name": "SPOKE-2-INTERNET",
+      "bidirectional": false,
+      "deactivated": false,
+      "dynamic": false,
+      "ipVersion": "IPv4"
+    }
+  ]
+}

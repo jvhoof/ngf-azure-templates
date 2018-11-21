@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Read a json file
+      set_fact:
+        my_json_contents: "{{ lookup('file', './rules.json') }}"
+    - name: What did we read?
+      debug:
+        var: my_json_contents
+    - name: Ping each IP
+      debug: 
+        var: item.name
+      with_items: "{{ my_json_contents.rules }}"

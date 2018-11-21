@@ -1,0 +1,114 @@
+{
+  "objects": [
+    {
+      "included": [
+          {
+              "references": "JVH50-SUBNET-CGF"
+          },
+          {
+              "references": "JVH50-SUBNET-GREEN"
+          },
+          {
+              "references": "JVH50-SUBNET-RED"
+          }
+      ],
+      "excluded": [],
+      "name": "JVH50-VNET",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    },
+    {
+      "included": [
+          {
+              "entry": {
+                  "ip": "172.16.136.0/24"
+              }
+          }
+      ],
+      "excluded": [],
+      "name": "JVH50-SUBNET-CGF",
+      "comment": "CGF",
+      "color": "#ff0000",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    },
+    {
+      "included": [
+          {
+              "entry": {
+                  "ip": "172.16.138.0/24"
+              }
+          }
+      ],
+      "excluded": [],
+      "name": "JVH50-SUBNET-GREEN",
+      "comment": "Green",
+      "color": "#ff0000",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    },
+    {
+      "included": [
+          {
+              "entry": {
+                  "ip": "172.16.140.0/23"
+              }
+          }
+      ],
+      "excluded": [],
+      "name": "JVH50-SUBNET-SPOKE1",
+      "comment": "Spoke1 Subnet",
+      "color": "#ff0000",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    },
+    {
+      "included": [
+          {
+              "entry": {
+                  "ip": "172.16.137.0/24"
+              }
+          }
+      ],
+      "excluded": [],
+      "name": "JVH50-SUBNET-RED",
+      "comment": "Red",
+      "color": "#ff0000",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    },
+    {
+      "included": [
+          {
+              "references": "JVH50-SUBNET-SPOKE2"
+          }
+      ],
+      "excluded": [],
+      "name": "JVH50-VNET-SPOKE2",
+      "comment": "Spoke2 VNET",
+      "color": "#ff0000",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    },
+    {
+      "included": [
+          {
+              "references": "JVH50-SUBNET-SPOKE1"
+          }
+      ],
+      "excluded": [],
+      "name": "JVH50-VNET-SPOKE1",
+      "comment": "Spoke1 VNET",
+      "color": "#ff0000",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    }
+  ]
+}
