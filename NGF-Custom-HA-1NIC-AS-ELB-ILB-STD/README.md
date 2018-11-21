@@ -42,7 +42,7 @@ ccSecret | Secret to retrieve the configuration from the CloudGen Control Center
 
 ## Launching the Template
 
-The package provides a deploy.ps1 and deploy.sh for Powershell or Azure CLI based deployments. This can be peformed from the Azure Portal as well as the any system that has either of these scripting infrastructures installed. Or you can deploy from the Azure Portal using the provided link.
+The package provides a deploy.ps1 and deploy.sh for Powershell or Azure CLI based deployments. This can be performed from the Azure Portal as well as the any system that has either of these scripting infrastructures installed. Or you can deploy from the Azure Portal using the provided link.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjvhoof%2Fngf-azure-templates%2Fmaster%2FNGF-Custom-HA-1NIC-AS-ELB-ILB-STD%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
