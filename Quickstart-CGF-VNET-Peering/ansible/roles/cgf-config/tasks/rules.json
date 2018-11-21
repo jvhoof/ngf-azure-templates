@@ -6,19 +6,19 @@
         "reference": "CLOUD-LB-PROBE"
       },
       "source": {
-        "references": "JVH50-VNET"
+        "references": "{{ cgf_prefix }}-VNET"
       },
       "destination": {
         "explicit": {
           "included": [
             {
-              "references": "JVH50-VNET"
+              "references": "{{ cgf_prefix }}-VNET"
             },
             {
-              "references": "JVH50-VNET-SPOKE1"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE1"
             },
             {
-              "references": "JVH50-VNET-SPOKE2"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE2"
             }
           ],
           "excluded": [],
@@ -53,10 +53,10 @@
         "explicit": {
           "included": [
             {
-              "references": "JVH50-VNET-SPOKE1"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE1"
             },
             {
-              "references": "JVH50-VNET-SPOKE2"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE2"
             }
           ],
           "excluded": [],
@@ -65,7 +65,7 @@
         }
       },
       "destination": {
-        "references": "JVH50-VNET"
+        "references": "{{ cgf_prefix }}-VNET"
       },
       "service": {
         "references": "Any"
@@ -94,10 +94,10 @@
         "explicit": {
           "included": [
             {
-              "references": "JVH50-VNET-SPOKE1"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE1"
             },
             {
-              "references": "JVH50-VNET-SPOKE2"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE2"
             }
           ],
           "excluded": [],
@@ -109,10 +109,10 @@
         "explicit": {
           "included": [
             {
-              "references": "JVH50-VNET-SPOKE1"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE1"
             },
             {
-              "references": "JVH50-VNET-SPOKE2"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE2"
             }
           ],
           "excluded": [],
@@ -144,7 +144,7 @@
         "reference": "CLOUD-LB-PROBE"
       },
       "source": {
-        "references": "JVH50-VNET"
+        "references": "{{ cgf_prefix }}-VNET"
       },
       "destination": {
         "references": "Internet"
@@ -176,10 +176,10 @@
         "explicit": {
           "included": [
             {
-              "references": "JVH50-VNET-SPOKE1"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE1"
             },
             {
-              "references": "JVH50-VNET-SPOKE2"
+              "references": "{{ cgf_prefix }}-VNET-SPOKE2"
             }
           ],
           "excluded": [],

@@ -3,31 +3,13 @@
     {
       "included": [
           {
-              "references": "JVH50-SUBNET-CGF"
-          },
-          {
-              "references": "JVH50-SUBNET-GREEN"
-          },
-          {
-              "references": "JVH50-SUBNET-RED"
-          }
-      ],
-      "excluded": [],
-      "name": "JVH50-VNET",
-      "type": "generic",
-      "shared": false,
-      "dynamic": false
-    },
-    {
-      "included": [
-          {
               "entry": {
                   "ip": "172.16.136.0/24"
               }
           }
       ],
       "excluded": [],
-      "name": "JVH50-SUBNET-CGF",
+      "name": "{{ cgf_prefix }}-SUBNET-CGF",
       "comment": "CGF",
       "color": "#ff0000",
       "type": "generic",
@@ -43,7 +25,7 @@
           }
       ],
       "excluded": [],
-      "name": "JVH50-SUBNET-GREEN",
+      "name": "{{ cgf_prefix }}-SUBNET-GREEN",
       "comment": "Green",
       "color": "#ff0000",
       "type": "generic",
@@ -59,7 +41,7 @@
           }
       ],
       "excluded": [],
-      "name": "JVH50-SUBNET-SPOKE1",
+      "name": "{{ cgf_prefix }}-SUBNET-SPOKE1",
       "comment": "Spoke1 Subnet",
       "color": "#ff0000",
       "type": "generic",
@@ -75,7 +57,7 @@
           }
       ],
       "excluded": [],
-      "name": "JVH50-SUBNET-RED",
+      "name": "{{ cgf_prefix }}-SUBNET-RED",
       "comment": "Red",
       "color": "#ff0000",
       "type": "generic",
@@ -85,11 +67,29 @@
     {
       "included": [
           {
-              "references": "JVH50-SUBNET-SPOKE2"
+              "references": "{{ cgf_prefix }}-SUBNET-CGF"
+          },
+          {
+              "references": "{{ cgf_prefix }}-SUBNET-GREEN"
+          },
+          {
+              "references": "{{ cgf_prefix }}-SUBNET-RED"
           }
       ],
       "excluded": [],
-      "name": "JVH50-VNET-SPOKE2",
+      "name": "{{ cgf_prefix }}-VNET",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    },
+    {
+      "included": [
+          {
+              "references": "{{ cgf_prefix }}-SUBNET-SPOKE2"
+          }
+      ],
+      "excluded": [],
+      "name": "{{ cgf_prefix }}-VNET-SPOKE2",
       "comment": "Spoke2 VNET",
       "color": "#ff0000",
       "type": "generic",
@@ -99,11 +99,11 @@
     {
       "included": [
           {
-              "references": "JVH50-SUBNET-SPOKE1"
+              "references": "{{ cgf_prefix }}-SUBNET-SPOKE1"
           }
       ],
       "excluded": [],
-      "name": "JVH50-VNET-SPOKE1",
+      "name": "{{ cgf_prefix }}-VNET-SPOKE1",
       "comment": "Spoke1 VNET",
       "color": "#ff0000",
       "type": "generic",
