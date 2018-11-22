@@ -486,7 +486,7 @@
               "nextHopIpAddress": "[variables('lbIPAddress-internal')]"
             }
           }
-        ]
+         ]
       }
     },
     {
@@ -737,7 +737,7 @@
             "name": "HAProbe",
             "properties": {
               "protocol": "Tcp",
-              "port": 65500,
+              "port": 65000,
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             }
