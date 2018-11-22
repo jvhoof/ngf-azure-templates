@@ -74,7 +74,7 @@ do
     if [[ $? != 0 ]]; 
     then 
         vnet="$prefix-VNET"
-        if [[ "$TIER" == "SPOKE1" || "$TIER" == "SPOKE1" ]]
+        if [[ "$TIER" == "SPOKE1" || "$TIER" == "SPOKE2" ]]
         then
             vnet="$prefix-VNET-$TIER"
         fi
@@ -103,7 +103,7 @@ do
             --nics "$prefix-VM-$TIER-NIC" \
             --image win2016datacenter \
             --admin-username azureuser \
-            --admin-password $passwd
+            --admin-password "$passwd"
         result=$? 
         if [[ $result != 0 ]]; 
         then 
@@ -114,3 +114,26 @@ do
         echo "--> Deployment $TIER VM found ..."
     fi
 done
+
+echo "
+##############################################################################################################
+#  _                         
+# |_) _  __ __ _  _     _| _ 
+# |_)(_| |  | (_|(_ |_|(_|(_|
+#
+# Thank you for deploying VM's to support the Barracuda CloudGen Firewall VNET peering Quickstart
+#
+# Username: azureuser
+#
+##############################################################################################################
+ IP Assignment:
+"
+query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
+az vm list-ip-addresses --query "$query" --output tsv
+echo "
+External Load Balancer: $prefix-ELB-CGF
+"
+az network public-ip show --resource-group "$prefix-RG" --name "$prefix-CGF-LB-PIP" --query "{fqdn: dnsSettings.fqdn, address: ipAddress}" --output tsv
+echo "
+##############################################################################################################
+"
