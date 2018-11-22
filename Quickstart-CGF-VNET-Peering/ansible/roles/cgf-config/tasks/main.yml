@@ -65,7 +65,7 @@
 ### CGF Load network objects ###
 - name: Read network objects from JSON file
   set_fact:
-    network_objects: "{{ lookup('file', './network_objects.json') }}"
+    network_objects: "{{ lookup('template', './network_objects.json') }}"
 
 ### CGF Create network objects ###
 - include_tasks: cgf-create-replace-item.yml
@@ -80,7 +80,7 @@
 ### CGF Load firewall rules ###
 - name: Read rules from JSON file
   set_fact:
-    rulebase: "{{ lookup('file', './rules.json') }}"
+    rulebase: "{{ lookup('template', './rules.json') }}"
 
 ### CGF Create firewall rules ###
 - include_tasks: cgf-create-replace-item.yml
