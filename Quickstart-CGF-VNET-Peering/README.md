@@ -6,7 +6,7 @@
 
 This reference architecture extends the the High Availability Cluster reference architecture building block with the capability to have multiple peered VNET's. The VNET containing the Barracuda CloudGen Firewall will act as the transit VNET where all communication between peered VNET's, Internet and on-premise networks connected via VPN or ExpressRoute will be inspected by the different deep packet inspection modules in the CloudGen Firewall.
 
-This template creates a full setup with 3 different VNET's; 1 Transit Hub VNET and 2 Spoke VNET's. Automatically all required VNET peering and 
+This template creates a full setup with 3 different VNET's; 1 Transit Hub VNET and 2 Spoke VNET's. Automatically all required VNET peering and routing is created to have the spokes and hub can talk with each other and the internet.
 
 ![Network diagram](images/cgf-transit-vnet.png)
 
