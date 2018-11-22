@@ -1,4 +1,4 @@
-# Barracuda CloudGen Firewall 8.0 for Azure - High Availability Cluster witg VNET Peering
+# Barracuda CloudGen Firewall 8.0 for Azure - High Availability Cluster with VNET Peering
 
 **Note** This ARM Template uses version 8.0 of the CGF. Barracuda CloudGen Firewall version 8.0 is a cloud-only version. It is currently not available for on-premises deployments and can only be deployed in Microsoft Azure, Amazon Web Services, or Google Cloud Platform public clouds.
 
@@ -46,7 +46,7 @@ The package provides a deploy.sh for Azure CLI based deployments. This can be pe
 To deploy via Azure Cloud Shell you can connect via the Azure Portal or directly to [https://shell.azure.com/](https://shell.azure.com/). 
 
 - Start up Azure Cloud Shell from the Azure Portal or go directly to [https://shell.azure.com](https://shell.azure.com/)
-- Download the latest version of the ARM templates in the persistant clouddrive:
+- Download the latest version of the ARM templates in the persistent clouddrive:
 
 `cd ~/clouddrive/ && wget -qO- https://github.com/jvhoof/ngf-azure-templates/archive/master.zip | jar x && cd ~/clouddrive/ngf-azure-templates-master/Quickstart-CGF-VNET-Peering/ && ./deploy.sh`
 
