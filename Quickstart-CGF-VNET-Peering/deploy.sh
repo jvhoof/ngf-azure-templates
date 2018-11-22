@@ -138,6 +138,11 @@ echo "
 #
 # Firewall Admin 8.0: https://d.barracudanetworks.com/ngfirewall/8.0.0/FirewallAdmin_8.0.0-819.exe
 #
+# BYOL eval license: https://www.barracuda.com/purchase/evaluation/products/BNGCAZ
+#
+# To complete this quickstart you can run the deploy-support-linux.sh or deploy-support-windows.sh to install
+# VM's in the red, green, spoke1 and spoke2 tiers for testing.
+#
 # Connect via email:
 # azure_support@barracuda.com
 #
@@ -149,8 +154,8 @@ az vm list-ip-addresses --query "$query" --output tsv
 echo "
 External Load Balancer: $prefix-ELB-CGF
 "
-az network public-ip show --group "$prefix-RG" --name "$prefix-CGF-LB-PIP" --query "{fqdn: dnsSettings.fqdn, address: ipAddress}" --output tsv
-"
+az network public-ip show --resource-group "$prefix-RG" --name "$prefix-CGF-LB-PIP" --query "{fqdn: dnsSettings.fqdn, address: ipAddress}" --output tsv
+echo "
 ##############################################################################################################
 "
 fi
