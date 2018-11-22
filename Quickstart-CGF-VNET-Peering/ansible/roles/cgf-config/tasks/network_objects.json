@@ -36,13 +36,29 @@
       "included": [
           {
               "entry": {
-                  "ip": "172.16.140.0/23"
+                  "ip": "172.16.140.0/24"
               }
           }
       ],
       "excluded": [],
       "name": "{{ cgf_prefix }}-SUBNET-SPOKE1",
       "comment": "Spoke1 Subnet",
+      "color": "#ff0000",
+      "type": "generic",
+      "shared": false,
+      "dynamic": false
+    },
+    {
+      "included": [
+        {
+          "entry": {
+            "ip": "172.16.142.0/24"
+          }
+        }
+      ],
+      "excluded": [],
+      "name": "{{ cgf_prefix }}-SUBNET-SPOKE2",
+      "comment": "Spoke2 Subnet",
       "color": "#ff0000",
       "type": "generic",
       "shared": false,
