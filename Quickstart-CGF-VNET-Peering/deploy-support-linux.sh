@@ -59,7 +59,7 @@ do
     if [[ $? != 0 ]]; 
     then 
         vnet="$prefix-VNET"
-        if [[ "$TIER" == "SPOKE1" || "$TIER" == "SPOKE1" ]]
+        if [[ "$TIER" == "SPOKE1" || "$TIER" == "SPOKE2" ]]
         then
             vnet="$prefix-VNET-$TIER"
         fi
