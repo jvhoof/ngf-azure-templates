@@ -136,6 +136,8 @@ echo "
 # Campus website:
 # https://campus.barracuda.com/product/cloudgenfirewall/doc/73719655/microsoft-azure-deployment/
 #
+# Firewall Admin 8.0: https://d.barracudanetworks.com/ngfirewall/8.0.0/FirewallAdmin_8.0.0-819.exe
+#
 # Connect via email:
 # azure_support@barracuda.com
 #
@@ -145,6 +147,10 @@ echo "
 query="[?virtualMachine.name.starts_with(@, '$prefix')].{virtualMachine:virtualMachine.name, publicIP:virtualMachine.network.publicIpAddresses[0].ipAddress,privateIP:virtualMachine.network.privateIpAddresses[0]}"
 az vm list-ip-addresses --query "$query" --output tsv
 echo "
+External Load Balancer: $prefix-ELB-CGF
+"
+az network public-ip show --group "$prefix-RG" --name "$prefix-CGF-LB-PIP" --query "{fqdn: dnsSettings.fqdn, address: ipAddress}" --output tsv
+"
 ##############################################################################################################
 "
 fi

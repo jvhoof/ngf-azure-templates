@@ -2,6 +2,59 @@
   "rules": [
     {
       "position": {
+        "placement": "top"
+      },
+      "source": {
+          "references": "Azure-Virtual-IP"
+      },
+      "destination": {
+          "references": "All Firewall IPs"
+      },
+      "service": {
+          "explicit": {
+              "entries": [
+                  {
+                      "entry": {
+                          "tcp": {
+                              "clientPortUsed": {
+                                  "from": 1024,
+                                  "to": 65535
+                              },
+                              "ports": [
+                                  "65000"
+                              ]
+                          },
+                          "protocolProtection": {
+                              "protocols": [],
+                              "action": "none",
+                              "policy": "whitelist"
+                          },
+                          "protocol": "TCP",
+                          "sessionTimeout": 86400
+                      }
+                  }
+              ],
+              "name": "<explicit>"
+          }
+      },
+      "policies": {
+          "ips": "Default"
+      },
+      "action": {
+          "target": {
+              "address": "127.0.0.9",
+              "port": 450
+          },
+          "type": "appredirect"
+      },
+      "name": "CLOUD-LB-PROBE",
+      "comment": "Redirect probes from the loadbalancer TCP port 65000 to fwauth on port 450.",
+      "deactivated": false,
+      "dynamic": false,
+      "ipVersion": "IPv4"
+    },
+    {
+      "position": {
         "placement": "after",
         "reference": "CLOUD-LB-PROBE"
       },
