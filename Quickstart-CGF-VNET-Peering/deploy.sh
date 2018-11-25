@@ -140,8 +140,7 @@ echo "
 #
 # BYOL eval license: https://www.barracuda.com/purchase/evaluation/products/BNGCAZ
 #
-# To complete this quickstart you can run the deploy-support-linux.sh or deploy-support-windows.sh to install
-# VM's in the red, green, spoke1 and spoke2 tiers for testing.
+# To complete this quickstart verify the "Post Deployment Configuration" list in the README
 #
 # Connect via email:
 # azure_support@barracuda.com
