@@ -122,7 +122,7 @@
     "lbFrontEndPoolID-internal": "[concat(variables('lbID-internal'),'/frontendIPConfigurations/loadBalancerFrontend')]",
     "lbBackEndPoolID-external": "[concat(variables('lbID-external'),'/backendAddressPools/loadBalancerBackend')]",
     "lbBackEndPoolID-internal": "[concat(variables('lbID-internal'),'/backendAddressPools/loadBalancerBackend')]",
-    "lbProbeID-external": "[concat(variables('lbID-external'),'/probes/TinaProbe')]",
+    "lbProbeID-external": "[concat(variables('lbID-external'),'/probes/HAProbe')]",
     "lbProbeID-internal": "[concat(variables('lbID-internal'),'/probes/HAProbe')]",
     "lbIPAddress-internal": "[concat( variables( 'gcfSubnetAddrSplit' )[0], '.', variables( 'gcfSubnetAddrSplit' )[1], '.', variables( 'gcfSubnetAddrSplit' )[2], '.', add( int( variables( 'gcfSubnetAddrSplit' )[3]), 10 ))]",
 
@@ -340,10 +340,10 @@
           ],
           "probes": [
               {
-                  "name": "TinaProbe",
+                  "name": "HAProbe",
                   "properties": {
                       "protocol": "Tcp",
-                      "port": 691,
+                      "port": 65000,
                       "intervalInSeconds": 5,
                       "numberOfProbes": 2
                   }
@@ -409,7 +409,7 @@
             "name": "HAProbe",
             "properties": {
               "protocol": "Tcp",
-              "port": 65500,
+              "port": 65000,
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             }

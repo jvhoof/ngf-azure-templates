@@ -182,7 +182,7 @@
     "lbFrontEndPoolID-internal": "[concat(variables('lbID-internal'),'/frontendIPConfigurations/loadBalancerFrontend')]",
     "lbBackEndPoolID-external": "[concat(variables('lbID-external'),'/backendAddressPools/loadBalancerBackend')]",
     "lbBackEndPoolID-internal": "[concat(variables('lbID-internal'),'/backendAddressPools/loadBalancerBackend')]",
-    "lbProbeID-external": "[concat(variables('lbID-external'),'/probes/TinaProbe')]",
+    "lbProbeID-external": "[concat(variables('lbID-external'),'/probes/HAProbe')]",
     "lbProbeID-internal": "[concat(variables('lbID-internal'),'/probes/HAProbe')]",
     "lbIPAddress-internal": "[concat( variables( 'cgfSubnetAddrSplit' )[0], '.', variables( 'cgfSubnetAddrSplit' )[1], '.', variables( 'cgfSubnetAddrSplit' )[2], '.', add( int( variables( 'cgfSubnetAddrSplit' )[3]), 10 ))]",
 
@@ -666,10 +666,10 @@
         ],
         "probes": [
           {
-            "name": "TinaProbe",
+            "name": "HAProbe",
             "properties": {
               "protocol": "Tcp",
-              "port": 691,
+              "port": 65000,
               "intervalInSeconds": 5,
               "numberOfProbes": 2
             }
